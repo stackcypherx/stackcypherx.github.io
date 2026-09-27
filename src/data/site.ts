@@ -17,10 +17,13 @@ export const site = {
     email: '',
     x: '',
   },
-  // Source tracker this site's cyber lab plan was built from.
+  // Source the cyber lab sequence was adapted from.
+  //
+  // Deliberately NOT a hyperlink: the tracker is access-restricted paid bootcamp
+  // material whose learning contract prohibits redistributing the material or
+  // sharing class access. Credited by name only. If you get the organiser's
+  // written permission, add `trackerUrl` here and link it from the labs page.
   sources: {
-    tracker:
-      'https://docs.google.com/spreadsheets/d/1lHRLa8iZe9Rc4-TKGIWh4_9F9B_UzYweMRJK0QjjAlo/edit',
     trackerName: 'Cyber Security Learning Tracker',
   },
   startedOn: '2026-09-28',

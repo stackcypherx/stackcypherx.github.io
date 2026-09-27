@@ -31,11 +31,11 @@ const rtTotal = redTeamList.reduce((n, s) => n + s.machines.length, 0);
     <!-- ------------------------------------------------------------ attribution -->
     <section class="callout">
       <p class="small" style="margin: 0">
-        <b>Source:</b> the room track and machine lists are transcribed from the
-        <a href={site.sources.tracker}>{site.sources.trackerName}</a> spreadsheet — a 100-day
-        Indonesian bootcamp programme with a 50-room checkpoint before mentored study. Machine lists
-        are LainKusanagi's public OSCP-like and post-OSCP red team lists. Descriptions are given in
-        English with the original Indonesian preserved underneath.
+        <b>Source:</b> the room sequence is adapted from the <i>{site.sources.trackerName}</i> — a
+        100-day Indonesian bootcamp programme with a 50-room checkpoint before mentored study.
+        Credited by name only, and not linked: it is access-restricted course material. Room titles
+        are public TryHackMe names; the descriptions here are written for this site. The machine
+        lists are LainKusanagi's publicly published OSCP-like and post-OSCP red team lists.
       </p>
     </section>
 
@@ -88,7 +88,6 @@ const rtTotal = redTeamList.reduce((n, s) => n + s.machines.length, 0);
                         <span>
                           <span class="room-name">{r.n}</span>
                           <span class="room-desc" style="display: block">{r.d}</span>
-                          {r.id && <span class="room-desc-id" style="display: block">{r.id}</span>}
                         </span>
                         <a class="tiny" href={thmSearch(r.n)} rel="noopener" target="_blank">open ↗</a>
                       </label>

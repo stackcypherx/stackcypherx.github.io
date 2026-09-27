@@ -534,6 +534,9 @@ tbody tr:hover { background: var(--surface-2); }
 .room-row:has(input:checked) .room-name { color: var(--text-dim); text-decoration: line-through; }
 .room-name { font-weight: 560; }
 .room-desc { font-size: 0.83rem; color: var(--text-soft); }
+/* Secondary-language room description. Unused by default — see the credit note in
+   README: the original Indonesian copy is not redistributed here. Kept for when
+   you add your own bilingual descriptions (recommendation 5). */
 .room-desc-id { font-size: 0.8rem; color: var(--text-dim); font-style: italic; }
 .room-row input[type='checkbox'] {
   appearance: none; -webkit-appearance: none;

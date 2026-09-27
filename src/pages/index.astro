@@ -180,11 +180,11 @@ const totalMilestones = tracks.reduce((n, t) => n + countItems(t), 0);
       <div class="callout">
         <h3 style="margin: 0 0 0.4rem">Where the cybersecurity lab plan comes from</h3>
         <p class="small" style="margin: 0 0 0.6rem">
-          The {totalRooms}-room TryHackMe track and the OSCP-style machine lists are transcribed from the
-          <a href={site.sources.tracker}>{site.sources.trackerName}</a> spreadsheet — an Indonesian
-          bootcamp's 100-day programme, with a 50-room checkpoint before mentored study begins. The
-          machine lists are LainKusanagi's public OSCP-like and post-OSCP red team lists. Both are
-          reproduced here with attribution, reorganised, and translated so the plan is usable in English.
+          The {totalRooms}-room TryHackMe sequence is adapted from the
+          <i>{site.sources.trackerName}</i> — an Indonesian bootcamp's 100-day programme, with a
+          50-room checkpoint before mentored study begins. Credited by name only, since it is
+          access-restricted course material. The machine lists are LainKusanagi's publicly published
+          OSCP-like and post-OSCP red team lists.
         </p>
         <a class="btn btn-sm" href={`${base}/labs`}>Open the lab tracker →</a>
       </div>

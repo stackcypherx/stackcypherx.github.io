@@ -111,11 +111,17 @@ It appears on `/notes` automatically, newest first. Set `draft: true` to hide on
 
 ## Credit
 
-The cybersecurity lab plan is transcribed from the **Cyber Security Learning Tracker** spreadsheet —
-an Indonesian bootcamp's 100-day TryHackMe programme, with a 50-room checkpoint before mentored
-study. The OSCP-like and post-OSCP red team machine lists within it are **LainKusanagi's** public
-lists. Both are reproduced with attribution, restructured for the web, and translated to English with
-the original Indonesian descriptions preserved alongside.
+The cybersecurity lab sequence is adapted from the **Cyber Security Learning Tracker** — an
+Indonesian bootcamp's 100-day TryHackMe programme, with a 50-room checkpoint before mentored study.
+
+**It is credited by name and deliberately not linked.** That tracker is access-restricted paid
+course material, and its learning contract (`BACA INI (S&K)` tab) prohibits redistributing the
+material or sharing class access. So this repo carries only: public TryHackMe room titles, the
+topic grouping, and descriptions written for this site — not the original Indonesian copy, and not
+the sheet URL. If you obtain the organiser's written permission, add a `trackerUrl` to
+`src/data/site.ts` and restore the link.
+
+The OSCP-like and post-OSCP red team machine lists are **LainKusanagi's** publicly published lists.
 
 Room links point at TryHackMe's `hacktivities` search rather than hardcoded room slugs — THM slugs
 are not derivable from room titles (e.g. *Windows Fundamentals 1* lives at
