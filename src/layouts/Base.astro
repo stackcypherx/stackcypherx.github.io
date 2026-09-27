@@ -1,0 +1,158 @@
+---
+import '../styles/global.css';
+import { site, nav } from '../data/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** Rendered inside the page as an <h1> hero when provided. */
+  heading?: string;
+  lede?: string;
+  eyebrow?: string;
+  wide?: boolean;
+}
+
+const {
+  title,
+  description = site.description,
+  heading,
+  lede,
+  eyebrow,
+  wide = false,
+} = Astro.props;
+
+const pageTitle = title ? `${title} · ${site.name}` : site.title;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const href = (p: string) => (p.startsWith('http') ? p : `${base}${p}` || '/');
+const current = Astro.url.pathname.replace(/\/$/, '') || '/';
+const isCurrent = (p: string) => {
+  const target = href(p).replace(/\/$/, '') || '/';
+  return current === target || (target !== '/' && current.startsWith(target));
+};
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="canonical" href={new URL(Astro.url.pathname, site.url).href} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:site_name" content={site.name} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%233b5bdb'/%3E%3Ctext x='32' y='45' font-size='38' font-family='monospace' font-weight='bold' fill='white' text-anchor='middle'%3E%26gt;%3C/text%3E%3C/svg%3E"
+    />
+
+    <!-- Applied before first paint so the theme never flashes. -->
+    <script is:inline>
+      (() => {
+        try {
+          const saved = localStorage.getItem('theme');
+          if (saved === 'dark' || saved === 'light') {
+            document.documentElement.setAttribute('data-theme', saved);
+          }
+        } catch {}
+      })();
+    </script>
+  </head>
+
+  <body>
+    <header class="site-header">
+      <div class="wrap">
+        <a class="brand" href={href('/')}>
+          <span class="mono dot">&gt;_</span> {site.name}
+        </a>
+
+        <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" data-nav-toggle>☰</button>
+
+        <nav class="site-nav" data-nav>
+          {nav.map((n) => (
+            <a href={href(n.href)} aria-current={isCurrent(n.href) ? 'page' : undefined}>{n.label}</a>
+          ))}
+        </nav>
+
+        <button class="theme-toggle" data-theme-toggle aria-label="Toggle colour theme" title="Toggle theme">
+          <span data-theme-icon>◐</span>
+        </button>
+      </div>
+    </header>
+
+    <main class="site-main">
+      {heading && (
+        <div class="wrap">
+          <div class={wide ? 'hero' : 'hero narrow'}>
+            {eyebrow && <div class="eyebrow">{eyebrow}</div>}
+            <h1>{heading}</h1>
+            {lede && <p class="hero-lede">{lede}</p>}
+          </div>
+        </div>
+      )}
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap">
+        <div class="row-between">
+          <div>
+            <strong style="color: var(--text)">{site.name}</strong> — {site.tagline}
+            <div class="tiny dim" style="margin-top: 0.3rem">
+              Built with Astro · hosted on GitHub Pages · <a href={site.repo}>source</a>
+            </div>
+          </div>
+          <div class="row tiny">
+            {site.links.github && <a href={site.links.github}>GitHub</a>}
+            {site.links.linkedin && <a href={site.links.linkedin}>LinkedIn</a>}
+            {site.links.tryhackme && <a href={site.links.tryhackme}>TryHackMe</a>}
+            {site.links.credly && <a href={site.links.credly}>Credly</a>}
+          </div>
+        </div>
+        <p class="tiny dim" style="margin-top: 1.4rem; max-width: 78ch">
+          Roadmap content reflects research current as of September 2026. Certification costs, exam
+          codes, visa thresholds and platform pricing change — verify against the official source
+          before booking or applying. Nothing here is immigration or financial advice.
+        </p>
+      </div>
+    </footer>
+
+    <script>
+      // Theme toggle — cycles explicit light/dark and persists the choice.
+      const root = document.documentElement;
+      const btn = document.querySelector('[data-theme-toggle]');
+      const icon = document.querySelector('[data-theme-icon]');
+
+      const effective = () => {
+        const attr = root.getAttribute('data-theme');
+        if (attr === 'dark' || attr === 'light') return attr;
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      };
+      const paint = () => {
+        if (icon) icon.textContent = effective() === 'dark' ? '☀' : '☾';
+      };
+      btn?.addEventListener('click', () => {
+        const next = effective() === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-theme', next);
+        try { localStorage.setItem('theme', next); } catch {}
+        paint();
+      });
+      paint();
+
+      // Mobile nav
+      const navToggle = document.querySelector('[data-nav-toggle]');
+      const navEl = document.querySelector('[data-nav]');
+      navToggle?.addEventListener('click', () => {
+        const open = navEl?.classList.toggle('open');
+        navToggle.setAttribute('aria-expanded', String(!!open));
+      });
+    </script>
+
+    <script src="../scripts/progress.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,120 @@
+---
+import Base from '../layouts/Base.astro';
+import SectionHead from '../components/SectionHead.astro';
+import { certs, certPhilosophy } from '../data/certs';
+import { slug } from '../data/types';
+
+const tracksOrder = ['Foundation', 'Cyber', 'Networks', 'AI', 'Cloud'] as const;
+const priorityClass: Record<string, string> = {
+  'Do it': 'badge-ok',
+  'Worth it': 'badge-accent',
+  Situational: '',
+  Later: 'badge-warn',
+  'Skip unless funded': 'badge-danger',
+};
+const priorities = ['Do it', 'Worth it', 'Situational', 'Later', 'Skip unless funded'];
+---
+
+<Base
+  title="Certifications"
+  eyebrow="Costed and assessed"
+  heading="Certifications, honestly"
+  lede={`${certs.length} credentials across all tracks, with a real price, the exam format, and a verdict — including which ones to skip. Certificates get you into the room; projects get the offer.`}
+  wide
+>
+  <div class="wrap stack-lg">
+    <section>
+      <SectionHead title="Rules I am holding myself to" />
+      <div class="panel">
+        <ol style="margin: 0; max-width: 88ch">
+          {certPhilosophy.map((p) => <li style="margin-bottom: 0.6rem">{p}</li>)}
+        </ol>
+      </div>
+    </section>
+
+    <section data-filter-scope>
+      <SectionHead
+        title="The full list"
+        note="Costs are approximate in USD as of September 2026 and move constantly — always check the vendor before booking. Voucher bundles, student pricing, and retake insurance change the real number substantially."
+      />
+
+      <div class="filter-bar" style="margin-bottom: 1.2rem">
+        <input type="search" placeholder="Search certifications…" data-filter-search aria-label="Search certifications" />
+        {tracksOrder.map((t) => <button class="chip" data-filter-value={t} aria-pressed="false">{t}</button>)}
+      </div>
+
+      <div class="row" style="margin-bottom: 1.2rem; gap: 0.4rem">
+        <span class="tiny dim">Priority key:</span>
+        {priorities.map((p) => <span class={`badge ${priorityClass[p]}`}>{p}</span>)}
+      </div>
+
+      <div class="stack">
+        {
+          tracksOrder.map((tr) => {
+            const group = certs.filter((c) => c.track === tr);
+            if (group.length === 0) return null;
+            return (
+              <div data-filter-container>
+                <h3 class="anchor-h" id={slug(tr)} style="margin: 1.4rem 0 0.7rem">{tr}</h3>
+                <div class="stack">
+                  {
+                    group.map((c) => (
+                      <div
+                        class="card"
+                        data-filter-item
+                        data-filter-tags={c.track}
+                        data-filter-text={`${c.name} ${c.vendor} ${c.verdict} ${c.when} ${c.track} ${c.tier}`}
+                      >
+                        <div class="row-between" style="align-items: flex-start; gap: 1rem">
+                          <div style="flex: 1; min-width: 260px">
+                            <div class="row" style="gap: 0.4rem; margin-bottom: 0.4rem">
+                              <span class={`badge ${priorityClass[c.priority]}`}>{c.priority}</span>
+                              <span class="badge">{c.tier}</span>
+                              <span class="tiny dim">{c.vendor}</span>
+                            </div>
+                            <h4 style="margin: 0 0 0.45rem; font-size: 1.04rem">
+                              <a href={c.url} rel="noopener">{c.name} ↗</a>
+                            </h4>
+                            <p class="small" style="margin: 0 0 0.55rem; max-width: 84ch">{c.verdict}</p>
+                            <p class="small muted" style="margin: 0; max-width: 84ch">
+                              <b class="tiny dim" style="text-transform: uppercase; letter-spacing: 0.05em">When</b>
+                              &nbsp;{c.when}
+                            </p>
+                          </div>
+                          <div style="min-width: 190px" class="small">
+                            <div class="tiny dim" style="text-transform: uppercase; letter-spacing: 0.05em">Cost</div>
+                            <div style="margin-bottom: 0.6rem">{c.cost}</div>
+                            <div class="tiny dim" style="text-transform: uppercase; letter-spacing: 0.05em">Format</div>
+                            <div class="mono tiny">{c.format}</div>
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  }
+                </div>
+              </div>
+            );
+          })
+        }
+      </div>
+      <p class="muted center" data-filter-empty hidden style="padding: 2rem 0">No certifications match that filter.</p>
+    </section>
+
+    <section>
+      <div class="callout">
+        <h3 style="margin: 0 0 0.4rem">The 24-month money plan</h3>
+        <p class="small" style="margin: 0 0 0.7rem; max-width: 86ch">
+          Realistic total: <b>USD 3,000–5,000</b> over two years. Rough shape — foundations plus
+          Security+ around $500; CySA+ or eJPT another $400; CCNA $300; the hard practical credential
+          $500 (PNPT) to $1,600+ (OSCP); cloud and AI certificates $300–600; lab subscriptions
+          $200–400 a year; domain and hosting under $20 a year, since this site is free to host.
+        </p>
+        <p class="small" style="margin: 0; max-width: 86ch">
+          Sequence it so the expensive item lands <i>after</i> the cheap ones proved you stayed
+          interested. If Security+ and the free labs did not hold your attention, OSCP will not fix
+          that — and you will have found out for $400 rather than $1,600.
+        </p>
+      </div>
+    </section>
+  </div>
+</Base>

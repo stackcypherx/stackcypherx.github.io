@@ -1,0 +1,72 @@
+---
+import type { Phase } from '../data/types';
+import { itemKey } from '../data/types';
+
+interface Props {
+  trackId: string;
+  phase: Phase;
+  /** Extra progress groups this phase's items contribute to (e.g. the track total). */
+  groups?: string[];
+}
+
+const { trackId, phase, groups = [] } = Astro.props;
+const phaseGroup = `${trackId}.${phase.id}`;
+const allGroups = [phaseGroup, ...groups].join(' ');
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const resolve = (u: string) => (u.startsWith('http') ? u : `${base}${u}`);
+---
+
+<section class="phase" id={phaseGroup}>
+  <header class="phase-head">
+    <div class="phase-meta">
+      <span class="badge badge-accent">{phase.window}</span>
+      <span class="progress-figure" data-figure-for={phaseGroup} data-figure-mode="count">—</span>
+    </div>
+    <h3 class="anchor-h">{phase.title}</h3>
+    <p class="small muted" style="margin: 0">{phase.goal}</p>
+    <div class="bar" style="margin-top: 0.8rem" data-bar-for={phaseGroup}><span></span></div>
+    <p class="exit-note"><strong>Done when:</strong> {phase.exit}</p>
+  </header>
+
+  <ul class="check-list">
+    {
+      phase.items.map((item) => {
+        const key = itemKey(trackId, phase.id, item.title);
+        return (
+          <li class="check-item">
+            <input
+              type="checkbox"
+              data-key={key}
+              data-group={allGroups}
+              data-weight={item.weight ?? 1}
+              id={key}
+              aria-label={item.title}
+            />
+            <div>
+              <div class="row" style="gap: 0.5rem; align-items: baseline">
+                <label class="check-title" for={key}>{item.title}</label>
+                <span class={`badge kind-${item.kind}`}>{item.kind}</span>
+              </div>
+              {item.detail && <div class="check-detail">{item.detail}</div>}
+              {item.evidence && (
+                <div class="check-evidence">
+                  <b>Evidence</b>
+                  <span>{item.evidence}</span>
+                </div>
+              )}
+              {item.links && item.links.length > 0 && (
+                <div class="check-links">
+                  {item.links.map((l) => (
+                    <a href={resolve(l.url)} rel={l.url.startsWith('http') ? 'noopener' : undefined}>
+                      {l.label} ↗
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
+          </li>
+        );
+      })
+    }
+  </ul>
+</section>

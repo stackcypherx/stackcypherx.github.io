@@ -1,0 +1,82 @@
+---
+import Base from '../../layouts/Base.astro';
+import Checklist from '../../components/Checklist.astro';
+import ProgressPanel from '../../components/ProgressPanel.astro';
+import { tracks } from '../../data/roadmap';
+import { countItems } from '../../data/types';
+
+export function getStaticPaths() {
+  return tracks.map((track) => ({ params: { track: track.slug }, props: { track } }));
+}
+
+const { track } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const group = `track.${track.id}`;
+const others = tracks.filter((t) => t.id !== track.id);
+---
+
+<Base title={track.short} description={track.summary} wide>
+  <div class="wrap">
+    <div class="hero" style="padding-bottom: 1.5rem">
+      <div class="eyebrow" style={`color: ${track.accent}`}>
+        <span style="font-size: 1.1em">{track.icon}</span> {track.title}
+      </div>
+      <h1 style="max-width: 26ch">{track.tagline}</h1>
+      <p class="hero-lede">{track.summary}</p>
+
+      <div class="row" style="margin-top: 1.2rem">
+        {track.roles.map((r) => <span class="pill">{r}</span>)}
+      </div>
+    </div>
+  </div>
+
+  <div class="sticky-progress">
+    <div class="wrap">
+      <div class="row-between">
+        <div style="flex: 1; min-width: 200px; max-width: 520px">
+          <div class="row-between tiny" style="margin-bottom: 0.3rem">
+            <span class="dim">{track.short} progress</span>
+            <span class="progress-figure" data-figure-for={group}>—</span>
+          </div>
+          <div class="bar thick" data-bar-for={group}><span></span></div>
+        </div>
+        <div class="row tiny dim">
+          {track.phases.map((p) => <a href={`#${track.id}.${p.id}`}>{p.title}</a>)}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap stack-lg">
+    <section class="callout" style={`border-left-color: ${track.accent}; background: var(--surface-2)`}>
+      <h4 style="margin: 0 0 0.3rem">Market reality</h4>
+      <p class="small" style="margin: 0; max-width: 88ch">{track.marketNote}</p>
+    </section>
+
+    <section>
+      <p class="small dim" style="margin-bottom: 1rem">
+        {track.phases.length} phases · {countItems(track)} milestones · every one needs an artifact
+      </p>
+      {track.phases.map((phase) => <Checklist trackId={track.id} phase={phase} groups={[group, 'site.all']} />)}
+    </section>
+
+    <section><ProgressPanel /></section>
+
+    <section>
+      <h2>Other tracks</h2>
+      <div class="grid grid-3">
+        {
+          others.map((t) => (
+            <a class="card card-hover" href={`${base}/roadmap/${t.slug}`} style={`border-left: 3px solid ${t.accent}; color: inherit`}>
+              <div class="row" style="gap: 0.45rem">
+                <span style={`color: ${t.accent}`}>{t.icon}</span>
+                <b>{t.short}</b>
+              </div>
+              <p class="small muted" style="margin: 0.4rem 0 0">{t.tagline}</p>
+            </a>
+          ))
+        }
+      </div>
+    </section>
+  </div>
+</Base>

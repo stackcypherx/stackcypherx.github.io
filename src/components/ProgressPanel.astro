@@ -1,0 +1,22 @@
+---
+/** Export / import / reset controls for locally stored progress. */
+---
+
+<div class="panel">
+  <div class="row-between">
+    <div>
+      <h4 style="margin: 0 0 0.2rem">Your progress is stored in this browser</h4>
+      <p class="small muted" style="margin: 0; max-width: 60ch">
+        Checkboxes save to <code>localStorage</code> — nothing is sent anywhere and there is no
+        account. That also means clearing site data or switching device wipes it, so export a backup
+        every month or so.
+      </p>
+    </div>
+    <div class="row">
+      <button class="btn btn-sm" data-progress-export>Export JSON</button>
+      <button class="btn btn-sm" data-progress-import>Import</button>
+      <button class="btn btn-sm" data-progress-reset>Reset all progress</button>
+    </div>
+  </div>
+  <p class="small" style="margin: 0.7rem 0 0; color: var(--ok); min-height: 1.2em" data-progress-status aria-live="polite"></p>
+</div>

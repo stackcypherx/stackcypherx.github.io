@@ -1,0 +1,232 @@
+---
+import Base from '../layouts/Base.astro';
+import TrackCard from '../components/TrackCard.astro';
+import SectionHead from '../components/SectionHead.astro';
+import { site } from '../data/site';
+import { tracks, timeline, cadence } from '../data/roadmap';
+import { countItems, itemKey } from '../data/types';
+import { totalRooms } from '../data/labs';
+import { certs } from '../data/certs';
+import { projects } from '../data/projects';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const totalMilestones = tracks.reduce((n, t) => n + countItems(t), 0);
+---
+
+<Base
+  eyebrow="Portfolio · Learning hub · Open roadmap"
+  heading="Three tracks, one plan, built for global hiring."
+  lede={`Cybersecurity, network engineering, and AI / agentic engineering — sequenced into ${totalMilestones} milestones where every single one has to produce a public artifact before it counts. This is my working plan, in the open, with the progress bars honest.`}
+  wide
+>
+  <div class="wrap stack-lg">
+    <!-- ---------------------------------------------------------- headline stats -->
+    <section>
+      <div class="grid grid-4">
+        <div class="card">
+          <div class="stat">
+            <span class="n" data-figure-for="site.all" data-figure-mode="pct">0%</span>
+            <span class="l">Overall progress</span>
+          </div>
+          <div class="bar" style="margin-top: 0.7rem" data-bar-for="site.all"><span></span></div>
+        </div>
+        <div class="card">
+          <div class="stat">
+            <span class="n">{totalMilestones}</span>
+            <span class="l">Milestones</span>
+          </div>
+          <p class="tiny dim" style="margin: 0.5rem 0 0">Across {tracks.length} tracks and {tracks.reduce((n, t) => n + t.phases.length, 0)} phases</p>
+        </div>
+        <div class="card">
+          <div class="stat">
+            <span class="n">{totalRooms}</span>
+            <span class="l">Free labs mapped</span>
+          </div>
+          <p class="tiny dim" style="margin: 0.5rem 0 0">The 100-day TryHackMe track, room by room</p>
+        </div>
+        <div class="card">
+          <div class="stat">
+            <span class="n">{certs.length}</span>
+            <span class="l">Certs assessed</span>
+          </div>
+          <p class="tiny dim" style="margin: 0.5rem 0 0">Cost, format, and an honest verdict on each</p>
+        </div>
+      </div>
+      <!-- Invisible aggregator: every track contributes to site.all via the track cards below. -->
+    </section>
+
+    <!-- --------------------------------------------------------------- the tracks -->
+    <section>
+      <SectionHead
+        title="The tracks"
+        note="Foundations first — it is shared substrate, not optional. Then one of the three specialist tracks becomes your spike and the other two become force multipliers. Deliberately not three parallel tracks: see recommendation 1."
+      />
+      <div class="grid grid-4">
+        {tracks.map((t) => <TrackCard track={t} />)}
+      </div>
+    </section>
+
+    <!-- ----------------------------------------------------------- how this works -->
+    <section>
+      <SectionHead title="How this site works" />
+      <div class="grid grid-3">
+        <div class="card">
+          <span class="badge kind-lab">Checklists</span>
+          <h3 style="margin: 0.6rem 0 0.35rem">Every box needs a link</h3>
+          <p class="small muted" style="margin: 0">
+            Each milestone carries an <b>Evidence</b> line naming the artifact it must produce — a repo,
+            a writeup, a badge, a report. If you cannot paste a link, the box does not get ticked.
+            Progress is stored locally in your browser.
+          </p>
+        </div>
+        <div class="card">
+          <span class="badge kind-cert">Honest costs</span>
+          <h3 style="margin: 0.6rem 0 0.35rem">No certificate worship</h3>
+          <p class="small muted" style="margin: 0">
+            Certificates get you into the room; projects get the offer. The
+            <a href={`${base}/certifications`}>certifications page</a> gives each credential a price,
+            a format, and a verdict — including the ones worth skipping unless somebody else is paying.
+          </p>
+        </div>
+        <div class="card">
+          <span class="badge kind-signal">Global by design</span>
+          <h3 style="margin: 0.6rem 0 0.35rem">Market-specific, not generic</h3>
+          <p class="small muted" style="margin: 0">
+            <a href={`${base}/global-readiness`}>Global readiness</a> covers remote-first, EU/UK, US,
+            and Middle East/APAC separately — the certifications, compliance frameworks, and visa
+            routes genuinely differ, and generic advice is how people waste a year.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ----------------------------------------------------------------- timeline -->
+    <section>
+      <SectionHead
+        id="timeline"
+        title="24 months, quarter by quarter"
+        note="Calibrated for starting from zero at roughly 15 hours a week. Faster is possible; the sequence matters more than the pace."
+      />
+      <ol class="timeline">
+        {
+          timeline.map((q) => (
+            <li>
+              <div class="row" style="gap: 0.5rem; margin-bottom: 0.2rem">
+                <span class="badge badge-accent">{q.q}</span>
+                <span class="tiny dim mono">{q.months}</span>
+              </div>
+              <h3 style="margin: 0 0 0.3rem">{q.theme}</h3>
+              <p class="small muted" style="margin: 0 0 0.45rem; max-width: 80ch">{q.focus}</p>
+              <p class="tiny" style="margin: 0; color: var(--ok)"><b>Output:</b> {q.output}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+
+    <!-- ------------------------------------------------------------------ cadence -->
+    <section>
+      <SectionHead
+        title="The cadence that actually does the work"
+        note="Certifications are milestones. This table is the machine that gets you to them — and the thing to protect on the weeks when motivation is gone."
+      />
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr><th>Rhythm</th><th>Commitment</th><th>What happens</th></tr>
+          </thead>
+          <tbody>
+            {cadence.map((c) => (
+              <tr>
+                <td><b>{c.rhythm}</b></td>
+                <td class="mono tiny dim nowrap">{c.commitment}</td>
+                <td>{c.item}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ----------------------------------------------------------------- projects -->
+    <section>
+      <SectionHead
+        title="The cross-track projects that make you hard to compare"
+        note="Two of these sit in overlaps that almost nobody occupies. That is the whole point — a candidate who is only comparable to thousands of others competes on price."
+      />
+      <div class="grid grid-3">
+        {
+          projects
+            .filter((p) => p.track === 'Cross-track' && p.tier === 'Flagship')
+            .map((p) => (
+              <div class="card card-hover">
+                <div class="row" style="gap: 0.4rem">
+                  <span class="badge badge-warn">{p.tier}</span>
+                  <span class="badge">{p.track}</span>
+                </div>
+                <h3 style="margin: 0.6rem 0 0.35rem">{p.title}</h3>
+                <p class="small muted" style="margin: 0">{p.pitch}</p>
+              </div>
+            ))
+        }
+      </div>
+      <p class="small" style="margin-top: 1rem">
+        <a href={`${base}/projects`}>All {projects.length} project briefs →</a>
+      </p>
+    </section>
+
+    <!-- ------------------------------------------------------------------- source -->
+    <section>
+      <div class="callout">
+        <h3 style="margin: 0 0 0.4rem">Where the cybersecurity lab plan comes from</h3>
+        <p class="small" style="margin: 0 0 0.6rem">
+          The {totalRooms}-room TryHackMe track and the OSCP-style machine lists are transcribed from the
+          <a href={site.sources.tracker}>{site.sources.trackerName}</a> spreadsheet — an Indonesian
+          bootcamp's 100-day programme, with a 50-room checkpoint before mentored study begins. The
+          machine lists are LainKusanagi's public OSCP-like and post-OSCP red team lists. Both are
+          reproduced here with attribution, reorganised, and translated so the plan is usable in English.
+        </p>
+        <a class="btn btn-sm" href={`${base}/labs`}>Open the lab tracker →</a>
+      </div>
+    </section>
+
+    <!-- --------------------------------------------------------------- next steps -->
+    <section>
+      <div class="card" style="border-left: 3px solid var(--accent)">
+        <h2 style="margin: 0 0 0.5rem">Start here</h2>
+        <ol style="margin: 0 0 1rem; max-width: 74ch">
+          <li>Read <a href={`${base}/recommendations`}>the twelve recommendations</a> before the roadmap. Recommendation 1 is the one that determines whether the next two years work.</li>
+          <li>Pick your primary track and write the choice down publicly.</li>
+          <li>Start <a href={`${base}/roadmap/foundations`}>Foundations phase 0</a> and the <a href={`${base}/labs`}>Cyber Security 101 lab track</a> in the same week.</li>
+          <li>Publish something in week one. Anything. The habit is the asset.</li>
+        </ol>
+        <div class="row">
+          <a class="btn btn-primary" href={`${base}/roadmap`}>Open the full roadmap</a>
+          <a class="btn" href={`${base}/recommendations`}>Read the recommendations</a>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!--
+    Hidden mirror checkboxes so the "overall progress" figure aggregates every track.
+    Real state lives on the per-track pages; these are never rendered visibly.
+  -->
+  <div hidden aria-hidden="true">
+    {
+      tracks.flatMap((t) =>
+        t.phases.flatMap((p) =>
+          p.items.map((i) => (
+            <input
+              type="checkbox"
+              data-key={itemKey(t.id, p.id, i.title)}
+              data-group={`site.all track.${t.id}`}
+              data-weight={i.weight ?? 1}
+              tabindex="-1"
+            />
+          )),
+        ),
+      )
+    }
+  </div>
+</Base>

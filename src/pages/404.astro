@@ -1,0 +1,21 @@
+---
+import Base from '../layouts/Base.astro';
+import { nav } from '../data/site';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<Base title="Not found" heading="404" lede="That page does not exist. Here is everything that does.">
+  <div class="wrap">
+    <div class="narrow">
+      <div class="grid grid-2">
+        {nav.map((n) => (
+          <a class="card card-hover" href={`${base}${n.href}`} style="color: inherit">
+            <b>{n.label}</b>
+          </a>
+        ))}
+      </div>
+      <p style="margin-top: 1.5rem"><a href={base || '/'}>← Home</a></p>
+    </div>
+  </div>
+</Base>

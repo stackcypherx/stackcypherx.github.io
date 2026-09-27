@@ -1,0 +1,29 @@
+# build output
+dist/
+.astro/
+
+# dependencies
+node_modules/
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# environment
+.env
+.env.production
+.env.local
+
+# macOS / Google Drive
+.DS_Store
+Icon?
+._*
+.Spotlight-V100
+.Trashes
+
+# editors / local tooling
+.vscode/
+.idea/
+.claude/settings.local.json

@@ -1,0 +1,113 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../data/site';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const linkRows = [
+  ['GitHub', site.links.github],
+  ['LinkedIn', site.links.linkedin],
+  ['TryHackMe', site.links.tryhackme],
+  ['Hack The Box', site.links.hackthebox],
+  ['Credly', site.links.credly],
+  ['Email', site.links.email],
+].filter(([, v]) => v);
+---
+
+<Base
+  title="About"
+  eyebrow="About"
+  heading="About this site"
+  lede="A portfolio and an open learning plan in one place — because the plan is the more interesting artifact until the portfolio fills up."
+>
+  <div class="wrap">
+    <div class="narrow prose">
+      <h2>Who</h2>
+      <p>
+        I'm <b>{site.name}</b> ({site.handle}) — working toward roles in security engineering, with
+        network automation and agentic AI as the two things that make the profile unusual rather than
+        interchangeable. Based in Indonesia, aiming at the global market.
+      </p>
+      <p class="muted small">
+        Replace this paragraph with your own. A short, specific, first-person version beats a polished
+        generic one — name the roles you want, the market you are aiming at, and one thing that is
+        actually true about how you work.
+      </p>
+
+      <h2>What this site is</h2>
+      <p>
+        Three things at once, and deliberately not separated:
+      </p>
+      <ul>
+        <li>
+          <b>An open roadmap.</b> <a href={`${base}/roadmap`}>Four tracks</a> broken into phases and
+          milestones, each with the artifact it must produce. Progress is visible and stored in your
+          own browser, so anyone can fork the plan and use it.
+        </li>
+        <li>
+          <b>A lab tracker.</b> The <a href={`${base}/labs`}>84-room free TryHackMe path</a> plus the
+          OSCP-style and post-OSCP machine lists, checkable room by room.
+        </li>
+        <li>
+          <b>A portfolio.</b> <a href={`${base}/projects`}>Project briefs</a> and
+          <a href={`${base}/notes`}>writeups</a>, filling in over time. Right now it is mostly plan and
+          not much portfolio. That is the honest state of it, and the dates are on everything so the
+          rate of change is visible.
+        </li>
+      </ul>
+
+      <h2>Why the plan is public</h2>
+      <p>
+        Because an unpublished plan is one you can quietly abandon in March, and because the evidence
+        that the strongest hiring and immigration routes actually want — recognition, third-party
+        letters, a visible track record — is a byproduct of having been useful in public for a long
+        time. It cannot be assembled in the month you need it. Starting the clock early is free.
+      </p>
+
+      <h2>Sources and credit</h2>
+      <p>
+        The cybersecurity lab plan is transcribed from the
+        <a href={site.sources.tracker}>{site.sources.trackerName}</a> spreadsheet — an Indonesian
+        bootcamp's 100-day programme. The OSCP-like and post-OSCP red team machine lists in it are
+        LainKusanagi's public lists. Both are reproduced with attribution, reorganised for the web, and
+        translated into English with the original Indonesian descriptions preserved.
+      </p>
+      <p>
+        Market figures, certification costs, and visa criteria come from research current as of
+        September 2026 and are cited inline where they carry a number. All of it moves — verify against
+        the official source before spending money or making a decision.
+      </p>
+
+      <h2>How this is built</h2>
+      <p>
+        Astro, hand-written CSS, no framework and no build-time dependencies beyond Astro itself.
+        Progress tracking is about 150 lines of TypeScript against <code>localStorage</code> — no
+        accounts, no analytics, no data leaving your browser. Deployed to GitHub Pages by a GitHub
+        Actions workflow on every push to <code>main</code>.
+        <a href={site.repo}>Source is here</a> — fork it and replace the data files if the structure
+        is useful to you.
+      </p>
+
+      {
+        linkRows.length > 0 && (
+          <>
+            <h2>Elsewhere</h2>
+            <ul>
+              {linkRows.map(([label, url]) => (
+                <li>
+                  {label}: <a href={url!.startsWith('http') ? url! : `mailto:${url}`}>{url}</a>
+                </li>
+              ))}
+            </ul>
+          </>
+        )
+      }
+
+      <div class="callout" style="margin-top: 2rem">
+        <p class="small" style="margin: 0">
+          <b>Fill these in:</b> the profile links live in <code>src/data/site.ts</code>. Empty values
+          are hidden automatically, so add them as the accounts exist rather than leaving placeholders.
+        </p>
+      </div>
+    </div>
+  </div>
+</Base>

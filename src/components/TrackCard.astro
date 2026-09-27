@@ -1,0 +1,22 @@
+---
+import type { Track } from '../data/types';
+import { countItems } from '../data/types';
+
+interface Props {
+  track: Track;
+}
+const { track } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const total = countItems(track);
+---
+
+<a class="track-card" href={`${base}/roadmap/${track.slug}`} style={`--tc: ${track.accent}`}>
+  <span class="tc-icon">{track.icon}</span>
+  <h3>{track.short}</h3>
+  <p class="tc-tagline">{track.tagline}</p>
+  <div class="bar" data-bar-for={`track.${track.id}`}><span></span></div>
+  <div class="row-between tiny dim">
+    <span>{track.phases.length} phases · {total} milestones</span>
+    <span class="progress-figure" data-figure-for={`track.${track.id}`} data-figure-mode="pct">—</span>
+  </div>
+</a>

@@ -1,0 +1,96 @@
+---
+import Base from '../../layouts/Base.astro';
+
+type NoteFrontmatter = {
+  title: string;
+  description?: string;
+  date: string;
+  track?: string;
+  tags?: string[];
+  lang?: string;
+  draft?: boolean;
+};
+
+// import.meta.glob is Vite-native and stable across Astro versions.
+const modules = import.meta.glob<{ frontmatter: NoteFrontmatter; url?: string }>('./*.md', {
+  eager: true,
+});
+
+const notes = Object.values(modules)
+  .filter((m) => m.frontmatter && !m.frontmatter.draft && m.url)
+  .sort((a, b) => +new Date(b.frontmatter.date) - +new Date(a.frontmatter.date));
+
+const fmt = (d: string) =>
+  new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+---
+
+<Base
+  title="Notes"
+  eyebrow="Learning log"
+  heading="Notes & writeups"
+  lede="One technical writeup a week, published whether or not it feels finished. This is the HoneyLog habit from the tracker, made public — it is the single part of the plan that compounds."
+>
+  <div class="wrap">
+    <div class="narrow stack-lg">
+      {
+        notes.length === 0 ? (
+          <div class="panel">
+            <h3 style="margin: 0 0 0.4rem">No notes yet</h3>
+            <p class="small muted" style="margin: 0">
+              Add a Markdown file to <code>src/pages/notes/</code> with frontmatter and it appears here.
+            </p>
+          </div>
+        ) : (
+          <div class="stack">
+            {notes.map((n) => (
+              <a class="card card-hover" href={n.url} style="display: block; color: inherit">
+                <div class="row" style="gap: 0.5rem; margin-bottom: 0.4rem">
+                  <time class="tiny dim mono" datetime={n.frontmatter.date}>{fmt(n.frontmatter.date)}</time>
+                  {n.frontmatter.track && <span class="badge badge-accent">{n.frontmatter.track}</span>}
+                  {n.frontmatter.lang && n.frontmatter.lang !== 'en' && (
+                    <span class="badge">{n.frontmatter.lang.toUpperCase()}</span>
+                  )}
+                </div>
+                <h3 style="margin: 0 0 0.3rem">{n.frontmatter.title}</h3>
+                {n.frontmatter.description && (
+                  <p class="small muted" style="margin: 0">{n.frontmatter.description}</p>
+                )}
+                {n.frontmatter.tags && (
+                  <div class="row" style="margin-top: 0.7rem">
+                    {n.frontmatter.tags.map((t) => <span class="pill tiny">{t}</span>)}
+                  </div>
+                )}
+              </a>
+            ))}
+          </div>
+        )
+      }
+
+      <div class="panel">
+        <h3 style="margin: 0 0 0.5rem">How to add a note</h3>
+        <p class="small muted" style="margin: 0 0 0.8rem">
+          Create <code>src/pages/notes/my-slug.md</code>. The layout, listing, and styling are handled.
+        </p>
+        <pre><code>---
+layout: ../../layouts/Note.astro
+title: Room writeup — Pickle Rick
+description: One line on what this covers and what was new.
+date: 2026-10-05
+track: Cybersecurity
+tags: [tryhackme, web, enumeration]
+lang: en
+---
+
+## Goal
+What I set out to do.
+
+## What I tried
+Including the things that did not work — that part is the writeup.
+
+## What I learned
+The one command or concept worth remembering.
+</code></pre>
+      </div>
+    </div>
+  </div>
+</Base>

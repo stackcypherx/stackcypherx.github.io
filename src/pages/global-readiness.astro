@@ -1,0 +1,163 @@
+---
+import Base from '../layouts/Base.astro';
+import SectionHead from '../components/SectionHead.astro';
+import { pillars, markets, interviewPrep } from '../data/global';
+import { slug } from '../data/types';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<Base
+  title="Global Readiness"
+  eyebrow="Beyond the technical"
+  heading="Ready for the global market"
+  lede="Technical skill is necessary and not sufficient. The four pillars below are what convert skill into offers across borders — and the market sections cover why the same CV performs differently in London, Austin, Dubai, and Singapore."
+  wide
+>
+  <div class="wrap stack-lg">
+    <!-- -------------------------------------------------------------- pillars -->
+    <section>
+      <SectionHead
+        title="Four pillars"
+        note="These run in parallel with the technical tracks from month one, not after them. Every item is checkable — progress saves locally."
+      />
+      <div class="stack">
+        {
+          pillars.map((p) => {
+            const gid = `g.${p.id}`;
+            return (
+              <div class="phase">
+                <div class="phase-head">
+                  <div class="phase-meta">
+                    <span class="badge badge-accent">Pillar {p.n}</span>
+                    <span class="progress-figure" data-figure-for={gid} data-figure-mode="count">—</span>
+                  </div>
+                  <h3 class="anchor-h" id={p.id}>{p.title}</h3>
+                  <p class="small muted" style="margin: 0; max-width: 88ch">{p.why}</p>
+                  <div class="bar" style="margin-top: 0.8rem" data-bar-for={gid}><span></span></div>
+                </div>
+                <ul class="check-list">
+                  {
+                    p.items.map((it) => {
+                      const key = `${gid}.${slug(it.title)}`;
+                      return (
+                        <li class="check-item">
+                          <input type="checkbox" data-key={key} data-group={gid} id={key} aria-label={it.title} />
+                          <div>
+                            <label class="check-title" for={key}>{it.title}</label>
+                            <div class="check-detail">{it.detail}</div>
+                          </div>
+                        </li>
+                      );
+                    })
+                  }
+                </ul>
+              </div>
+            );
+          })
+        }
+      </div>
+    </section>
+
+    <!-- -------------------------------------------------------------- markets -->
+    <section>
+      <SectionHead
+        id="markets"
+        title="Market by market"
+        note="You selected all four. That is fine as a starting position, but by month 18 you should have narrowed to two — the certifications, compliance vocabulary, and visa paperwork genuinely diverge, and hedging across four costs you depth in all of them."
+      />
+      <div class="stack">
+        {
+          markets.map((m) => (
+            <div class="card">
+              <h3 class="anchor-h" id={slug(m.region)} style="margin: 0 0 0.5rem">
+                <span style="font-size: 1.15em">{m.flag}</span> {m.region}
+              </h3>
+              <p class="small" style="margin: 0 0 1rem; max-width: 92ch">{m.demandNote}</p>
+
+              <div class="grid grid-2">
+                <div>
+                  <h4 class="tiny dim" style="text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.5rem">
+                    Frameworks to know by name
+                  </h4>
+                  <div class="row" style="margin-bottom: 1rem">
+                    {m.frameworks.map((f) => <span class="pill">{f}</span>)}
+                  </div>
+                  <h4 class="tiny dim" style="text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.4rem">
+                    Certification bias
+                  </h4>
+                  <p class="small muted" style="margin: 0">{m.certBias}</p>
+                </div>
+                <div>
+                  <h4 class="tiny dim" style="text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.5rem">
+                    Routes in
+                  </h4>
+                  <div class="stack" style="--stack-gap: 0.6rem">
+                    {
+                      m.visas.map((v) => (
+                        <div style="padding-bottom: 0.65rem; border-bottom: 1px dashed var(--border)">
+                          <b class="small">{v.name}</b>
+                          <p class="small muted" style="margin: 0.15rem 0 0">{v.detail}</p>
+                        </div>
+                      ))
+                    }
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+
+      <div class="callout warn" style="margin-top: 1.2rem">
+        <p class="small" style="margin: 0">
+          <b>Verify everything here.</b> Visa thresholds, endorsement criteria, occupation lists, and
+          processing times change frequently and without much warning. Treat this page as a map of
+          which routes exist and what evidence they want — then read the official government source
+          before making any decision. This is not immigration advice.
+        </p>
+      </div>
+    </section>
+
+    <!-- ------------------------------------------------------- interview loops -->
+    <section>
+      <SectionHead
+        id="interviews"
+        title="What the interview loops actually test"
+        note="Per track, in the order you will meet them. Prepare for these specifically — general study does not cover them."
+      />
+      <div class="grid grid-3">
+        {
+          interviewPrep.map((t) => (
+            <div class="card">
+              <h3 style="margin: 0 0 0.7rem; font-size: 1.02rem">{t.track}</h3>
+              <ol class="small" style="margin: 0; padding-left: 1.15rem">
+                {t.rounds.map((r) => <li style="margin-bottom: 0.6rem">{r}</li>)}
+              </ol>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section>
+      <div class="card" style="border-left: 3px solid var(--accent)">
+        <h3 style="margin: 0 0 0.5rem">The one thing on this page that matters most</h3>
+        <p style="margin: 0 0 0.8rem; max-width: 84ch">
+          Three recommendation letters from three different established organisations. The UK Global
+          Talent route requires exactly that; the US O-1A route wants comparable third-party evidence.
+          These are relationship artifacts with a multi-year lead time, and almost everyone discovers
+          the requirement about two months before they want to move.
+        </p>
+        <p class="small muted" style="margin: 0 0 0.8rem; max-width: 84ch">
+          The sources are more accessible than they sound: an open-source maintainer whose project you
+          contributed to, a CTF team captain, a conference organiser who accepted your talk, a mentor
+          from your bootcamp community, a vendor whose tool you wrote about. The mechanism is simple
+          and slow — contribute something real, stay in contact, be useful without asking for anything.
+          Then in year two, ask.
+        </p>
+        <a class="btn btn-sm" href={`${base}/recommendations#rec-8`}>Recommendation 8 →</a>
+      </div>
+    </section>
+  </div>
+</Base>

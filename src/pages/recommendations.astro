@@ -1,0 +1,78 @@
+---
+import Base from '../layouts/Base.astro';
+import { recommendations } from '../data/recommendations';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const strengthClass: Record<string, string> = {
+  'Do this': 'badge-ok',
+  'Strongly consider': 'badge-accent',
+  'Worth thinking about': '',
+};
+---
+
+<Base
+  title="Recommendations"
+  eyebrow="Additions beyond the brief"
+  heading="Twelve recommendations"
+  lede="These go beyond what was asked for. They are judgement calls rather than research findings, several of them are uncomfortable, and recommendation 1 is the one that determines whether the rest of the plan works."
+>
+  <div class="wrap">
+    <div class="narrow" style="margin-bottom: 2rem">
+      <div class="callout">
+        <p class="small" style="margin: 0">
+          The original scope was three fields, a portfolio, and a milestone checklist. The roadmap
+          delivers that. This page argues about it — where the scope has a structural problem, where
+          there is an opportunity in it that is easy to miss, and what is missing entirely.
+        </p>
+      </div>
+    </div>
+
+    <div class="narrow" style="margin-bottom: 2rem">
+      <nav class="panel">
+        <h4 style="margin: 0 0 0.6rem">Contents</h4>
+        <ol class="small" style="margin: 0; padding-left: 1.2rem">
+          {recommendations.map((r) => (
+            <li style="margin-bottom: 0.25rem">
+              <a href={`#rec-${r.n}`}>{r.title}</a>
+            </li>
+          ))}
+        </ol>
+      </nav>
+    </div>
+
+    <div class="narrow">
+      {
+        recommendations.map((r) => (
+          <article class="rec anchor-h" id={`rec-${r.n}`}>
+            <div class="row" style="gap: 0.55rem">
+              <span class="rec-n">{String(r.n).padStart(2, '0')}</span>
+              <span class={`badge ${strengthClass[r.strength]}`}>{r.strength}</span>
+            </div>
+            <h2 style="margin: 0.45rem 0 0; font-size: 1.32rem">{r.title}</h2>
+            <p class="rec-claim">{r.claim}</p>
+            {r.body.map((para) => <p class="small muted">{para}</p>)}
+            <div class="rec-action">
+              <b>Do this</b>
+              {r.action}
+            </div>
+          </article>
+        ))
+      }
+    </div>
+
+    <div class="narrow" style="margin-top: 2.5rem">
+      <div class="card" style="border-left: 3px solid var(--accent)">
+        <h3 style="margin: 0 0 0.5rem">If you only act on three</h3>
+        <ol style="margin: 0 0 1rem">
+          <li><b>Spike, do not spread</b> — pick one primary track this week and write the choice down publicly.</li>
+          <li><b>Aim at AI × Security</b> — it converts your broad scope from a weakness into a position nobody else holds.</li>
+          <li><b>The evidence ledger rule</b> — no artifact, no tick. It is the difference between two years of learning and two years of provable learning.</li>
+        </ol>
+        <div class="row">
+          <a class="btn btn-primary" href={`${base}/roadmap`}>Open the roadmap</a>
+          <a class="btn" href={`${base}/projects`}>See the project briefs</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</Base>
