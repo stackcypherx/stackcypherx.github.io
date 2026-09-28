@@ -30,17 +30,17 @@ const dateLabel = new Date(fm.date).toLocaleDateString('en-GB', {
 
       <div class="row" style="gap: 0.5rem; margin-bottom: 0.7rem">
         <time class="tiny dim mono" datetime={fm.date}>{dateLabel}</time>
-        {fm.track && <span class="badge badge-accent">{fm.track}</span>}
-        {fm.lang && fm.lang !== 'en' && <span class="badge">{fm.lang.toUpperCase()}</span>}
+        {fm.track && <span class="chip chip-signal">{fm.track}</span>}
+        {fm.lang && fm.lang !== 'en' && <span class="chip">{fm.lang.toUpperCase()}</span>}
       </div>
 
       <h1 style="margin-bottom: 0.6rem">{fm.title}</h1>
-      {fm.description && <p class="hero-lede" style="margin-bottom: 1.2rem">{fm.description}</p>}
+      {fm.description && <p class="lede" style="margin-bottom: 1.2rem">{fm.description}</p>}
 
       {
         fm.tags && fm.tags.length > 0 && (
           <div class="row" style="margin-bottom: 2rem">
-            {fm.tags.map((t) => <span class="pill tiny">{t}</span>)}
+            {fm.tags.map((t) => <span class="tok tiny">{t}</span>)}
           </div>
         )
       }

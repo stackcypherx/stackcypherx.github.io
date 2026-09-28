@@ -8,8 +8,8 @@ const tiers = ['Flagship', 'Portfolio', 'Starter'] as const;
 const trackNames = ['Cyber', 'Networks', 'AI', 'Cross-track'] as const;
 const statusBadge: Record<string, string> = {
   planned: '',
-  building: 'badge-warn',
-  shipped: 'badge-ok',
+  building: 'chip-amber',
+  shipped: 'chip-lime',
 };
 const shipped = projects.filter((p) => p.status === 'shipped').length;
 ---
@@ -19,11 +19,10 @@ const shipped = projects.filter((p) => p.status === 'shipped').length;
   eyebrow="Portfolio briefs"
   heading="Projects"
   lede={`${projects.length} briefs, each with the signals it sends to a hiring manager and concrete acceptance criteria. ${shipped} shipped so far. Fill in the repo and live links as they exist — an unlinked project is a plan, not a portfolio.`}
-  wide
 >
   <div class="wrap stack-lg">
     <section>
-      <div class="callout">
+      <div class="note-box">
         <p class="small" style="margin: 0">
           <b>Six pinned repos, maximum.</b> Each with a README containing a screenshot or GIF, a live
           link where applicable, an eval table where relevant, and a "what I would do differently"
@@ -34,9 +33,9 @@ const shipped = projects.filter((p) => p.status === 'shipped').length;
     </section>
 
     <section data-filter-scope>
-      <div class="filter-bar" style="margin-bottom: 1.2rem">
+      <div class="filters" style="margin-bottom: 1.2rem">
         <input type="search" placeholder="Search projects…" data-filter-search aria-label="Search projects" />
-        {trackNames.map((t) => <button class="chip" data-filter-value={t} aria-pressed="false">{t}</button>)}
+        {trackNames.map((t) => <button class="fchip" data-filter-value={t} aria-pressed="false">{t}</button>)}
       </div>
 
       {
@@ -66,16 +65,16 @@ const shipped = projects.filter((p) => p.status === 'shipped').length;
                       data-filter-text={`${p.title} ${p.pitch} ${p.stack.join(' ')} ${p.track}`}
                     >
                       <div class="row" style="gap: 0.4rem; margin-bottom: 0.5rem">
-                        <span class="badge badge-accent">{p.track}</span>
-                        <span class={`badge ${statusBadge[p.status]}`}>{p.status}</span>
+                        <span class="chip chip-signal">{p.track}</span>
+                        <span class={`chip ${statusBadge[p.status]}`}>{p.status}</span>
                         {p.repo && <a class="tiny" href={p.repo}>repo ↗</a>}
                         {p.live && <a class="tiny" href={p.live}>live ↗</a>}
                       </div>
 
-                      <h3 class="anchor-h" id={p.id} style="margin: 0 0 0.45rem">{p.title}</h3>
+                      <h3 class="" id={p.id} style="margin: 0 0 0.45rem">{p.title}</h3>
                       <p style="margin: 0 0 1rem; max-width: 88ch">{p.pitch}</p>
 
-                      <div class="grid grid-2" style="gap: 1.4rem">
+                      <div class="grid g2 gap" style="gap: 1.4rem">
                         <div>
                           <h4 class="tiny dim" style="text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.4rem">
                             What it signals
@@ -92,7 +91,7 @@ const shipped = projects.filter((p) => p.status === 'shipped').length;
                             {p.done.map((d) => <li>{d}</li>)}
                           </ul>
                           <div class="row">
-                            {p.stack.map((s) => <span class="pill tiny">{s}</span>)}
+                            {p.stack.map((s) => <span class="tok tiny">{s}</span>)}
                           </div>
                         </div>
                       </div>
@@ -104,7 +103,7 @@ const shipped = projects.filter((p) => p.status === 'shipped').length;
           );
         })
       }
-      <p class="muted center" data-filter-empty hidden style="padding: 2rem 0">No projects match that filter.</p>
+      <p class="muted" style="text-align:center" data-filter-empty hidden style="padding: 2rem 0">No projects match that filter.</p>
     </section>
   </div>
 </Base>

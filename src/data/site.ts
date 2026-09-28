@@ -1,5 +1,7 @@
 export const site = {
   name: 'Dickie Zulfickar Hervianto',
+  shortName: 'dickie.zh',
+  role: 'netops · security · agentic ai',
   handle: 'stackcypherx',
   title: 'Dickie Zulfickar Hervianto — Network Operations · Security · Agentic AI',
   tagline: 'Carrier network operations, specialising into security and agentic AI.',
@@ -32,12 +34,11 @@ export const site = {
 
 export const nav = [
   { label: 'Experience', href: '/experience' },
+  { label: 'Agentic', href: '/agentic' },
   { label: 'Roadmap', href: '/roadmap' },
   { label: 'Labs', href: '/labs' },
-  { label: 'Certifications', href: '/certifications' },
-  { label: 'Projects', href: '/projects' },
-  { label: 'Global Readiness', href: '/global-readiness' },
-  { label: 'Recommendations', href: '/recommendations' },
+  { label: 'Certs', href: '/certifications' },
+  { label: 'Readiness', href: '/global-readiness' },
   { label: 'Notes', href: '/notes' },
   { label: 'About', href: '/about' },
 ] as const;

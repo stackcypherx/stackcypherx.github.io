@@ -16,11 +16,10 @@ const totalMilestones = tracks.reduce((n, t) => n + countItems(t), 0);
   eyebrow="The checklist"
   heading="The roadmap"
   lede={`${totalMilestones} milestones across four tracks. Each one names the artifact it has to produce — tick nothing you cannot link to. Progress saves in your browser, so export a backup occasionally.`}
-  wide
 >
   <div class="wrap stack-lg">
     <section>
-      <div class="grid grid-4">
+      <div class="grid g4 gap">
         {tracks.map((t) => <TrackCard track={t} />)}
       </div>
     </section>
@@ -31,8 +30,8 @@ const totalMilestones = tracks.reduce((n, t) => n + countItems(t), 0);
         title="Starting position — this is not a blank slate"
         note={`The phase windows below are written for someone beginning from zero. I am not. ${yearsWord[0].toUpperCase()}${yearsWord.slice(1)} years of carrier network and service operations, plus CEH and Cisco CyberOps, already cover a meaningful slice of the plan — and pretending otherwise would waste a year.`}
       />
-      <div class="grid grid-2">
-        <div class="callout ok">
+      <div class="grid g2 gap">
+        <div class="note-box ok">
           <h4 style="margin: 0 0 0.5rem">Already covered — do not re-study</h4>
           <ul class="small" style="margin: 0">
             <li><b>Networking fundamentals (Foundations + Track 2 phase 1).</b> OSI/TCP-IP, routing, fibre, Metro-E, IP core, DWDM — this is the day job, at carrier scale, across four regions.</li>
@@ -41,7 +40,7 @@ const totalMilestones = tracks.reduce((n, t) => n + countItems(t), 0);
             <li><b>Team leadership and stakeholder work.</b> Led branch technical teams, helpdesk operations, and vendor coordination — the part junior candidates cannot fake.</li>
           </ul>
         </div>
-        <div class="callout warn">
+        <div class="note-box warn">
           <h4 style="margin: 0 0 0.5rem">The actual gaps — where the time goes</h4>
           <ul class="small" style="margin: 0">
             <li><b>Hands-on offensive and defensive practice.</b> CEH is multiple-choice. The gap is demonstrable practical skill: the lab track, a practical credential, published writeups.</li>
@@ -53,7 +52,7 @@ const totalMilestones = tracks.reduce((n, t) => n + countItems(t), 0);
         </div>
       </div>
 
-      <div class="card" style="margin-top: 1rem; border-left: 3px solid var(--accent)">
+      <div class="card" style="margin-top: 1rem; border-left: 3px solid var(--signal)">
         <h4 style="margin: 0 0 0.5rem">How that changes the plan</h4>
         <p class="small" style="margin: 0 0 0.6rem; max-width: 92ch">
           Compress the first two quarters into roughly one. Skip ISC2 CC and treat Security+ as optional
@@ -77,8 +76,8 @@ const totalMilestones = tracks.reduce((n, t) => n + countItems(t), 0);
         title="Read this before you start"
         note="Three warnings that determine whether this plan produces a job or a very long list of half-finished courses."
       />
-      <div class="grid grid-3">
-        <div class="callout warn">
+      <div class="grid g3 gap">
+        <div class="note-box warn">
           <h4 style="margin: 0 0 0.3rem">Do not run three tracks in parallel</h4>
           <p class="small" style="margin: 0">
             Equal effort across three fields produces a plausible junior in all three and a credible
@@ -87,14 +86,14 @@ const totalMilestones = tracks.reduce((n, t) => n + countItems(t), 0);
             <a href={`${base}/recommendations#rec-1`}>Recommendation 1 →</a>
           </p>
         </div>
-        <div class="callout warn">
+        <div class="note-box warn">
           <h4 style="margin: 0 0 0.3rem">Foundations is not optional</h4>
           <p class="small" style="margin: 0">
             It is the phase most self-taught candidates skip and the one that reappears as "failed the
             practical" three rounds later. Three months, properly. All three specialist tracks assume it.
           </p>
         </div>
-        <div class="callout warn">
+        <div class="note-box warn">
           <h4 style="margin: 0 0 0.3rem">Plan for month seven</h4>
           <p class="small" style="margin: 0">
             Almost everyone stalls between month six and nine, when the material gets harder and no job
@@ -111,7 +110,7 @@ const totalMilestones = tracks.reduce((n, t) => n + countItems(t), 0);
         {
           tracks.map((t) => (
             <div class="card" style={`border-left: 3px solid ${t.accent}`}>
-              <div class="row-between" style="align-items: flex-start">
+              <div class="between" style="align-items: flex-start">
                 <div style="flex: 1; min-width: 280px">
                   <div class="row" style="gap: 0.5rem; margin-bottom: 0.35rem">
                     <span style={`color: ${t.accent}; font-size: 1.15rem`}>{t.icon}</span>
@@ -123,11 +122,11 @@ const totalMilestones = tracks.reduce((n, t) => n + countItems(t), 0);
                     <span class="muted">{t.marketNote}</span>
                   </p>
                   <div class="row">
-                    {t.roles.map((r) => <span class="pill">{r}</span>)}
+                    {t.roles.map((r) => <span class="tok">{r}</span>)}
                   </div>
                 </div>
                 <div style="min-width: 170px">
-                  <div class="progress-figure" data-figure-for={`track.${t.id}`}>—</div>
+                  <div class="figure" data-figure-for={`track.${t.id}`}>—</div>
                   <div class="bar thick" style="margin-top: 0.4rem" data-bar-for={`track.${t.id}`}><span></span></div>
                   <p class="tiny dim" style="margin: 0.5rem 0 0">
                     {t.phases.length} phases · {countItems(t)} milestones
@@ -147,17 +146,17 @@ const totalMilestones = tracks.reduce((n, t) => n + countItems(t), 0);
         title="Quarter-by-quarter plan"
         note="Assumes starting from zero at roughly 15 hours a week."
       />
-      <ol class="timeline">
+      <ol class="tl">
         {
           timeline.map((q) => (
             <li>
               <div class="row" style="gap: 0.5rem; margin-bottom: 0.2rem">
-                <span class="badge badge-accent">{q.q}</span>
+                <span class="chip chip-signal">{q.q}</span>
                 <span class="tiny dim mono">{q.months}</span>
               </div>
               <h3 style="margin: 0 0 0.3rem">{q.theme}</h3>
               <p class="small muted" style="margin: 0 0 0.45rem; max-width: 82ch">{q.focus}</p>
-              <p class="tiny" style="margin: 0; color: var(--ok)"><b>Output:</b> {q.output}</p>
+              <p class="tiny" style="margin: 0; color: var(--lime)"><b>Output:</b> {q.output}</p>
             </li>
           ))
         }

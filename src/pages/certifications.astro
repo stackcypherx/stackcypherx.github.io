@@ -8,11 +8,11 @@ const held = certs.filter((c) => c.held).length;
 
 const tracksOrder = ['Foundation', 'Cyber', 'Networks', 'AI', 'Cloud'] as const;
 const priorityClass: Record<string, string> = {
-  'Do it': 'badge-ok',
-  'Worth it': 'badge-accent',
+  'Do it': 'chip-lime',
+  'Worth it': 'chip-signal',
   Situational: '',
-  Later: 'badge-warn',
-  'Skip unless funded': 'badge-danger',
+  Later: 'chip-amber',
+  'Skip unless funded': 'chip-rose',
 };
 const priorities = ['Do it', 'Worth it', 'Situational', 'Later', 'Skip unless funded'];
 ---
@@ -22,11 +22,10 @@ const priorities = ['Do it', 'Worth it', 'Situational', 'Later', 'Skip unless fu
   eyebrow="Costed and assessed"
   heading="Certifications, honestly"
   lede={`${certs.length} credentials across all tracks, with a real price, the exam format, and a verdict — including which ones to skip. ${held} are already earned. Certificates get you into the room; projects get the offer.`}
-  wide
 >
   <div class="wrap stack-lg">
     <section>
-      <div class="callout ok">
+      <div class="note-box ok">
         <p class="small" style="margin: 0">
           <b>Already held:</b> CEH (EC-Council, Mastery, Jan 2026) and Cisco CyberOps Associate
           (Apr 2021, via the Kominfo Digital Talent Scholarship), plus ISO/IEC 27001 ISMS awareness and
@@ -52,14 +51,14 @@ const priorities = ['Do it', 'Worth it', 'Situational', 'Later', 'Skip unless fu
         note="Costs are approximate in USD as of September 2026 and move constantly — always check the vendor before booking. Voucher bundles, student pricing, and retake insurance change the real number substantially."
       />
 
-      <div class="filter-bar" style="margin-bottom: 1.2rem">
+      <div class="filters" style="margin-bottom: 1.2rem">
         <input type="search" placeholder="Search certifications…" data-filter-search aria-label="Search certifications" />
-        {tracksOrder.map((t) => <button class="chip" data-filter-value={t} aria-pressed="false">{t}</button>)}
+        {tracksOrder.map((t) => <button class="fchip" data-filter-value={t} aria-pressed="false">{t}</button>)}
       </div>
 
       <div class="row" style="margin-bottom: 1.2rem; gap: 0.4rem">
         <span class="tiny dim">Priority key:</span>
-        {priorities.map((p) => <span class={`badge ${priorityClass[p]}`}>{p}</span>)}
+        {priorities.map((p) => <span class={`chip ${priorityClass[p]}`}>{p}</span>)}
       </div>
 
       <div class="stack">
@@ -69,7 +68,7 @@ const priorities = ['Do it', 'Worth it', 'Situational', 'Later', 'Skip unless fu
             if (group.length === 0) return null;
             return (
               <div data-filter-container>
-                <h3 class="anchor-h" id={slug(tr)} style="margin: 1.4rem 0 0.7rem">{tr}</h3>
+                <h3 class="" id={slug(tr)} style="margin: 1.4rem 0 0.7rem">{tr}</h3>
                 <div class="stack">
                   {
                     group.map((c) => (
@@ -79,13 +78,13 @@ const priorities = ['Do it', 'Worth it', 'Situational', 'Later', 'Skip unless fu
                         data-filter-tags={c.track}
                         data-filter-text={`${c.name} ${c.vendor} ${c.verdict} ${c.when} ${c.track} ${c.tier}`}
                       >
-                        <div class="row-between" style="align-items: flex-start; gap: 1rem">
+                        <div class="between" style="align-items: flex-start; gap: 1rem">
                           <div style="flex: 1; min-width: 260px">
                             <div class="row" style="gap: 0.4rem; margin-bottom: 0.4rem">
                               {c.held
-                                ? <span class="badge badge-ok">✓ Earned {c.held}</span>
-                                : <span class={`badge ${priorityClass[c.priority]}`}>{c.priority}</span>}
-                              <span class="badge">{c.tier}</span>
+                                ? <span class="chip chip-lime">✓ Earned {c.held}</span>
+                                : <span class={`chip ${priorityClass[c.priority]}`}>{c.priority}</span>}
+                              <span class="chip">{c.tier}</span>
                               <span class="tiny dim">{c.vendor}</span>
                             </div>
                             <h4 style="margin: 0 0 0.45rem; font-size: 1.04rem">
@@ -113,11 +112,11 @@ const priorities = ['Do it', 'Worth it', 'Situational', 'Later', 'Skip unless fu
           })
         }
       </div>
-      <p class="muted center" data-filter-empty hidden style="padding: 2rem 0">No certifications match that filter.</p>
+      <p class="muted" style="text-align:center" data-filter-empty hidden style="padding: 2rem 0">No certifications match that filter.</p>
     </section>
 
     <section>
-      <div class="callout">
+      <div class="note-box">
         <h3 style="margin: 0 0 0.4rem">The 24-month money plan</h3>
         <p class="small" style="margin: 0 0 0.7rem; max-width: 86ch">
           Realistic total: <b>USD 3,000–5,000</b> over two years. Rough shape — foundations plus

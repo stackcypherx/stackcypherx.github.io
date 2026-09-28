@@ -1,5 +1,12 @@
 /**
- * Professional profile, from the CVs.
+ * Professional profile, written for an EXTERNAL reader.
+ *
+ * Editorial rule: an outside recruiter cannot calibrate an internal award. A
+ * company-internal idea competition or a board-level commendation means little
+ * to someone in Rotterdam or Dubai, and listing it spends credibility to say
+ * nothing. So internal recognition is out, and what replaces it is field
+ * outcomes — named infrastructure, real incidents, measurable scope — anchored
+ * by certifications a stranger can independently verify.
  *
  * DELIBERATELY OMITTED from this public file — do not add them back:
  *   · phone number          (public page = spam magnet; keep it on the PDF you send)
@@ -31,6 +38,8 @@ export type Credential = {
   date: string;
   level?: string;
   domain: string;
+  /** Who recognises it — International / National / Standards. */
+  scope: string;
 };
 
 export type Profile = {
@@ -196,69 +205,82 @@ export const profile: Profile = {
     },
   ],
 
+  /** Engineering cases — what the work was, stated so an outsider can judge the difficulty. */
   keyProjects: [
     {
-      title: 'Digital connectivity acceleration across eastern Indonesia',
-      place: 'Ternate & Makassar',
-      period: '2017 – present',
+      title: 'Access network build-out in an archipelagic service area',
+      place: 'North Maluku',
+      period: '2017 – 2020',
       detail:
-        'Sustained role in extending connectivity across urban, suburban, rural and underserved areas — the part of the country where infrastructure is hardest to build and hardest to keep running.',
+        'New OLT integration and end-to-end FTTH deployment — feeder, distribution, ODC and ODP — across islands where every rollout carries a sea-freight and weather dependency. Led the branch technical team and ran the commissioning.',
     },
     {
-      title: 'Natural disaster network recovery task force',
-      place: 'Masamba, South Sulawesi',
-      period: 'Jul 2020',
+      title: 'Wholesale service assurance at regional scale',
+      place: 'Eastern Indonesia',
+      period: '2020 – 2026',
       detail:
-        'Disaster response leadership during the Masamba flood, restoring critical communications infrastructure under crisis conditions. Recognised at board level (BOD-1).',
+        'Topology design and material specification for new links, rebalancing, fiberisation and dual-homing across access, backhaul, IPRAN and IP core — then holding the resulting services to contracted SLA and SLG for carrier and enterprise customers.',
     },
     {
-      title: 'Dashboard and reporting innovation',
+      title: 'Operational data consolidation',
       place: 'Makassar',
-      period: 'Aug 2023',
+      period: '2023 – 2026',
       detail:
-        'Designed and shipped an internal dashboard and reporting system that replaced manual status collection with at-a-glance operational visibility, improving decision quality and speed.',
+        'Replaced manual status collection with a reporting system giving real-time operational visibility, then rebuilt it as a full analytics platform with agent-assisted development. The engineering side of that work is documented under agentic engineering.',
     },
   ],
 
+  /**
+   * Field outcomes, not internal awards. Each one is verifiable in kind by an
+   * outsider: named national infrastructure, a documented disaster, a national
+   * government programme, or a recognised standard.
+   */
   achievements: [
     {
-      title: 'Top 50 — IndiHome Innovation Centre',
-      org: 'PT Telkom Group',
-      date: 'May 2017',
+      title: 'Palapa Ring integration across the eastern corridor',
+      org: "Indonesia's national fibre backbone programme",
+      date: '2017 – 2022',
       detail:
-        'Selected from 1,000+ submissions company-wide. Proposed "IndiTouch", a supplementary business concept to grow profit and strengthen the IndiHome brand.',
+        'Delivered integration of the Palapa Ring Tengah and Tengah–Timur segments into live Metro-Ethernet and mobile operator infrastructure, spanning Morotai, Siau, Tahuna and Talaud. Palapa Ring is the state programme that brought backbone connectivity to Indonesia\u2019s outer islands; this was the operational work of attaching it to a running network without dropping the network.',
     },
     {
-      title: 'Top 100 — Telkom Group Hack Idea 2019',
-      org: 'PT Telkom Group',
-      date: 'Aug 2019',
-      detail:
-        'Selected from 1,200+ submissions nationwide. Led the proposal for "Jastip.in", a personal-shopper application positioned as a new revenue engine.',
-    },
-    {
-      title: 'Digital Talent Scholarship — Professional Academy',
-      org: 'Ministry of Communication and Informatics (Kominfo), Republic of Indonesia',
-      date: 'Apr 2021',
-      detail: 'National government scholarship programme; completed the Cisco CyberOps Associate track.',
-    },
-    {
-      title: 'Technical Assistance Team — Masamba recovery',
-      org: 'PT Telkom Indonesia — board-level recognition (BOD-1)',
+      title: 'Network restoration after the Masamba flash flood',
+      org: 'Emergency response, Luwu Utara, South Sulawesi',
       date: 'Jul 2020',
-      detail: 'Recognised for disaster-response contribution restoring network infrastructure in Luwu Utara.',
+      detail:
+        'Deployed to the flash-flood disaster zone as part of the technical recovery effort, restoring critical communications infrastructure while access routes were still compromised. Incident command under genuine constraint — the conditions that separate procedure from judgement.',
+    },
+    {
+      title: 'Connectivity delivery for PON & Peparnas Papua 2021',
+      org: 'National and Para Games, Papua',
+      date: '2021',
+      detail:
+        'Surveyed, designed topology and specified material requirements for new links and mobile base-station dual-homing supporting Indonesia\u2019s national multi-sport games in Papua — a fixed, immovable deadline in the country\u2019s most logistically difficult province.',
+    },
+    {
+      title: 'Cisco CyberOps Associate via national scholarship',
+      org: 'Digital Talent Scholarship, Ministry of Communication & Informatics (Kominfo)',
+      date: 'Apr 2021',
+      detail:
+        'Competitive national government programme. The credential is Cisco\u2019s security-operations associate track — monitoring, host and network intrusion analysis, and incident response.',
+    },
+    {
+      title: 'Regional operations ownership across four provinces',
+      org: 'Papua, Maluku, Sulawesi & Kalimantan (Pamasuka)',
+      date: '2026 – present',
+      detail:
+        'Accountable for mobile broadband and transport service operations across roughly the eastern half of Indonesia — an archipelagic footprint measured in thousands of kilometres, where every fault has a logistics problem attached to it.',
     },
   ],
 
   /** Credentials already held. These feed the "Earned" markers on the certifications page. */
   credentials: [
-    { name: 'Certified Ethical Hacker (CEH)', issuer: 'EC-Council', date: 'Jan 2026', level: 'Mastery', domain: 'Security' },
-    { name: 'Cisco CyberOps Associate', issuer: 'Cisco / Kominfo Digital Talent Scholarship', date: 'Apr 2021', domain: 'Security' },
-    { name: 'Cisco Cybersecurity Foundation', issuer: 'Cisco', date: '—', domain: 'Security' },
-    { name: 'BlueTeam.id Cybersecurity Training', issuer: 'BlueTeam.id', date: '—', domain: 'Security' },
-    { name: 'ISO/IEC 27001:2022 ISMS awareness', issuer: 'Internal — with ISO 9001:2015 QMS and ISO 22301:2019 BCMS', date: '2025', domain: 'Governance' },
-    { name: 'SDN / NFV and SD-WAN', issuer: 'Internal technical programme', date: 'Apr 2024', domain: 'Networks' },
-    { name: 'Google Digital Marketing & E-commerce', issuer: 'Google Career Certificates', date: 'Dec 2023', domain: 'Other' },
-    { name: 'Great People Managerial Program', issuer: 'PT Telkom Indonesia', date: '—', domain: 'Leadership' },
+    { name: 'Certified Ethical Hacker (CEH)', issuer: 'EC-Council', date: 'Jan 2026', level: 'Mastery', domain: 'Security', scope: 'International' },
+    { name: 'Cisco CyberOps Associate', issuer: 'Cisco — via Kominfo Digital Talent Scholarship', date: 'Apr 2021', domain: 'Security', scope: 'International + national programme' },
+    { name: 'Cisco Cybersecurity Foundation', issuer: 'Cisco', date: '\u2014', domain: 'Security', scope: 'International' },
+    { name: 'Google Digital Marketing & E-commerce', issuer: 'Google Career Certificates', date: 'Dec 2023', domain: 'Commercial', scope: 'International' },
+    { name: 'BlueTeam.id Cybersecurity Training', issuer: 'BlueTeam.id', date: '\u2014', domain: 'Security', scope: 'National' },
+    { name: 'ISO/IEC 27001:2022 ISMS', issuer: 'Awareness programme, with ISO 9001 QMS and ISO 22301 BCMS', date: '2025', domain: 'Governance', scope: 'Standards' },
   ],
 
   skills: [

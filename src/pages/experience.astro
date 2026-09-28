@@ -5,6 +5,22 @@ import { profile, yearsExperience } from '../data/profile';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const companies = new Set(profile.experience.map((e) => e.company)).size;
+const rail = [
+  ['Summary', 'summary'],
+  ['Experience', 'experience'],
+  ['Engineering cases', 'cases'],
+  ['Field record', 'record'],
+  ['Credentials', 'credentials'],
+  ['Skills', 'skills'],
+  ['Education', 'education'],
+  ['Contact', 'contact'],
+];
+const scopeChip: Record<string, string> = {
+  International: 'chip-signal',
+  'International + national programme': 'chip-signal',
+  National: 'chip-violet',
+  Standards: 'chip-amber',
+};
 ---
 
 <Base
@@ -12,244 +28,238 @@ const companies = new Set(profile.experience.map((e) => e.company)).size;
   eyebrow={profile.headline}
   heading={profile.name}
   lede={profile.pitch}
-  wide
+  display
 >
-  <div class="wrap stack-lg">
-    <!-- ------------------------------------------------------------ at a glance -->
-    <section>
-      <div class="grid grid-4">
-        <div class="card">
-          <div class="stat">
-            <span class="n">{yearsExperience}</span>
-            <span class="l">Years in telecom</span>
-          </div>
-          <p class="tiny dim" style="margin: 0.5rem 0 0">Network & service operations, since 2014</p>
-        </div>
-        <div class="card">
-          <div class="stat">
-            <span class="n">{companies}</span>
-            <span class="l">Operators</span>
-          </div>
-          <p class="tiny dim" style="margin: 0.5rem 0 0">Telkom Indonesia · Infranexia · Smartfren</p>
-        </div>
-        <div class="card">
-          <div class="stat">
-            <span class="n">4</span>
-            <span class="l">Regions covered</span>
-          </div>
-          <p class="tiny dim" style="margin: 0.5rem 0 0">Papua, Maluku, Sulawesi, Kalimantan</p>
-        </div>
-        <div class="card">
-          <div class="stat">
-            <span class="n">CEH</span>
-            <span class="l">Plus CyberOps</span>
-          </div>
-          <p class="tiny dim" style="margin: 0.5rem 0 0">EC-Council, 2026 · Cisco/Kominfo, 2021</p>
-        </div>
-      </div>
-    </section>
+  <div slot="hero-extra" class="row" style="margin-top: 2rem; gap: 0.6rem" data-reveal="220">
+    <span class="tok">📍 {profile.location}</span>
+    <span class="tok">Open to: {profile.openTo}</span>
+  </div>
 
-    <!-- ---------------------------------------------------------------- summary -->
-    <section>
-      <div class="card" style="border-left: 3px solid var(--accent)">
-        {profile.summary.map((p) => <p style="max-width: 92ch">{p}</p>)}
-        <div class="row" style="margin-top: 1rem">
-          <span class="pill">📍 {profile.location}</span>
-          <span class="pill">🌐 Open to: {profile.openTo}</span>
-        </div>
-      </div>
-    </section>
+  <div class="wrap" style="margin-top: 3.5rem">
+    <div class="railed">
+      <nav class="rail" aria-label="On this page">
+        <div class="tag" style="margin-bottom: 0.6rem">Contents</div>
+        {rail.map(([label, id]) => <a href={`#${id}`}>{label}</a>)}
+        <a class="btn btn-sm" style="margin-top: 1.2rem; width: 100%; justify-content: center" href={`${base}/agentic`}>
+          Software built →
+        </a>
+      </nav>
 
-    <!-- ------------------------------------------------------------- experience -->
-    <section>
-      <SectionHead
-        id="experience"
-        title="Professional experience"
-        note="Reverse chronological. Scope described in industry-standard terms rather than internal acronyms."
-      />
-      <div class="stack">
-        {
-          profile.experience.map((job) => (
-            <div class="card">
-              <div class="row-between" style="align-items: flex-start; gap: 1rem; margin-bottom: 0.7rem">
-                <div style="flex: 1; min-width: 280px">
-                  <div class="row" style="gap: 0.45rem; margin-bottom: 0.3rem">
-                    {job.current && <span class="badge badge-ok">Current</span>}
-                    <span class="tiny dim mono">{job.period}</span>
+      <div class="stack-lg">
+        <!-- ───────────────────────────────────────────────────── summary -->
+        <section>
+          <div class="grid g4" style="border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--line); margin-bottom: 2rem">
+            <div class="card" data-reveal>
+              <div class="stat"><span class="n" data-count={yearsExperience}>0</span><span class="l">Years</span></div>
+            </div>
+            <div class="card" data-reveal="50">
+              <div class="stat"><span class="n" data-count={companies}>0</span><span class="l">Operators</span></div>
+            </div>
+            <div class="card" data-reveal="100">
+              <div class="stat"><span class="n" data-count="4">0</span><span class="l">Provinces</span></div>
+            </div>
+            <div class="card" data-reveal="150">
+              <div class="stat"><span class="n" data-count={profile.credentials.length}>0</span><span class="l">Credentials</span></div>
+            </div>
+          </div>
+
+          <div id="summary" class="card spot" data-reveal style="border-color: var(--signal-line)">
+            {profile.summary.map((p) => <p class="muted" style="max-width: 88ch">{p}</p>)}
+          </div>
+        </section>
+
+        <!-- ────────────────────────────────────────────────── experience -->
+        <section>
+          <SectionHead
+            id="experience"
+            label="Track record"
+            title="Professional experience"
+            note="Reverse chronological. Scope stated in industry-standard terms rather than internal acronyms, so it reads the same to someone who has never heard of the employer."
+          />
+          <div class="xp">
+            {
+              profile.experience.map((job, i) => (
+                <article class={`xp-item ${job.current ? 'now' : ''}`} data-reveal={String(Math.min(i * 50, 200))}>
+                  <div class="row" style="gap: 0.5rem">
+                    {job.current && <span class="chip chip-lime">Current</span>}
+                    <span class="tag">{job.period}</span>
+                    <span class="tag">{job.place}</span>
                   </div>
-                  <h3 style="margin: 0 0 0.2rem">{job.role}</h3>
-                  <div class="small" style="color: var(--accent); font-weight: 560">{job.company}</div>
-                  {job.companyNote && <div class="tiny dim" style="margin-top: 0.15rem">{job.companyNote}</div>}
-                </div>
-                <div class="tiny dim nowrap">{job.place}</div>
-              </div>
+                  <h3 class="xp-role">{job.role}</h3>
+                  <div class="xp-co">{job.company}</div>
+                  {job.companyNote && <div class="tiny dim" style="margin-top: 0.2rem">{job.companyNote}</div>}
 
-              <p class="small muted" style="max-width: 92ch; margin-bottom: 0.8rem">
-                <b class="tiny dim" style="text-transform: uppercase; letter-spacing: 0.05em">Scope</b><br />
-                {job.scope}
-              </p>
+                  <p class="small muted" style="margin: 0.9rem 0; max-width: 88ch">
+                    <span class="tag" style="display: block; margin-bottom: 0.25rem">Scope</span>
+                    {job.scope}
+                  </p>
 
-              <ul class="small" style="margin: 0 0 1rem; max-width: 92ch">
-                {job.points.map((p) => <li>{p}</li>)}
-              </ul>
+                  <ul class="small muted" style="max-width: 88ch; margin-bottom: 1rem">
+                    {job.points.map((p) => <li>{p}</li>)}
+                  </ul>
 
-              <div class="row">
-                {job.tags.map((t) => <span class="pill tiny">{t}</span>)}
-              </div>
-            </div>
-          ))
-        }
-      </div>
-    </section>
-
-    <!-- --------------------------------------------------------------- projects -->
-    <section>
-      <SectionHead id="projects" title="Notable projects" />
-      <div class="grid grid-3">
-        {
-          profile.keyProjects.map((p) => (
-            <div class="card card-hover">
-              <div class="tiny dim mono" style="margin-bottom: 0.35rem">{p.period} · {p.place}</div>
-              <h3 style="margin: 0 0 0.45rem; font-size: 1.02rem">{p.title}</h3>
-              <p class="small muted" style="margin: 0">{p.detail}</p>
-            </div>
-          ))
-        }
-      </div>
-    </section>
-
-    <!-- ----------------------------------------------------------- achievements -->
-    <section>
-      <SectionHead
-        id="achievements"
-        title="Recognition"
-        note="Company-wide and national selections — useful raw material for endorsement-based visa routes, which ask for exactly this kind of third-party recognition."
-      />
-      <div class="grid grid-2">
-        {
-          profile.achievements.map((a) => (
-            <div class="card">
-              <div class="row" style="gap: 0.5rem; margin-bottom: 0.4rem">
-                <span class="badge badge-warn">{a.date}</span>
-              </div>
-              <h3 style="margin: 0 0 0.25rem; font-size: 1rem">{a.title}</h3>
-              <div class="tiny dim" style="margin-bottom: 0.5rem">{a.org}</div>
-              <p class="small muted" style="margin: 0">{a.detail}</p>
-            </div>
-          ))
-        }
-      </div>
-    </section>
-
-    <!-- ----------------------------------------------------------- credentials -->
-    <section>
-      <SectionHead
-        id="credentials"
-        title="Credentials held"
-        note="Already earned. The forward plan for what comes next is on the certifications page."
-      />
-      <div class="table-scroll">
-        <table>
-          <thead>
-            <tr><th>Credential</th><th>Issuer</th><th>Domain</th><th>Earned</th></tr>
-          </thead>
-          <tbody>
-            {
-              profile.credentials.map((c) => (
-                <tr>
-                  <td>
-                    <b>{c.name}</b>
-                    {c.level && <span class="badge badge-ok" style="margin-left: 0.4rem">{c.level}</span>}
-                  </td>
-                  <td class="muted">{c.issuer}</td>
-                  <td><span class="pill tiny">{c.domain}</span></td>
-                  <td class="mono tiny dim nowrap">{c.date}</td>
-                </tr>
+                  <div class="row">{job.tags.map((t) => <span class="tok tiny">{t}</span>)}</div>
+                </article>
               ))
             }
-          </tbody>
-        </table>
-      </div>
-      <p class="small" style="margin-top: 0.9rem">
-        <a href={`${base}/certifications`}>What I am targeting next →</a>
-      </p>
-    </section>
+          </div>
+        </section>
 
-    <!-- ------------------------------------------------------------------ skills -->
-    <section>
-      <SectionHead id="skills" title="Skills" />
-      <div class="grid grid-2">
-        {
-          profile.skills.map((g) => (
-            <div class="card">
-              <h3 style="margin: 0 0 0.7rem; font-size: 1rem">{g.group}</h3>
-              <div class="row">
-                {g.items.map((s) => <span class="pill tiny">{s}</span>)}
-              </div>
-            </div>
-          ))
-        }
-      </div>
-    </section>
-
-    <!-- --------------------------------------------------- education & language -->
-    <section>
-      <div class="grid grid-2">
-        <div>
-          <SectionHead id="education" title="Education" />
-          {
-            profile.education.map((e) => (
-              <div class="card">
-                <div class="tiny dim mono" style="margin-bottom: 0.35rem">{e.period}</div>
-                <h3 style="margin: 0 0 0.2rem; font-size: 1.02rem">{e.award}</h3>
-                <div class="small" style="color: var(--accent); font-weight: 560">{e.school}</div>
-                <div class="tiny dim" style="margin: 0.15rem 0 0.6rem">{e.place} · {e.note}</div>
-                <p class="small muted" style="margin: 0">{e.detail}</p>
-              </div>
-            ))
-          }
-        </div>
-        <div>
-          <SectionHead id="languages" title="Languages & interests" />
-          <div class="card">
+        <!-- ─────────────────────────────────────────────── engineering -->
+        <section>
+          <SectionHead
+            id="cases"
+            label="What the work was"
+            title="Engineering cases"
+            note="Stated so an outsider can judge the difficulty, not so an insider can recognise the project code."
+          />
+          <div class="grid g3" style="border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--line)">
             {
-              profile.languages.map((l) => (
-                <div class="row-between small" style="padding: 0.3rem 0; border-bottom: 1px dashed var(--border)">
-                  <b>{l.name}</b>
-                  <span class="muted">{l.level}</span>
+              profile.keyProjects.map((p, i) => (
+                <div class="card spot" data-reveal={String(i * 60)}>
+                  <div class="tag" style="margin-bottom: 0.5rem">{p.period} · {p.place}</div>
+                  <h3 style="margin-bottom: 0.5rem">{p.title}</h3>
+                  <p class="small muted" style="margin: 0">{p.detail}</p>
                 </div>
               ))
             }
-            <div style="margin-top: 1rem">
+          </div>
+        </section>
+
+        <!-- ──────────────────────────────────────────────── field record -->
+        <section>
+          <SectionHead
+            id="record"
+            label="Verifiable outcomes"
+            title="Field record"
+            note="Named national infrastructure, documented incidents, a competitive government programme — things an outside reader can weigh without knowing the company."
+          />
+          <div class="stack">
+            {
+              profile.achievements.map((a, i) => (
+                <div class="card spot" data-reveal={String(Math.min(i * 45, 180))}>
+                  <div class="between" style="align-items: flex-start; margin-bottom: 0.5rem">
+                    <h3 style="margin: 0; max-width: 62ch">{a.title}</h3>
+                    <span class="chip chip-signal">{a.date}</span>
+                  </div>
+                  <div class="tag" style="margin-bottom: 0.65rem">{a.org}</div>
+                  <p class="small muted" style="margin: 0; max-width: 90ch">{a.detail}</p>
+                </div>
+              ))
+            }
+          </div>
+        </section>
+
+        <!-- ───────────────────────────────────────────────── credentials -->
+        <section>
+          <SectionHead
+            id="credentials"
+            label="Independently verifiable"
+            title="Certifications"
+            note="Issued by bodies a stranger can check. Internal company training is deliberately not listed — it means nothing outside the building."
+          />
+          <div class="tscroll" data-reveal>
+            <table>
+              <thead>
+                <tr><th>Credential</th><th>Issuer</th><th>Recognition</th><th>Domain</th><th>Earned</th></tr>
+              </thead>
+              <tbody>
+                {
+                  profile.credentials.map((c) => (
+                    <tr>
+                      <td>
+                        <b>{c.name}</b>
+                        {c.level && <span class="chip chip-lime" style="margin-left: 0.45rem">{c.level}</span>}
+                      </td>
+                      <td class="muted">{c.issuer}</td>
+                      <td><span class={`chip ${scopeChip[c.scope] ?? ''}`}>{c.scope}</span></td>
+                      <td class="dim">{c.domain}</td>
+                      <td class="mono tiny dim nowrap">{c.date}</td>
+                    </tr>
+                  ))
+                }
+              </tbody>
+            </table>
+          </div>
+          <p class="small" style="margin-top: 1rem">
+            <a href={`${base}/certifications`} style="color: var(--signal)">What's targeted next, and what's deliberately skipped →</a>
+          </p>
+        </section>
+
+        <!-- ────────────────────────────────────────────────────── skills -->
+        <section>
+          <SectionHead id="skills" label="Capability" title="Skills" />
+          <div class="grid g2" style="border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--line)">
+            {
+              profile.skills.map((g, i) => (
+                <div class="card spot" data-reveal={String(i * 50)}>
+                  <div class="tag tag-signal" style="margin-bottom: 0.75rem">{g.group}</div>
+                  <div class="row">{g.items.map((s) => <span class="tok tiny">{s}</span>)}</div>
+                </div>
+              ))
+            }
+          </div>
+        </section>
+
+        <!-- ────────────────────────────────────────── education / languages -->
+        <section>
+          <SectionHead id="education" label="Background" title="Education, languages & outside work" />
+          <div class="grid g2 gap" style="gap: 1rem">
+            <div class="card" data-reveal>
+              {
+                profile.education.map((e) => (
+                  <>
+                    <div class="tag" style="margin-bottom: 0.5rem">{e.period}</div>
+                    <h3 style="margin-bottom: 0.3rem">{e.award}</h3>
+                    <div class="xp-co">{e.school}</div>
+                    <div class="tiny dim" style="margin: 0.25rem 0 0.8rem">{e.place} · {e.note}</div>
+                    <p class="small muted" style="margin: 0">{e.detail}</p>
+                  </>
+                ))
+              }
+              <div style="margin-top: 1.4rem; padding-top: 1.2rem; border-top: 1px solid var(--line)">
+                <div class="tag" style="margin-bottom: 0.6rem">Languages</div>
+                {
+                  profile.languages.map((l) => (
+                    <div class="between small" style="padding: 0.28rem 0">
+                      <b>{l.name}</b><span class="muted">{l.level}</span>
+                    </div>
+                  ))
+                }
+              </div>
+            </div>
+            <div class="card" data-reveal="80">
+              <div class="tag" style="margin-bottom: 0.8rem">Outside the job</div>
               {
                 profile.interests.map((i) => (
-                  <div style="margin-bottom: 0.7rem">
+                  <div style="margin-bottom: 1rem">
                     <b class="small">{i.title}</b>
-                    <p class="small muted" style="margin: 0.1rem 0 0">{i.detail}</p>
+                    <p class="small muted" style="margin: 0.15rem 0 0">{i.detail}</p>
                   </div>
                 ))
               }
             </div>
           </div>
-        </div>
-      </div>
-    </section>
+        </section>
 
-    <!-- ----------------------------------------------------------------- contact -->
-    <section>
-      <div class="card" style="border-left: 3px solid var(--accent)">
-        <h2 style="margin: 0 0 0.5rem">Get in touch</h2>
-        <p class="muted" style="max-width: 78ch">
-          Open to security engineering, detection engineering, network security, and NetDevOps roles —
-          remote-first globally, or relocation to the EU/UK, US, Middle East and APAC.
-        </p>
-        <div class="row" style="margin-top: 1rem">
-          <a class="btn btn-primary" href={`mailto:${profile.contact.email}`}>Email</a>
-          <a class="btn" href={profile.contact.linkedin}>LinkedIn</a>
-          <a class="btn" href={profile.contact.github}>GitHub</a>
-          <a class="btn" href={profile.contact.tryhackme}>TryHackMe</a>
-        </div>
+        <!-- ───────────────────────────────────────────────────── contact -->
+        <section>
+          <div id="contact" class="card spot" data-reveal style="border-color: var(--signal-line)">
+            <div class="tag tag-signal" style="margin-bottom: 0.6rem">Availability</div>
+            <h2 style="margin-bottom: 0.7rem">Open to the right move</h2>
+            <p class="muted" style="max-width: 76ch">
+              Security engineering, detection engineering, network security and NetDevOps — remote-first
+              globally, or relocation to the EU/UK, US, Middle East and APAC.
+            </p>
+            <div class="row" style="margin-top: 1.4rem">
+              <a class="btn btn-primary" href={`mailto:${profile.contact.email}`}>Email</a>
+              <a class="btn" href={profile.contact.linkedin}>LinkedIn ↗</a>
+              <a class="btn" href={profile.contact.github}>GitHub ↗</a>
+              <a class="btn" href={profile.contact.tryhackme}>TryHackMe ↗</a>
+            </div>
+          </div>
+        </section>
       </div>
-    </section>
+    </div>
   </div>
 </Base>

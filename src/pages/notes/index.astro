@@ -43,12 +43,12 @@ const fmt = (d: string) =>
         ) : (
           <div class="stack">
             {notes.map((n) => (
-              <a class="card card-hover" href={n.url} style="display: block; color: inherit">
+              <a class="card card-i spot" href={n.url} style="display: block; color: inherit">
                 <div class="row" style="gap: 0.5rem; margin-bottom: 0.4rem">
                   <time class="tiny dim mono" datetime={n.frontmatter.date}>{fmt(n.frontmatter.date)}</time>
-                  {n.frontmatter.track && <span class="badge badge-accent">{n.frontmatter.track}</span>}
+                  {n.frontmatter.track && <span class="chip chip-signal">{n.frontmatter.track}</span>}
                   {n.frontmatter.lang && n.frontmatter.lang !== 'en' && (
-                    <span class="badge">{n.frontmatter.lang.toUpperCase()}</span>
+                    <span class="chip">{n.frontmatter.lang.toUpperCase()}</span>
                   )}
                 </div>
                 <h3 style="margin: 0 0 0.3rem">{n.frontmatter.title}</h3>
@@ -57,7 +57,7 @@ const fmt = (d: string) =>
                 )}
                 {n.frontmatter.tags && (
                   <div class="row" style="margin-top: 0.7rem">
-                    {n.frontmatter.tags.map((t) => <span class="pill tiny">{t}</span>)}
+                    {n.frontmatter.tags.map((t) => <span class="tok tiny">{t}</span>)}
                   </div>
                 )}
               </a>

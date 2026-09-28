@@ -1,0 +1,172 @@
+---
+import Base from '../layouts/Base.astro';
+import SectionHead from '../components/SectionHead.astro';
+import { builds, vibeStats, method } from '../data/vibe';
+
+const kinds = Array.from(new Set(builds.map((b) => b.kind)));
+const visChip: Record<string, string> = { Internal: 'chip-amber', Personal: '', Public: 'chip-lime' };
+const allStack = Array.from(new Set(builds.flatMap((b) => b.stack)));
+const shipped = builds.length;
+---
+
+<Base
+  title="Agentic engineering"
+  eyebrow="Built with coding agents"
+  heading="Software shipped by orchestrating agents."
+  lede="Six systems between June and September 2026 — an internal operations analytics platform, alerting bots, document automation, and two published sites. Written by agents, specified and reviewed by me. The method matters more than the volume, so it is documented below."
+  canvas
+  display
+>
+  <div class="wrap stack-lg" style="margin-top: 3.5rem">
+    <!-- ───────────────────────────────────────────────────── the numbers -->
+    <section>
+      <div class="grid g4" style="border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--line)">
+        <div class="card" data-reveal>
+          <div class="stat"><span class="n" data-count={vibeStats.activeDays}>0</span><span class="l">Active days</span></div>
+          <p class="tiny dim" style="margin-top: 0.5rem">Since {vibeStats.since}</p>
+        </div>
+        <div class="card" data-reveal="60">
+          <div class="stat"><span class="n" data-count={shipped}>0</span><span class="l">Systems shipped</span></div>
+          <p class="tiny dim" style="margin-top: 0.5rem">Deployed, not prototyped</p>
+        </div>
+        <div class="card" data-reveal="120">
+          <div class="stat"><span class="n" data-count={vibeStats.fileEdits}>0</span><span class="l">File writes</span></div>
+          <p class="tiny dim" style="margin-top: 0.5rem">Across every session</p>
+        </div>
+        <div class="card" data-reveal="180">
+          <div class="stat"><span class="n" data-count={vibeStats.commands}>0</span><span class="l">Commands run</span></div>
+          <p class="tiny dim" style="margin-top: 0.5rem">Build, deploy, debug</p>
+        </div>
+      </div>
+      <p class="tiny dim" style="margin-top: 0.8rem">
+        Measured from local session history, 29 Jun – 28 Sep 2026. Counted because they are real, not
+        because volume is the point.
+      </p>
+    </section>
+
+    <!-- ───────────────────────────────────────────────────────── marquee -->
+    <section>
+      <div class="marquee" aria-hidden="true">
+        <div class="marquee-t">
+          {allStack.map((s) => <span>{s}</span>)}
+          {allStack.map((s) => <span>{s}</span>)}
+        </div>
+      </div>
+    </section>
+
+    <!-- ────────────────────────────────────────────────────────── builds -->
+    <section data-filter-scope>
+      <SectionHead
+        id="builds"
+        label="Portfolio"
+        title="What got built"
+        note="Employer-internal work is described by capability, stack and outcome only — no system names, hostnames, addresses or data. Everything here is safe to hand to a competitor."
+      />
+
+      <div class="filters" style="margin-bottom: 1.4rem">
+        <input type="search" placeholder="Filter by name, stack, problem…" data-filter-search aria-label="Filter builds" />
+        {kinds.map((k) => <button class="fchip" data-filter-value={k} aria-pressed="false">{k}</button>)}
+      </div>
+
+      <div class="stack">
+        {
+          builds.map((b, i) => (
+            <article
+              class="card spot"
+              id={b.id}
+              data-reveal={String(Math.min(i * 40, 160))}
+              data-filter-item
+              data-filter-tags={b.kind}
+              data-filter-text={`${b.title} ${b.summary} ${b.problem} ${b.stack.join(' ')} ${b.kind}`}
+            >
+              <div class="between" style="align-items: flex-start; margin-bottom: 0.9rem">
+                <div class="row" style="gap: 0.45rem">
+                  <span class="chip chip-signal">{b.kind}</span>
+                  <span class={`chip ${visChip[b.visibility]}`}>{b.visibility}</span>
+                  <span class="tag">{b.period}</span>
+                </div>
+                <div class="row small">
+                  {b.url && <a href={b.url} style="color: var(--signal)">live ↗</a>}
+                  {b.repo && <a href={b.repo} style="color: var(--signal)">repo ↗</a>}
+                </div>
+              </div>
+
+              <h3 style="font-size: 1.32rem; margin-bottom: 0.55rem">{b.title}</h3>
+              <p class="muted" style="max-width: 86ch; margin-bottom: 1.2rem">{b.summary}</p>
+
+              <div class="grid g2 gap" style="gap: 1.6rem">
+                <div>
+                  <div class="tag" style="margin-bottom: 0.45rem">The problem</div>
+                  <p class="small muted" style="margin: 0">{b.problem}</p>
+                  {b.scale && (
+                    <>
+                      <div class="tag" style="margin: 1.1rem 0 0.45rem">Scale</div>
+                      <p class="small muted" style="margin: 0">{b.scale}</p>
+                    </>
+                  )}
+                </div>
+                <div>
+                  <div class="tag" style="margin-bottom: 0.45rem">What was built</div>
+                  <ul class="small muted" style="margin: 0 0 1.1rem">
+                    {b.built.map((x) => <li>{x}</li>)}
+                  </ul>
+                  <div class="row">
+                    {b.stack.map((s) => <span class="tok tiny">{s}</span>)}
+                  </div>
+                </div>
+              </div>
+
+              {b.lesson && (
+                <div class="note-box" style="margin-top: 1.3rem">
+                  <div class="tag tag-signal" style="margin-bottom: 0.3rem">What it taught</div>
+                  <p class="small" style="margin: 0">{b.lesson}</p>
+                </div>
+              )}
+            </article>
+          ))
+        }
+      </div>
+      <p class="muted" data-filter-empty hidden style="padding: 2.5rem 0; text-align: center">Nothing matches that filter.</p>
+    </section>
+
+    <!-- ────────────────────────────────────────────────────────── method -->
+    <section>
+      <SectionHead
+        id="method"
+        label="How I work"
+        title="Method, not magic"
+        note='Karpathy called the vibe-coding era over in February 2026 and proposed "agentic engineering": you are not writing the code most of the time, you are orchestrating agents and owning the oversight — and there is real expertise in doing that well. This is mine.'
+      />
+      <div class="grid g2" style="border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--line)">
+        {
+          method.map((m, i) => (
+            <div class="card spot" data-reveal={String(Math.min(i * 50, 200))}>
+              <div class="tag tag-signal" style="margin-bottom: 0.5rem">{String(i + 1).padStart(2, '0')}</div>
+              <h3 style="margin-bottom: 0.45rem">{m.title}</h3>
+              <p class="small muted" style="margin: 0">{m.body}</p>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- ───────────────────────────────────────────────────────── honesty -->
+    <section>
+      <div class="note-box warn" data-reveal>
+        <div class="tag" style="margin-bottom: 0.4rem; color: var(--amber)">Stated plainly</div>
+        <p class="small" style="margin: 0 0 0.7rem; max-width: 88ch">
+          I did not hand-write most of this code, and pretending otherwise would be both dishonest and
+          easy to catch in an interview. What I did was decide what to build, specify it precisely,
+          choose the structure, review every diff, and own the result when it ran against real
+          operational data.
+        </p>
+        <p class="small" style="margin: 0; max-width: 88ch">
+          The defects that mattered were never syntax. They were a region mapping a field differently
+          from its neighbour, an alert that would have been muted within a week, a document that was
+          valid and unusable. Catching those needed eleven years of knowing how these systems behave —
+          and that is the part of this work that does not transfer to the model.
+        </p>
+      </div>
+    </section>
+  </div>
+</Base>

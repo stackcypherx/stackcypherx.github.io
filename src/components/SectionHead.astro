@@ -1,13 +1,15 @@
 ---
 interface Props {
   id?: string;
+  label?: string;
   title: string;
   note?: string;
 }
-const { id, title, note } = Astro.props;
+const { id, label, title, note } = Astro.props;
 ---
 
-<div style="margin-bottom: 1.15rem">
-  <h2 class="anchor-h" id={id}>{title}</h2>
-  {note && <p class="muted" style="margin: 0; max-width: 78ch">{note}</p>}
-</div>
+<header class="sec-head" id={id} data-reveal>
+  {label && <div class="tag tag-signal">{label}</div>}
+  <h2>{title}</h2>
+  {note && <p class="note">{note}</p>}
+</header>

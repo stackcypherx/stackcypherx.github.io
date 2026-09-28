@@ -12,7 +12,6 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   eyebrow="Beyond the technical"
   heading="Ready for the global market"
   lede="Technical skill is necessary and not sufficient. The four pillars below are what convert skill into offers across borders — and the market sections cover why the same CV performs differently in London, Austin, Dubai, and Singapore."
-  wide
 >
   <div class="wrap stack-lg">
     <!-- -------------------------------------------------------------- pillars -->
@@ -29,10 +28,10 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
               <div class="phase">
                 <div class="phase-head">
                   <div class="phase-meta">
-                    <span class="badge badge-accent">Pillar {p.n}</span>
-                    <span class="progress-figure" data-figure-for={gid} data-figure-mode="count">—</span>
+                    <span class="chip chip-signal">Pillar {p.n}</span>
+                    <span class="figure" data-figure-for={gid} data-figure-mode="count">—</span>
                   </div>
-                  <h3 class="anchor-h" id={p.id}>{p.title}</h3>
+                  <h3 class="" id={p.id}>{p.title}</h3>
                   <p class="small muted" style="margin: 0; max-width: 88ch">{p.why}</p>
                   <div class="bar" style="margin-top: 0.8rem" data-bar-for={gid}><span></span></div>
                 </div>
@@ -42,7 +41,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                       const key = `${gid}.${slug(it.title)}`;
                       return (
                         <li class="check-item">
-                          <input type="checkbox" data-key={key} data-group={gid} id={key} aria-label={it.title} />
+                          <input type="checkbox" class="box" data-key={key} data-group={gid} id={key} aria-label={it.title} />
                           <div>
                             <label class="check-title" for={key}>{it.title}</label>
                             <div class="check-detail">{it.detail}</div>
@@ -70,18 +69,18 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         {
           markets.map((m) => (
             <div class="card">
-              <h3 class="anchor-h" id={slug(m.region)} style="margin: 0 0 0.5rem">
+              <h3 class="" id={slug(m.region)} style="margin: 0 0 0.5rem">
                 <span style="font-size: 1.15em">{m.flag}</span> {m.region}
               </h3>
               <p class="small" style="margin: 0 0 1rem; max-width: 92ch">{m.demandNote}</p>
 
-              <div class="grid grid-2">
+              <div class="grid g2 gap">
                 <div>
                   <h4 class="tiny dim" style="text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.5rem">
                     Frameworks to know by name
                   </h4>
                   <div class="row" style="margin-bottom: 1rem">
-                    {m.frameworks.map((f) => <span class="pill">{f}</span>)}
+                    {m.frameworks.map((f) => <span class="tok">{f}</span>)}
                   </div>
                   <h4 class="tiny dim" style="text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.4rem">
                     Certification bias
@@ -95,7 +94,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                   <div class="stack" style="--stack-gap: 0.6rem">
                     {
                       m.visas.map((v) => (
-                        <div style="padding-bottom: 0.65rem; border-bottom: 1px dashed var(--border)">
+                        <div style="padding-bottom: 0.65rem; border-bottom: 1px dashed var(--line)">
                           <b class="small">{v.name}</b>
                           <p class="small muted" style="margin: 0.15rem 0 0">{v.detail}</p>
                         </div>
@@ -109,7 +108,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         }
       </div>
 
-      <div class="callout warn" style="margin-top: 1.2rem">
+      <div class="note-box warn" style="margin-top: 1.2rem">
         <p class="small" style="margin: 0">
           <b>Verify everything here.</b> Visa thresholds, endorsement criteria, occupation lists, and
           processing times change frequently and without much warning. Treat this page as a map of
@@ -126,7 +125,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         title="What the interview loops actually test"
         note="Per track, in the order you will meet them. Prepare for these specifically — general study does not cover them."
       />
-      <div class="grid grid-3">
+      <div class="grid g3 gap">
         {
           interviewPrep.map((t) => (
             <div class="card">
@@ -141,7 +140,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     </section>
 
     <section>
-      <div class="card" style="border-left: 3px solid var(--accent)">
+      <div class="card" style="border-left: 3px solid var(--signal)">
         <h3 style="margin: 0 0 0.5rem">The one thing on this page that matters most</h3>
         <p style="margin: 0 0 0.8rem; max-width: 84ch">
           Three recommendation letters from three different established organisations. The UK Global
