@@ -1,0 +1,255 @@
+---
+import Base from '../layouts/Base.astro';
+import SectionHead from '../components/SectionHead.astro';
+import { profile, yearsExperience } from '../data/profile';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const companies = new Set(profile.experience.map((e) => e.company)).size;
+---
+
+<Base
+  title="Experience"
+  eyebrow={profile.headline}
+  heading={profile.name}
+  lede={profile.pitch}
+  wide
+>
+  <div class="wrap stack-lg">
+    <!-- ------------------------------------------------------------ at a glance -->
+    <section>
+      <div class="grid grid-4">
+        <div class="card">
+          <div class="stat">
+            <span class="n">{yearsExperience}</span>
+            <span class="l">Years in telecom</span>
+          </div>
+          <p class="tiny dim" style="margin: 0.5rem 0 0">Network & service operations, since 2014</p>
+        </div>
+        <div class="card">
+          <div class="stat">
+            <span class="n">{companies}</span>
+            <span class="l">Operators</span>
+          </div>
+          <p class="tiny dim" style="margin: 0.5rem 0 0">Telkom Indonesia · Infranexia · Smartfren</p>
+        </div>
+        <div class="card">
+          <div class="stat">
+            <span class="n">4</span>
+            <span class="l">Regions covered</span>
+          </div>
+          <p class="tiny dim" style="margin: 0.5rem 0 0">Papua, Maluku, Sulawesi, Kalimantan</p>
+        </div>
+        <div class="card">
+          <div class="stat">
+            <span class="n">CEH</span>
+            <span class="l">Plus CyberOps</span>
+          </div>
+          <p class="tiny dim" style="margin: 0.5rem 0 0">EC-Council, 2026 · Cisco/Kominfo, 2021</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------------------------------------------------------------- summary -->
+    <section>
+      <div class="card" style="border-left: 3px solid var(--accent)">
+        {profile.summary.map((p) => <p style="max-width: 92ch">{p}</p>)}
+        <div class="row" style="margin-top: 1rem">
+          <span class="pill">📍 {profile.location}</span>
+          <span class="pill">🌐 Open to: {profile.openTo}</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ------------------------------------------------------------- experience -->
+    <section>
+      <SectionHead
+        id="experience"
+        title="Professional experience"
+        note="Reverse chronological. Scope described in industry-standard terms rather than internal acronyms."
+      />
+      <div class="stack">
+        {
+          profile.experience.map((job) => (
+            <div class="card">
+              <div class="row-between" style="align-items: flex-start; gap: 1rem; margin-bottom: 0.7rem">
+                <div style="flex: 1; min-width: 280px">
+                  <div class="row" style="gap: 0.45rem; margin-bottom: 0.3rem">
+                    {job.current && <span class="badge badge-ok">Current</span>}
+                    <span class="tiny dim mono">{job.period}</span>
+                  </div>
+                  <h3 style="margin: 0 0 0.2rem">{job.role}</h3>
+                  <div class="small" style="color: var(--accent); font-weight: 560">{job.company}</div>
+                  {job.companyNote && <div class="tiny dim" style="margin-top: 0.15rem">{job.companyNote}</div>}
+                </div>
+                <div class="tiny dim nowrap">{job.place}</div>
+              </div>
+
+              <p class="small muted" style="max-width: 92ch; margin-bottom: 0.8rem">
+                <b class="tiny dim" style="text-transform: uppercase; letter-spacing: 0.05em">Scope</b><br />
+                {job.scope}
+              </p>
+
+              <ul class="small" style="margin: 0 0 1rem; max-width: 92ch">
+                {job.points.map((p) => <li>{p}</li>)}
+              </ul>
+
+              <div class="row">
+                {job.tags.map((t) => <span class="pill tiny">{t}</span>)}
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- --------------------------------------------------------------- projects -->
+    <section>
+      <SectionHead id="projects" title="Notable projects" />
+      <div class="grid grid-3">
+        {
+          profile.keyProjects.map((p) => (
+            <div class="card card-hover">
+              <div class="tiny dim mono" style="margin-bottom: 0.35rem">{p.period} · {p.place}</div>
+              <h3 style="margin: 0 0 0.45rem; font-size: 1.02rem">{p.title}</h3>
+              <p class="small muted" style="margin: 0">{p.detail}</p>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- ----------------------------------------------------------- achievements -->
+    <section>
+      <SectionHead
+        id="achievements"
+        title="Recognition"
+        note="Company-wide and national selections — useful raw material for endorsement-based visa routes, which ask for exactly this kind of third-party recognition."
+      />
+      <div class="grid grid-2">
+        {
+          profile.achievements.map((a) => (
+            <div class="card">
+              <div class="row" style="gap: 0.5rem; margin-bottom: 0.4rem">
+                <span class="badge badge-warn">{a.date}</span>
+              </div>
+              <h3 style="margin: 0 0 0.25rem; font-size: 1rem">{a.title}</h3>
+              <div class="tiny dim" style="margin-bottom: 0.5rem">{a.org}</div>
+              <p class="small muted" style="margin: 0">{a.detail}</p>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- ----------------------------------------------------------- credentials -->
+    <section>
+      <SectionHead
+        id="credentials"
+        title="Credentials held"
+        note="Already earned. The forward plan for what comes next is on the certifications page."
+      />
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr><th>Credential</th><th>Issuer</th><th>Domain</th><th>Earned</th></tr>
+          </thead>
+          <tbody>
+            {
+              profile.credentials.map((c) => (
+                <tr>
+                  <td>
+                    <b>{c.name}</b>
+                    {c.level && <span class="badge badge-ok" style="margin-left: 0.4rem">{c.level}</span>}
+                  </td>
+                  <td class="muted">{c.issuer}</td>
+                  <td><span class="pill tiny">{c.domain}</span></td>
+                  <td class="mono tiny dim nowrap">{c.date}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+      <p class="small" style="margin-top: 0.9rem">
+        <a href={`${base}/certifications`}>What I am targeting next →</a>
+      </p>
+    </section>
+
+    <!-- ------------------------------------------------------------------ skills -->
+    <section>
+      <SectionHead id="skills" title="Skills" />
+      <div class="grid grid-2">
+        {
+          profile.skills.map((g) => (
+            <div class="card">
+              <h3 style="margin: 0 0 0.7rem; font-size: 1rem">{g.group}</h3>
+              <div class="row">
+                {g.items.map((s) => <span class="pill tiny">{s}</span>)}
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- --------------------------------------------------- education & language -->
+    <section>
+      <div class="grid grid-2">
+        <div>
+          <SectionHead id="education" title="Education" />
+          {
+            profile.education.map((e) => (
+              <div class="card">
+                <div class="tiny dim mono" style="margin-bottom: 0.35rem">{e.period}</div>
+                <h3 style="margin: 0 0 0.2rem; font-size: 1.02rem">{e.award}</h3>
+                <div class="small" style="color: var(--accent); font-weight: 560">{e.school}</div>
+                <div class="tiny dim" style="margin: 0.15rem 0 0.6rem">{e.place} · {e.note}</div>
+                <p class="small muted" style="margin: 0">{e.detail}</p>
+              </div>
+            ))
+          }
+        </div>
+        <div>
+          <SectionHead id="languages" title="Languages & interests" />
+          <div class="card">
+            {
+              profile.languages.map((l) => (
+                <div class="row-between small" style="padding: 0.3rem 0; border-bottom: 1px dashed var(--border)">
+                  <b>{l.name}</b>
+                  <span class="muted">{l.level}</span>
+                </div>
+              ))
+            }
+            <div style="margin-top: 1rem">
+              {
+                profile.interests.map((i) => (
+                  <div style="margin-bottom: 0.7rem">
+                    <b class="small">{i.title}</b>
+                    <p class="small muted" style="margin: 0.1rem 0 0">{i.detail}</p>
+                  </div>
+                ))
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ----------------------------------------------------------------- contact -->
+    <section>
+      <div class="card" style="border-left: 3px solid var(--accent)">
+        <h2 style="margin: 0 0 0.5rem">Get in touch</h2>
+        <p class="muted" style="max-width: 78ch">
+          Open to security engineering, detection engineering, network security, and NetDevOps roles —
+          remote-first globally, or relocation to the EU/UK, US, Middle East and APAC.
+        </p>
+        <div class="row" style="margin-top: 1rem">
+          <a class="btn btn-primary" href={`mailto:${profile.contact.email}`}>Email</a>
+          <a class="btn" href={profile.contact.linkedin}>LinkedIn</a>
+          <a class="btn" href={profile.contact.github}>GitHub</a>
+          <a class="btn" href={profile.contact.tryhackme}>TryHackMe</a>
+        </div>
+      </div>
+    </section>
+  </div>
+</Base>

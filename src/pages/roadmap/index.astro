@@ -5,6 +5,7 @@ import ProgressPanel from '../../components/ProgressPanel.astro';
 import SectionHead from '../../components/SectionHead.astro';
 import { tracks, timeline } from '../../data/roadmap';
 import { countItems, itemKey } from '../../data/types';
+import { yearsWord } from '../../data/profile';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const totalMilestones = tracks.reduce((n, t) => n + countItems(t), 0);
@@ -21,6 +22,51 @@ const totalMilestones = tracks.reduce((n, t) => n + countItems(t), 0);
     <section>
       <div class="grid grid-4">
         {tracks.map((t) => <TrackCard track={t} />)}
+      </div>
+    </section>
+
+    <section>
+      <SectionHead
+        id="starting-position"
+        title="Starting position — this is not a blank slate"
+        note={`The phase windows below are written for someone beginning from zero. I am not. ${yearsWord[0].toUpperCase()}${yearsWord.slice(1)} years of carrier network and service operations, plus CEH and Cisco CyberOps, already cover a meaningful slice of the plan — and pretending otherwise would waste a year.`}
+      />
+      <div class="grid grid-2">
+        <div class="callout ok">
+          <h4 style="margin: 0 0 0.5rem">Already covered — do not re-study</h4>
+          <ul class="small" style="margin: 0">
+            <li><b>Networking fundamentals (Foundations + Track 2 phase 1).</b> OSI/TCP-IP, routing, fibre, Metro-E, IP core, DWDM — this is the day job, at carrier scale, across four regions.</li>
+            <li><b>Incident and escalation discipline.</b> Service assurance, SLA ownership, root-cause analysis on recurring faults. Most SOC candidates learn this from a course; it is over a decade of my actual work.</li>
+            <li><b>Security fundamentals.</b> CEH (Mastery, 2026) and Cisco CyberOps Associate (2021) already clear most of what Security+ and ISC2 CC teach.</li>
+            <li><b>Team leadership and stakeholder work.</b> Led branch technical teams, helpdesk operations, and vendor coordination — the part junior candidates cannot fake.</li>
+          </ul>
+        </div>
+        <div class="callout warn">
+          <h4 style="margin: 0 0 0.5rem">The actual gaps — where the time goes</h4>
+          <ul class="small" style="margin: 0">
+            <li><b>Hands-on offensive and defensive practice.</b> CEH is multiple-choice. The gap is demonstrable practical skill: the lab track, a practical credential, published writeups.</li>
+            <li><b>Code and automation.</b> Python, Git, IaC, CI/CD. Operations experience without automation experience is the single biggest limiter on international roles.</li>
+            <li><b>The entire AI track.</b> Genuinely from zero, and the fastest-moving opportunity on this site.</li>
+            <li><b>Public evidence.</b> More than a decade of strong work that exists only on a CV. Nothing is searchable, nothing is verifiable by a stranger. This is the most urgent gap of the four.</li>
+            <li><b>English to C1.</b> IELTS 6.5 today; 7.0+ is the threshold for several visa routes.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top: 1rem; border-left: 3px solid var(--accent)">
+        <h4 style="margin: 0 0 0.5rem">How that changes the plan</h4>
+        <p class="small" style="margin: 0 0 0.6rem; max-width: 92ch">
+          Compress the first two quarters into roughly one. Skip ISC2 CC and treat Security+ as optional
+          paperwork rather than a learning goal — CEH already occupies that slot on a CV. Start the lab
+          track and the Python/automation work immediately and in parallel, and bring the hard practical
+          credential forward from month 13 to around month 8.
+        </p>
+        <p class="small muted" style="margin: 0; max-width: 92ch">
+          One credential worth checking early: <b>CISSP requires five years of paid experience in two of
+          its eight domains</b>. Carrier network operations maps cleanly onto Communication &amp; Network
+          Security, and service assurance arguably onto Security Operations. That requirement may already
+          be satisfied — which would make CISSP a near-term target rather than a year-three one.
+        </p>
       </div>
     </section>
 

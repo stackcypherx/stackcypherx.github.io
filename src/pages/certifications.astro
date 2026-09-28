@@ -4,6 +4,8 @@ import SectionHead from '../components/SectionHead.astro';
 import { certs, certPhilosophy } from '../data/certs';
 import { slug } from '../data/types';
 
+const held = certs.filter((c) => c.held).length;
+
 const tracksOrder = ['Foundation', 'Cyber', 'Networks', 'AI', 'Cloud'] as const;
 const priorityClass: Record<string, string> = {
   'Do it': 'badge-ok',
@@ -19,10 +21,22 @@ const priorities = ['Do it', 'Worth it', 'Situational', 'Later', 'Skip unless fu
   title="Certifications"
   eyebrow="Costed and assessed"
   heading="Certifications, honestly"
-  lede={`${certs.length} credentials across all tracks, with a real price, the exam format, and a verdict — including which ones to skip. Certificates get you into the room; projects get the offer.`}
+  lede={`${certs.length} credentials across all tracks, with a real price, the exam format, and a verdict — including which ones to skip. ${held} are already earned. Certificates get you into the room; projects get the offer.`}
   wide
 >
   <div class="wrap stack-lg">
+    <section>
+      <div class="callout ok">
+        <p class="small" style="margin: 0">
+          <b>Already held:</b> CEH (EC-Council, Mastery, Jan 2026) and Cisco CyberOps Associate
+          (Apr 2021, via the Kominfo Digital Talent Scholarship), plus ISO/IEC 27001 ISMS awareness and
+          SDN/NFV/SD-WAN training. That changes what comes next: the entry-tier multiple-choice
+          credentials below are now redundant, and the priority is a <i>practical</i> credential that
+          proves hands-on skill. Full list on the <a href="/experience#credentials">experience page</a>.
+        </p>
+      </div>
+    </section>
+
     <section>
       <SectionHead title="Rules I am holding myself to" />
       <div class="panel">
@@ -68,7 +82,9 @@ const priorities = ['Do it', 'Worth it', 'Situational', 'Later', 'Skip unless fu
                         <div class="row-between" style="align-items: flex-start; gap: 1rem">
                           <div style="flex: 1; min-width: 260px">
                             <div class="row" style="gap: 0.4rem; margin-bottom: 0.4rem">
-                              <span class={`badge ${priorityClass[c.priority]}`}>{c.priority}</span>
+                              {c.held
+                                ? <span class="badge badge-ok">✓ Earned {c.held}</span>
+                                : <span class={`badge ${priorityClass[c.priority]}`}>{c.priority}</span>}
                               <span class="badge">{c.tier}</span>
                               <span class="tiny dim">{c.vendor}</span>
                             </div>

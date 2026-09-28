@@ -12,6 +12,8 @@ export type Cert = {
   when: string;
   priority: 'Do it' | 'Worth it' | 'Situational' | 'Later' | 'Skip unless funded';
   url: string;
+  /** Already earned — set to the date. Renders an "Earned" marker and mutes the priority. */
+  held?: string;
 };
 
 export const certs: Cert[] = [
@@ -25,8 +27,8 @@ export const certs: Cert[] = [
     format: '100 MCQ · 2 h · proctored',
     verdict:
       'Genuinely easy, genuinely a real credential, and periodically free. The best first badge purely on risk-adjusted return.',
-    when: 'Month 4, as your first exam ever. Use it to learn how proctored exams feel.',
-    priority: 'Do it',
+    when: 'Skip. CEH and CyberOps already cover this ground — this would be a third credential saying the same thing.',
+    priority: 'Skip unless funded',
     url: 'https://www.isc2.org/certifications/cc',
   },
   {
@@ -38,8 +40,8 @@ export const certs: Cert[] = [
     format: '90 questions incl. performance-based · 90 min',
     verdict:
       'The single most-requested security credential in job postings, and the DoD 8140 IAT Level II baseline. It teaches breadth, not skill — treat it as an ATS key.',
-    when: 'Month 5–7. Study free with Professor Messer; do not buy a bootcamp.',
-    priority: 'Do it',
+    when: 'Optional paperwork, not a learning goal. Worth the $400 only for the US DoD 8140 IAT II mapping or a posting that names it explicitly — CEH already fills the HR slot.',
+    priority: 'Situational',
     url: 'https://www.comptia.org/certifications/security',
   },
   {
@@ -70,6 +72,34 @@ export const certs: Cert[] = [
   },
 
   // ---------- Cyber ----------
+  {
+    name: 'Certified Ethical Hacker (CEH)',
+    vendor: 'EC-Council',
+    track: 'Cyber',
+    tier: 'Associate',
+    cost: '~$1,200 with courseware (already held)',
+    format: '125 MCQ · 4 h',
+    verdict:
+      'Widely recognised by HR and mandatory in a number of government and enterprise tenders, especially across APAC and the Gulf. It is multiple-choice, so it proves breadth rather than hands-on skill — pair it with a practical credential and it does real work on a CV.',
+    when: 'Held since January 2026 at Mastery level. The follow-up is a practical credential, not another MCQ exam.',
+    priority: 'Do it',
+    held: 'Jan 2026',
+    url: 'https://www.eccouncil.org/train-certify/certified-ethical-hacker-ceh/',
+  },
+  {
+    name: 'Cisco CyberOps Associate',
+    vendor: 'Cisco',
+    track: 'Cyber',
+    tier: 'Entry',
+    cost: '~$300 (already held, via national scholarship)',
+    format: '95–105 questions · 120 min',
+    verdict:
+      'Genuinely good SOC-oriented content — monitoring, host and network intrusion analysis, incident response. Earned through the Kominfo Digital Talent Scholarship, which is itself a competitive national selection worth naming.',
+    when: 'Held since April 2021. Covers most of what Security+ would teach.',
+    priority: 'Do it',
+    held: 'Apr 2021',
+    url: 'https://www.cisco.com/site/us/en/learn/training-certifications/certifications/cyberops/cyberops-associate/index.html',
+  },
   {
     name: 'CompTIA CySA+ (CS0-003)',
     vendor: 'CompTIA',

@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import TrackCard from '../components/TrackCard.astro';
 import SectionHead from '../components/SectionHead.astro';
 import { site } from '../data/site';
+import { profile, yearsExperience, yearsWord } from '../data/profile';
 import { tracks, timeline, cadence } from '../data/roadmap';
 import { countItems, itemKey } from '../data/types';
 import { totalRooms } from '../data/labs';
@@ -14,12 +15,37 @@ const totalMilestones = tracks.reduce((n, t) => n + countItems(t), 0);
 ---
 
 <Base
-  eyebrow="Portfolio · Learning hub · Open roadmap"
-  heading="Three tracks, one plan, built for global hiring."
-  lede={`Cybersecurity, network engineering, and AI / agentic engineering — sequenced into ${totalMilestones} milestones where every single one has to produce a public artifact before it counts. This is my working plan, in the open, with the progress bars honest.`}
+  eyebrow={`${profile.name} · ${profile.location}`}
+  heading={`${yearsWord[0].toUpperCase()}${yearsWord.slice(1)} years keeping carrier networks up. Now specialising into security and agentic AI.`}
+  lede={profile.pitch}
   wide
 >
   <div class="wrap stack-lg">
+    <!-- ------------------------------------------------------------------ intro -->
+    <section>
+      <div class="row">
+        <a class="btn btn-primary" href={`${base}/experience`}>Experience & CV →</a>
+        <a class="btn" href={`${base}/roadmap`}>The learning roadmap</a>
+        <a class="btn" href={profile.contact.linkedin}>LinkedIn</a>
+        <a class="btn" href={profile.contact.github}>GitHub</a>
+      </div>
+    </section>
+
+    <section>
+      <div class="card" style="border-left: 3px solid var(--accent)">
+        <h2 style="margin: 0 0 0.6rem">Why this site has a roadmap on it</h2>
+        <p style="max-width: 86ch">
+          Most portfolios show only the finished work. This one also shows the plan — {totalMilestones}
+          milestones across security, networks, and agentic AI, each one required to produce a public
+          artifact before it counts as done, with the progress bars left honest.
+        </p>
+        <p class="muted small" style="max-width: 86ch; margin-bottom: 0">
+          I am {yearsExperience} years into telecom network and service operations, not starting from
+          zero — so the roadmap is calibrated against what I already have rather than against a blank
+          slate. <a href={`${base}/roadmap#starting-position`}>See how it is adjusted →</a>
+        </p>
+      </div>
+    </section>
     <!-- ---------------------------------------------------------- headline stats -->
     <section>
       <div class="grid grid-4">
@@ -105,7 +131,7 @@ const totalMilestones = tracks.reduce((n, t) => n + countItems(t), 0);
       <SectionHead
         id="timeline"
         title="24 months, quarter by quarter"
-        note="Calibrated for starting from zero at roughly 15 hours a week. Faster is possible; the sequence matters more than the pace."
+        note="Written for someone starting from zero at roughly 15 hours a week, so it is deliberately conservative for my own case — see the starting-position notes on the roadmap for where I compress it. The sequence matters more than the pace."
       />
       <ol class="timeline">
         {

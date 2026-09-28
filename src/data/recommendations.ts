@@ -20,7 +20,7 @@ export const recommendations: Rec[] = [
     body: [
       'The scope you asked for covers three fields that each take years. Pursued equally, you arrive at month 24 as a plausible junior in all three and a credible candidate for none. Hiring is comparative: you are ranked against people who did one thing for two years.',
       'The fix is T-shaped, with a genuine spike. One primary track gets roughly 70% of your hours and all of your flagship projects. The other two get 15% each and exist to make you unusual, not to make you employable.',
-      'My recommendation for your primary: cybersecurity. You already have momentum there — a structured 100-day plan, a tracker, a community with mentorship on the other side of the 50-room gate. Starting from a standstill in networks or AI would throw that away. Networks is the better choice only if you want the most stable long-term employment; AI is the better choice only if you are willing to accept a faster-moving, less structured market.',
+      'My recommendation for your primary: cybersecurity — and in your case the argument is stronger than the generic one. You already own the networks track by profession, so studying it as a "track" is largely re-certifying what you do daily. Security is the nearest adjacency, you hold CEH and CyberOps already, and network operations is the discipline security teams most often lack. AI gets deliberate time as the second, not because it is safer, but because the security of agentic systems is where the scarcest work is.',
     ],
     action:
       'Write your primary track choice down publicly, with the reasoning, and revisit it in six months rather than six days.',
@@ -154,6 +154,21 @@ export const recommendations: Rec[] = [
     ],
     action:
       'Write the 24-month budget with dates attached. Book each exam only when the previous milestone produced its artifact.',
+    strength: 'Do this',
+  },
+  {
+    n: 13,
+    title: 'Your decade in telecom is the asset, not the thing you are leaving behind',
+    claim:
+      'The instinct when switching fields is to present yourself as a beginner in the new one. That instinct costs you two salary bands and is factually wrong.',
+    body: [
+      'You are not a career changer competing with bootcamp graduates. You are a telecom network operations professional adding a security specialisation — and those are completely different candidates in a hiring manager\'s mind. One is a risk; the other is the person who already knows what a carrier network does at 3am when it is broken.',
+      'What you have that security-only candidates almost never do: carrier-scale network operations across access, transport and IP core; genuine incident command under pressure, including disaster recovery at Masamba; SLA accountability for wholesale customers; leadership of technical teams and helpdesks; and vendor and cross-functional coordination. Detection engineering, network security, OT/telecom security, and incident response all sit directly on top of that, and the roles that combine them are chronically hard to fill.',
+      'The positioning follows: not "aspiring SOC analyst" but "network operations engineer specialising into security". The first competes on price with thousands of people. The second is a shortlist of a few dozen, worldwide. Every artifact you publish should reinforce it — write the detection that catches an attack on infrastructure you have actually run, not the same Splunk tutorial everyone else publishes.',
+      'One concrete thing to check this month: CISSP requires five years of paid experience in two of its eight domains. Communication and Network Security is unambiguous for you, and service assurance arguably reaches Security Operations. If it qualifies, CISSP stops being a year-three ambition and becomes a near-term target — which for Gulf and European senior roles is a genuinely different conversation.',
+    ],
+    action:
+      'Rewrite your LinkedIn headline and CV summary to lead with the specialisation, not the transition. Then verify the CISSP domain mapping against your actual job descriptions.',
     strength: 'Do this',
   },
   {

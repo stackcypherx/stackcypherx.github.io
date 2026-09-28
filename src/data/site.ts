@@ -1,20 +1,21 @@
 export const site = {
-  name: 'stackcypher',
+  name: 'Dickie Zulfickar Hervianto',
   handle: 'stackcypherx',
-  title: 'stackcypher — Security · Networks · Agentic AI',
-  tagline: 'Learning in public toward global-market readiness.',
+  title: 'Dickie Zulfickar Hervianto — Network Operations · Security · Agentic AI',
+  tagline: 'Carrier network operations, specialising into security and agentic AI.',
   description:
-    'A portfolio and open learning hub for cybersecurity, network engineering, and AI / agentic engineering — with a milestone checklist built for the global hiring market.',
+    'Portfolio of Dickie Zulfickar Hervianto — telecom network and service operations engineer with over a decade at Telkom Indonesia and Smartfren, now specialising into cybersecurity and agentic AI. Includes an open, milestone-based learning roadmap built for the global hiring market.',
   url: 'https://stackcypherx.github.io',
   repo: 'https://github.com/stackcypherx/stackcypherx.github.io',
-  // Fill these in as you create them. Empty strings are hidden from the UI.
+  // Empty strings are hidden from the UI — add them as the accounts exist.
+  // Phone number deliberately excluded from this public site; keep it on the CV you send.
   links: {
     github: 'https://github.com/stackcypherx',
-    linkedin: '',
-    tryhackme: '',
+    linkedin: 'https://www.linkedin.com/in/dickiezh/',
+    tryhackme: 'https://tryhackme.com/p/stackcypher',
     hackthebox: '',
     credly: '',
-    email: '',
+    email: 'zulfickarhervianto@gmail.com',
     x: '',
   },
   // Source the cyber lab sequence was adapted from.
@@ -30,6 +31,7 @@ export const site = {
 } as const;
 
 export const nav = [
+  { label: 'Experience', href: '/experience' },
   { label: 'Roadmap', href: '/roadmap' },
   { label: 'Labs', href: '/labs' },
   { label: 'Certifications', href: '/certifications' },

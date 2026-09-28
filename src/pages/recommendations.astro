@@ -1,8 +1,9 @@
 ---
 import Base from '../layouts/Base.astro';
-import { recommendations } from '../data/recommendations';
+import { recommendations as recs } from '../data/recommendations';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const recommendations = [...recs].sort((a, b) => a.n - b.n);
 const strengthClass: Record<string, string> = {
   'Do this': 'badge-ok',
   'Strongly consider': 'badge-accent',
@@ -13,8 +14,8 @@ const strengthClass: Record<string, string> = {
 <Base
   title="Recommendations"
   eyebrow="Additions beyond the brief"
-  heading="Twelve recommendations"
-  lede="These go beyond what was asked for. They are judgement calls rather than research findings, several of them are uncomfortable, and recommendation 1 is the one that determines whether the rest of the plan works."
+  heading={`${recommendations.length} recommendations`}
+  lede="These go beyond what was asked for. They are judgement calls rather than research findings, several of them are uncomfortable, and recommendations 1 and 13 are the two that determine whether the rest of the plan works."
 >
   <div class="wrap">
     <div class="narrow" style="margin-bottom: 2rem">
@@ -62,11 +63,12 @@ const strengthClass: Record<string, string> = {
 
     <div class="narrow" style="margin-top: 2.5rem">
       <div class="card" style="border-left: 3px solid var(--accent)">
-        <h3 style="margin: 0 0 0.5rem">If you only act on three</h3>
+        <h3 style="margin: 0 0 0.5rem">If you only act on four</h3>
         <ol style="margin: 0 0 1rem">
-          <li><b>Spike, do not spread</b> — pick one primary track this week and write the choice down publicly.</li>
-          <li><b>Aim at AI × Security</b> — it converts your broad scope from a weakness into a position nobody else holds.</li>
-          <li><b>The evidence ledger rule</b> — no artifact, no tick. It is the difference between two years of learning and two years of provable learning.</li>
+          <li><b>Position as a specialist, not a switcher</b> (13) — more than a decade of carrier operations is the asset. Lead with it.</li>
+          <li><b>Spike, do not spread</b> (1) — security as primary, since networks is already your profession rather than a track to study.</li>
+          <li><b>Aim at AI × Security</b> (2) — network operations plus security plus agentic AI is a combination almost nobody holds.</li>
+          <li><b>The evidence ledger rule</b> (4) — no artifact, no tick. A decade of work nobody can verify is the gap that matters most.</li>
         </ol>
         <div class="row">
           <a class="btn btn-primary" href={`${base}/roadmap`}>Open the roadmap</a>

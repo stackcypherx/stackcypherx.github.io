@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import { site } from '../data/site';
+import { yearsExperience } from '../data/profile';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const linkRows = [
@@ -23,14 +24,24 @@ const linkRows = [
     <div class="narrow prose">
       <h2>Who</h2>
       <p>
-        I'm <b>{site.name}</b> ({site.handle}) — working toward roles in security engineering, with
-        network automation and agentic AI as the two things that make the profile unusual rather than
-        interchangeable. Based in Indonesia, aiming at the global market.
+        I'm <b>Dickie</b> — {yearsExperience} years in telecom network and service operations, currently
+        Mobile Service Operation Officer at PT Telkom Infrastruktur Indonesia (Infranexia), covering
+        Papua, Maluku, Sulawesi and Kalimantan from Makassar.
       </p>
-      <p class="muted small">
-        Replace this paragraph with your own. A short, specific, first-person version beats a polished
-        generic one — name the roles you want, the market you are aiming at, and one thing that is
-        actually true about how you work.
+      <p>
+        My work is the operations end of carrier networks: fibre and FTTH, Metro-Ethernet, IP core and
+        backhaul, DWDM, mobile broadband — and the part that decides whether any of it is actually
+        reliable, which is escalation, incident coordination, and root-cause analysis on the faults that
+        keep coming back. Before Telkom I certified devices at Smartfren, including factory inspection in
+        Shenzhen and troubleshooting at the R&amp;D principal in Hsinchu.
+      </p>
+      <p>
+        I am specialising into cybersecurity and agentic AI. That is not a reset — network operations is
+        where security incidents are actually detected and contained, and knowing how carrier
+        infrastructure genuinely behaves is context most security candidates never get. I hold CEH and
+        Cisco CyberOps Associate, and I am aiming at the intersection of network/telecom security,
+        detection engineering, and the security of agentic AI systems.
+        <a href={`${base}/experience`}>Full experience and credentials →</a>
       </p>
 
       <h2>What this site is</h2>
