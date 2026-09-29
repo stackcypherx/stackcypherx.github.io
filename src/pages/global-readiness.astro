@@ -70,7 +70,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           markets.map((m) => (
             <div class="card">
               <h3 class="" id={slug(m.region)} style="margin: 0 0 0.5rem">
-                <span style="font-size: 1.15em">{m.flag}</span> {m.region}
+{m.region}
               </h3>
               <p class="small" style="margin: 0 0 1rem; max-width: 92ch">{m.demandNote}</p>
 
@@ -94,7 +94,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                   <div class="stack" style="--stack-gap: 0.6rem">
                     {
                       m.visas.map((v) => (
-                        <div style="padding-bottom: 0.65rem; border-bottom: 1px dashed var(--line)">
+                        <div style="padding-bottom: 0.65rem; border-bottom: 1px dashed var(--rule)">
                           <b class="small">{v.name}</b>
                           <p class="small muted" style="margin: 0.15rem 0 0">{v.detail}</p>
                         </div>
@@ -140,7 +140,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     </section>
 
     <section>
-      <div class="card" style="border-left: 3px solid var(--signal)">
+      <div class="card" style="border-left: 3px solid var(--accent)">
         <h3 style="margin: 0 0 0.5rem">The one thing on this page that matters most</h3>
         <p style="margin: 0 0 0.8rem; max-width: 84ch">
           Three recommendation letters from three different established organisations. The UK Global

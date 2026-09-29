@@ -11,13 +11,11 @@ interface Props {
   heading?: string;
   lede?: string;
   eyebrow?: string;
-  /** Show the animated topology canvas behind the hero. */
-  canvas?: boolean;
   /** Use the oversized display type for the heading. */
   display?: boolean;
 }
 
-const { title, description = site.description, heading, lede, eyebrow, canvas = false, display = false } = Astro.props;
+const { title, description = site.description, heading, lede, eyebrow, display = false } = Astro.props;
 
 const pageTitle = title ? `${title} — ${site.name}` : site.title;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -37,8 +35,7 @@ const index = JSON.stringify(buildIndex(base));
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
-    <meta name="theme-color" content="#06080c" media="(prefers-color-scheme: dark)" />
-    <meta name="theme-color" content="#fcfcfd" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#fcfbf8" />
     <link rel="canonical" href={new URL(Astro.url.pathname, site.url).href} />
 
     <meta property="og:type" content="profile" />
@@ -50,7 +47,7 @@ const index = JSON.stringify(buildIndex(base));
 
     <link
       rel="icon"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2306080c'/%3E%3Ccircle cx='20' cy='22' r='4' fill='%232ee6c5'/%3E%3Ccircle cx='44' cy='32' r='4' fill='%232ee6c5'/%3E%3Ccircle cx='24' cy='46' r='4' fill='%232ee6c5'/%3E%3Cpath d='M20 22 L44 32 L24 46 Z' stroke='%232ee6c5' stroke-width='2' fill='none' opacity='.45'/%3E%3C/svg%3E"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23fcfbf8'/%3E%3Cpath d='M14 46 L32 16 L50 46' stroke='%2316160f' stroke-width='5' fill='none'/%3E%3Cpath d='M22 38 h20' stroke='%239a3412' stroke-width='5'/%3E%3C/svg%3E"
     />
 
     <script is:inline>
@@ -70,8 +67,7 @@ const index = JSON.stringify(buildIndex(base));
     <header class="hdr">
       <div class="wrap hdr-in">
         <a class="brand" href={href('/')}>
-          <span class="brand-dot"></span>
-          <span>{site.shortName}<span class="brand-sub"> / {site.role}</span></span>
+          <span>{site.shortName}</span><span class="brand-sub">{site.role}</span>
         </a>
 
         <button class="icon-btn burger" data-burger aria-label="Menu" aria-expanded="false">☰</button>
@@ -95,7 +91,6 @@ const index = JSON.stringify(buildIndex(base));
     <main>
       {heading && (
         <section class="hero">
-          {canvas && <canvas class="hero-canvas" data-network aria-hidden="true"></canvas>}
           <div class="wrap hero-in">
             {eyebrow && <div class="eyebrow" data-reveal>{eyebrow}</div>}
             <h1 class={display ? 'display' : ''} data-reveal="60">{heading}</h1>
@@ -111,10 +106,7 @@ const index = JSON.stringify(buildIndex(base));
       <div class="wrap">
         <div class="between" style="align-items: flex-start">
           <div>
-            <div class="row" style="gap: 0.5rem; margin-bottom: 0.5rem">
-              <span class="brand-dot"></span>
-              <b>{site.name}</b>
-            </div>
+            <div style="margin-bottom: 0.5rem"><b style="font-family: var(--serif); font-size: 1.1rem">{site.name}</b></div>
             <p class="small muted" style="max-width: 46ch">{site.tagline}</p>
           </div>
 
@@ -132,12 +124,12 @@ const index = JSON.stringify(buildIndex(base));
             <div class="tag" style="margin-bottom: 0.6rem">Colophon</div>
             <p class="tiny dim" style="max-width: 34ch">
               Astro · hand-written CSS · canvas · no trackers, no analytics, no cookies.
-              <a href={site.repo} style="color: var(--signal)"> Source</a>.
+              <a href={site.repo} > Source</a>.
             </p>
           </div>
         </div>
 
-        <p class="tiny dim" style="margin-top: 2.2rem; max-width: 84ch; border-top: 1px solid var(--line); padding-top: 1.2rem">
+        <p class="tiny dim" style="margin-top: 2.2rem; max-width: 84ch; border-top: 1px solid var(--rule); padding-top: 1.2rem">
           Roadmap research current as of September 2026. Certification costs, exam codes, visa
           thresholds and platform pricing change — verify against the official source before booking
           or applying. Nothing here is immigration or financial advice.

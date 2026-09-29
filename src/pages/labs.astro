@@ -71,13 +71,12 @@ const rtTotal = redTeamList.reduce((n, s) => n + s.machines.length, 0);
             return (
               <details class="rgroup" open data-filter-container>
                 <summary>
-                  <span>{g.icon}</span>
                   <span>{g.topic}</span>
                   <span class="chip">{g.rooms.length}</span>
                   <span class="figure" data-figure-for={gid} data-figure-mode="count">—</span>
                 </summary>
                 <p class="rwhy">{g.why}</p>
-                {g.milestone && <div class="rmile">🏅 {g.milestone}</div>}
+                {g.milestone && <div class="rmile">{g.milestone}</div>}
                 {
                   g.rooms.map((r) => {
                     const key = `thm.${slug(r.n)}`;

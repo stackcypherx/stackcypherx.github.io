@@ -18,9 +18,7 @@ const others = tracks.filter((t) => t.id !== track.id);
 <Base title={track.short} description={track.summary}>
   <div class="wrap">
     <div class="hero" style="padding-bottom: 1.5rem">
-      <div class="tag tag-signal" style={`color: ${track.accent}`}>
-        <span style="font-size: 1.1em">{track.icon}</span> {track.title}
-      </div>
+      <div class="tag tag-signal">{track.title}</div>
       <h1 style="max-width: 26ch">{track.tagline}</h1>
       <p class="lede">{track.summary}</p>
 
@@ -48,7 +46,7 @@ const others = tracks.filter((t) => t.id !== track.id);
   </div>
 
   <div class="wrap stack-lg">
-    <section class="note-box" style={`border-left-color: ${track.accent}; background: var(--surface-2)`}>
+    <section class="note-box">
       <h4 style="margin: 0 0 0.3rem">Market reality</h4>
       <p class="small" style="margin: 0; max-width: 88ch">{track.marketNote}</p>
     </section>
@@ -67,12 +65,9 @@ const others = tracks.filter((t) => t.id !== track.id);
       <div class="grid g3 gap">
         {
           others.map((t) => (
-            <a class="card card-i spot" href={`${base}/roadmap/${t.slug}`} style={`border-left: 3px solid ${t.accent}; color: inherit`}>
-              <div class="row" style="gap: 0.45rem">
-                <span style={`color: ${t.accent}`}>{t.icon}</span>
-                <b>{t.short}</b>
-              </div>
-              <p class="small muted" style="margin: 0.4rem 0 0">{t.tagline}</p>
+            <a class="card card-i" href={`${base}/roadmap/${t.slug}`} style="color: inherit">
+              <h3 style="margin: 0 0 0.35rem">{t.short}</h3>
+              <p class="small muted" style="margin: 0">{t.tagline}</p>
             </a>
           ))
         }

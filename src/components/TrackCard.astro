@@ -1,16 +1,19 @@
 ---
 import type { Track } from '../data/types';
 import { countItems } from '../data/types';
+import { tracks } from '../data/roadmap';
 
 interface Props { track: Track }
 const { track } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+// A numbered index reads as a contents list rather than an icon grid.
+const n = String(tracks.findIndex((t) => t.id === track.id) + 1).padStart(2, '0');
 ---
 
-<a class="card card-i spot" href={`${base}/roadmap/${track.slug}`} data-reveal
-   style={`--signal: ${track.accent}; display: flex; flex-direction: column; gap: 0.7rem`}>
-  <div class="between" style="align-items: flex-start">
-    <span style={`color: ${track.accent}; font-size: 1.5rem; line-height: 1`}>{track.icon}</span>
+<a class="card card-i" href={`${base}/roadmap/${track.slug}`} data-reveal
+   style="display: flex; flex-direction: column; gap: 0.7rem">
+  <div class="between" style="align-items: baseline">
+    <span class="mono tiny" style="color: var(--accent)">{n}</span>
     <span class="figure" data-figure-for={`track.${track.id}`} data-figure-mode="pct">—</span>
   </div>
   <h3 style="margin: 0">{track.short}</h3>

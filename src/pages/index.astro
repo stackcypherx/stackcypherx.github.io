@@ -12,16 +12,12 @@ import { certs } from '../data/certs';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const totalMilestones = tracks.reduce((n, t) => n + countItems(t), 0);
 const held = certs.filter((c) => c.held).length;
-const stack = Array.from(new Set(builds.flatMap((b) => b.stack)));
-const domains = profile.skills.find((s) => s.group === 'Network & telecom')?.items ?? [];
-const ticker = [...domains, ...stack.slice(0, 14)];
 ---
 
 <Base
   eyebrow={`${profile.location} · open to relocation`}
   heading="I keep carrier networks running. Now I'm securing them."
   lede={profile.pitch}
-  canvas
   display
 >
   <div slot="hero-extra" class="row" style="margin-top: 2.2rem; gap: 0.75rem" data-reveal="220">
@@ -33,7 +29,7 @@ const ticker = [...domains, ...stack.slice(0, 14)];
   <div class="wrap stack-lg" style="margin-top: 4rem">
     <!-- ─────────────────────────────────────────────────────── key numbers -->
     <section>
-      <div class="grid g4" style="border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--line)">
+      <div class="grid g4" style="border-block: 1px solid var(--rule)">
         <div class="card" data-reveal>
           <div class="stat"><span class="n" data-count={yearsExperience}>0</span><span class="l">Years in telecom</span></div>
           <p class="tiny dim" style="margin-top: 0.5rem">Access, transport, IP core, mobile</p>
@@ -53,15 +49,6 @@ const ticker = [...domains, ...stack.slice(0, 14)];
       </div>
     </section>
 
-    <!-- ─────────────────────────────────────────────────────────── ticker -->
-    <section>
-      <div class="marquee" aria-hidden="true">
-        <div class="marquee-t">
-          {ticker.map((s) => <span>{s}</span>)}
-          {ticker.map((s) => <span>{s}</span>)}
-        </div>
-      </div>
-    </section>
 
     <!-- ───────────────────────────────────────────────────────── the pitch -->
     <section>
@@ -111,7 +98,7 @@ const ticker = [...domains, ...stack.slice(0, 14)];
           ))
         }
       </div>
-      <p class="small" style="margin-top: 1.2rem"><a href={`${base}/agentic`} style="color: var(--signal)">All six builds, with method →</a></p>
+      <p class="small" style="margin-top: 1.2rem"><a href={`${base}/agentic`} >All six builds, with method →</a></p>
     </section>
 
     <!-- ────────────────────────────────────────────────────────── roadmap -->
@@ -127,7 +114,7 @@ const ticker = [...domains, ...stack.slice(0, 14)];
       <div class="note-box" style="margin-top: 1.4rem" data-reveal>
         <p class="small" style="margin: 0">
           The phase windows assume someone starting from zero. I'm not —
-          <a href={`${base}/roadmap#starting-position`} style="color: var(--signal)">see what's already covered and what the real gaps are</a>.
+          <a href={`${base}/roadmap#starting-position`} >see what's already covered and what the real gaps are</a>.
         </p>
       </div>
     </section>
@@ -145,7 +132,7 @@ const ticker = [...domains, ...stack.slice(0, 14)];
               </div>
               <h3 style="margin-bottom: 0.35rem">{q.theme}</h3>
               <p class="small muted" style="margin: 0 0 0.5rem; max-width: 80ch">{q.focus}</p>
-              <p class="tiny" style="margin: 0; color: var(--lime); font-family: var(--mono)">→ {q.output}</p>
+              <p class="tiny" style="margin: 0; color: var(--good); font-family: var(--mono)">→ {q.output}</p>
             </li>
           ))
         }
@@ -177,29 +164,29 @@ const ticker = [...domains, ...stack.slice(0, 14)];
 
     <!-- ──────────────────────────────────────────────────────────── entry -->
     <section>
-      <div class="card spot" data-reveal style="border-color: var(--signal-line)">
+      <div class="card spot" data-reveal style="border-color: var(--rule-2)">
         <div class="tag tag-signal" style="margin-bottom: 0.7rem">Start here</div>
         <h2 style="margin-bottom: 1.2rem">Three ways in</h2>
         <div class="grid g3 gap" style="gap: 1.4rem; margin-bottom: 1.6rem">
           <div>
             <h4 style="margin-bottom: 0.35rem">Hiring</h4>
             <p class="small muted" style="margin: 0">
-              <a href={`${base}/experience`} style="color: var(--signal)">Experience</a> — {yearsExperience} years,
-              field record, credentials. Then <a href={`${base}/agentic`} style="color: var(--signal)">what I've built</a>.
+              <a href={`${base}/experience`} >Experience</a> — {yearsExperience} years,
+              field record, credentials. Then <a href={`${base}/agentic`} >what I've built</a>.
             </p>
           </div>
           <div>
             <h4 style="margin-bottom: 0.35rem">Curious about the plan</h4>
             <p class="small muted" style="margin: 0">
-              <a href={`${base}/recommendations`} style="color: var(--signal)">The 13 recommendations</a> first —
+              <a href={`${base}/recommendations`} >The 13 recommendations</a> first —
               they explain why the roadmap is shaped the way it is.
             </p>
           </div>
           <div>
             <h4 style="margin-bottom: 0.35rem">Here to use it</h4>
             <p class="small muted" style="margin: 0">
-              <a href={`${base}/roadmap`} style="color: var(--signal)">The roadmap</a> and
-              <a href={`${base}/labs`} style="color: var(--signal)"> {totalRooms} mapped labs</a> are free.
+              <a href={`${base}/roadmap`} >The roadmap</a> and
+              <a href={`${base}/labs`} > {totalRooms} mapped labs</a> are free.
               Fork the repo and swap the data files.
             </p>
           </div>

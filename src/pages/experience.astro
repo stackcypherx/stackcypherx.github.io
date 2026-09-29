@@ -31,7 +31,7 @@ const scopeChip: Record<string, string> = {
   display
 >
   <div slot="hero-extra" class="row" style="margin-top: 2rem; gap: 0.6rem" data-reveal="220">
-    <span class="tok">📍 {profile.location}</span>
+    <span class="tok">{profile.location}</span>
     <span class="tok">Open to: {profile.openTo}</span>
   </div>
 
@@ -48,7 +48,7 @@ const scopeChip: Record<string, string> = {
       <div class="stack-lg">
         <!-- ───────────────────────────────────────────────────── summary -->
         <section>
-          <div class="grid g4" style="border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--line); margin-bottom: 2rem">
+          <div class="grid g4" style="border-block: 1px solid var(--rule); margin-bottom: 2rem">
             <div class="card" data-reveal>
               <div class="stat"><span class="n" data-count={yearsExperience}>0</span><span class="l">Years</span></div>
             </div>
@@ -63,7 +63,7 @@ const scopeChip: Record<string, string> = {
             </div>
           </div>
 
-          <div id="summary" class="card spot" data-reveal style="border-color: var(--signal-line)">
+          <div id="summary" class="card spot" data-reveal style="border-color: var(--rule-2)">
             {profile.summary.map((p) => <p class="muted" style="max-width: 88ch">{p}</p>)}
           </div>
         </section>
@@ -113,7 +113,7 @@ const scopeChip: Record<string, string> = {
             title="Engineering cases"
             note="Stated so an outsider can judge the difficulty, not so an insider can recognise the project code."
           />
-          <div class="grid g3" style="border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--line)">
+          <div class="grid g3" style="border-block: 1px solid var(--rule)">
             {
               profile.keyProjects.map((p, i) => (
                 <div class="card spot" data-reveal={String(i * 60)}>
@@ -182,14 +182,14 @@ const scopeChip: Record<string, string> = {
             </table>
           </div>
           <p class="small" style="margin-top: 1rem">
-            <a href={`${base}/certifications`} style="color: var(--signal)">What's targeted next, and what's deliberately skipped →</a>
+            <a href={`${base}/certifications`} >What's targeted next, and what's deliberately skipped →</a>
           </p>
         </section>
 
         <!-- ────────────────────────────────────────────────────── skills -->
         <section>
           <SectionHead id="skills" label="Capability" title="Skills" />
-          <div class="grid g2" style="border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--line)">
+          <div class="grid g2" style="border-block: 1px solid var(--rule)">
             {
               profile.skills.map((g, i) => (
                 <div class="card spot" data-reveal={String(i * 50)}>
@@ -217,7 +217,7 @@ const scopeChip: Record<string, string> = {
                   </>
                 ))
               }
-              <div style="margin-top: 1.4rem; padding-top: 1.2rem; border-top: 1px solid var(--line)">
+              <div style="margin-top: 1.4rem; padding-top: 1.2rem; border-top: 1px solid var(--rule)">
                 <div class="tag" style="margin-bottom: 0.6rem">Languages</div>
                 {
                   profile.languages.map((l) => (
@@ -244,7 +244,7 @@ const scopeChip: Record<string, string> = {
 
         <!-- ───────────────────────────────────────────────────── contact -->
         <section>
-          <div id="contact" class="card spot" data-reveal style="border-color: var(--signal-line)">
+          <div id="contact" class="card spot" data-reveal style="border-color: var(--rule-2)">
             <div class="tag tag-signal" style="margin-bottom: 0.6rem">Availability</div>
             <h2 style="margin-bottom: 0.7rem">Open to the right move</h2>
             <p class="muted" style="max-width: 76ch">

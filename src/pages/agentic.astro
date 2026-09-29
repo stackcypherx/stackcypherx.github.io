@@ -5,7 +5,6 @@ import { builds, vibeStats, method } from '../data/vibe';
 
 const kinds = Array.from(new Set(builds.map((b) => b.kind)));
 const visChip: Record<string, string> = { Internal: 'chip-amber', Personal: '', Public: 'chip-lime' };
-const allStack = Array.from(new Set(builds.flatMap((b) => b.stack)));
 const shipped = builds.length;
 ---
 
@@ -14,13 +13,12 @@ const shipped = builds.length;
   eyebrow="Built with coding agents"
   heading="Software shipped by orchestrating agents."
   lede="Six systems between June and September 2026 — an internal operations analytics platform, alerting bots, document automation, and two published sites. Written by agents, specified and reviewed by me. The method matters more than the volume, so it is documented below."
-  canvas
   display
 >
   <div class="wrap stack-lg" style="margin-top: 3.5rem">
     <!-- ───────────────────────────────────────────────────── the numbers -->
     <section>
-      <div class="grid g4" style="border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--line)">
+      <div class="grid g4" style="border-block: 1px solid var(--rule)">
         <div class="card" data-reveal>
           <div class="stat"><span class="n" data-count={vibeStats.activeDays}>0</span><span class="l">Active days</span></div>
           <p class="tiny dim" style="margin-top: 0.5rem">Since {vibeStats.since}</p>
@@ -44,15 +42,6 @@ const shipped = builds.length;
       </p>
     </section>
 
-    <!-- ───────────────────────────────────────────────────────── marquee -->
-    <section>
-      <div class="marquee" aria-hidden="true">
-        <div class="marquee-t">
-          {allStack.map((s) => <span>{s}</span>)}
-          {allStack.map((s) => <span>{s}</span>)}
-        </div>
-      </div>
-    </section>
 
     <!-- ────────────────────────────────────────────────────────── builds -->
     <section data-filter-scope>
@@ -86,8 +75,8 @@ const shipped = builds.length;
                   <span class="tag">{b.period}</span>
                 </div>
                 <div class="row small">
-                  {b.url && <a href={b.url} style="color: var(--signal)">live ↗</a>}
-                  {b.repo && <a href={b.repo} style="color: var(--signal)">repo ↗</a>}
+                  {b.url && <a href={b.url} >live ↗</a>}
+                  {b.repo && <a href={b.repo} >repo ↗</a>}
                 </div>
               </div>
 
@@ -137,7 +126,7 @@ const shipped = builds.length;
         title="Method, not magic"
         note='Karpathy called the vibe-coding era over in February 2026 and proposed "agentic engineering": you are not writing the code most of the time, you are orchestrating agents and owning the oversight — and there is real expertise in doing that well. This is mine.'
       />
-      <div class="grid g2" style="border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--line)">
+      <div class="grid g2" style="border-block: 1px solid var(--rule)">
         {
           method.map((m, i) => (
             <div class="card spot" data-reveal={String(Math.min(i * 50, 200))}>
@@ -153,7 +142,7 @@ const shipped = builds.length;
     <!-- ───────────────────────────────────────────────────────── honesty -->
     <section>
       <div class="note-box warn" data-reveal>
-        <div class="tag" style="margin-bottom: 0.4rem; color: var(--amber)">Stated plainly</div>
+        <div class="tag" style="margin-bottom: 0.4rem; color: var(--warn)">Stated plainly</div>
         <p class="small" style="margin: 0 0 0.7rem; max-width: 88ch">
           I did not hand-write most of this code, and pretending otherwise would be both dishonest and
           easy to catch in an interview. What I did was decide what to build, specify it precisely,

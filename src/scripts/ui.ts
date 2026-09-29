@@ -198,158 +198,6 @@ function initRail() {
   sections.forEach((s) => o.observe(s));
 }
 
-/* ══════════════════════════════════════════════════ hero network canvas */
-
-type Node = { x: number; y: number; vx: number; vy: number; r: number; hub: boolean };
-
-function initCanvas() {
-  const cv = document.querySelector<HTMLCanvasElement>('canvas[data-network]');
-  if (!cv) return;
-  const ctx = cv.getContext('2d');
-  if (!ctx) return;
-
-  const css = getComputedStyle(document.documentElement);
-  const signal = css.getPropertyValue('--signal').trim() || '#2ee6c5';
-  const line = css.getPropertyValue('--line-2').trim() || '#2b3543';
-
-  let w = 0, h = 0, dpr = 1, raf = 0;
-  let nodes: Node[] = [];
-  const LINK_DIST = 172;
-
-  const build = () => {
-    const rect = cv.getBoundingClientRect();
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
-    w = rect.width; h = rect.height;
-    cv.width = Math.round(w * dpr);
-    cv.height = Math.round(h * dpr);
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-    const density = Math.min(Math.round((w * h) / 20000), 58);
-    nodes = Array.from({ length: Math.max(density, 16) }, (_, i) => ({
-      x: Math.random() * w,
-      y: Math.random() * h,
-      vx: (Math.random() - 0.5) * 0.19,
-      vy: (Math.random() - 0.5) * 0.19,
-      r: Math.random() < 0.16 ? 2.6 : 1.35,
-      hub: i % 7 === 0,
-    }));
-  };
-
-  // packets traverse links, echoing traffic on a topology
-  const packets: { a: number; b: number; t: number; sp: number }[] = [];
-  const spawnPacket = () => {
-    if (nodes.length < 2 || packets.length > 14) return;
-    const a = Math.floor(Math.random() * nodes.length);
-    let b = Math.floor(Math.random() * nodes.length);
-    if (a === b) b = (b + 1) % nodes.length;
-    if (Math.hypot(nodes[a].x - nodes[b].x, nodes[a].y - nodes[b].y) > LINK_DIST) return;
-    packets.push({ a, b, t: 0, sp: 0.006 + Math.random() * 0.01 });
-  };
-
-  const frame = () => {
-    ctx.clearRect(0, 0, w, h);
-
-    for (const n of nodes) {
-      n.x += n.vx; n.y += n.vy;
-      if (n.x < 0 || n.x > w) n.vx *= -1;
-      if (n.y < 0 || n.y > h) n.vy *= -1;
-    }
-
-    // links
-    ctx.lineWidth = 1;
-    for (let i = 0; i < nodes.length; i++) {
-      for (let j = i + 1; j < nodes.length; j++) {
-        const dx = nodes[i].x - nodes[j].x;
-        const dy = nodes[i].y - nodes[j].y;
-        const d = Math.hypot(dx, dy);
-        if (d > LINK_DIST) continue;
-        ctx.globalAlpha = (1 - d / LINK_DIST) * 0.4;
-        ctx.strokeStyle = line;
-        ctx.beginPath();
-        ctx.moveTo(nodes[i].x, nodes[i].y);
-        ctx.lineTo(nodes[j].x, nodes[j].y);
-        ctx.stroke();
-      }
-    }
-
-    // packets
-    for (let k = packets.length - 1; k >= 0; k--) {
-      const p = packets[k];
-      p.t += p.sp;
-      if (p.t >= 1) { packets.splice(k, 1); continue; }
-      const A = nodes[p.a], B = nodes[p.b];
-      if (!A || !B) { packets.splice(k, 1); continue; }
-      const x = A.x + (B.x - A.x) * p.t;
-      const y = A.y + (B.y - A.y) * p.t;
-      ctx.globalAlpha = Math.sin(p.t * Math.PI) * 0.9;
-      ctx.fillStyle = signal;
-      ctx.beginPath();
-      ctx.arc(x, y, 1.9, 0, Math.PI * 2);
-      ctx.fill();
-    }
-
-    // nodes
-    for (const n of nodes) {
-      ctx.globalAlpha = n.hub ? 0.85 : 0.4;
-      ctx.fillStyle = n.hub ? signal : line;
-      ctx.beginPath();
-      ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
-      ctx.fill();
-    }
-
-    ctx.globalAlpha = 1;
-    if (Math.random() < 0.055) spawnPacket();
-    raf = requestAnimationFrame(frame);
-  };
-
-  const stop = () => { if (raf) cancelAnimationFrame(raf); raf = 0; };
-
-  build();
-  if (reduced()) {
-    // one static frame — the topology without the motion
-    ctx.clearRect(0, 0, w, h);
-    for (let i = 0; i < nodes.length; i++) {
-      for (let j = i + 1; j < nodes.length; j++) {
-        const d = Math.hypot(nodes[i].x - nodes[j].x, nodes[i].y - nodes[j].y);
-        if (d > LINK_DIST) continue;
-        ctx.globalAlpha = (1 - d / LINK_DIST) * 0.35;
-        ctx.strokeStyle = line;
-        ctx.beginPath();
-        ctx.moveTo(nodes[i].x, nodes[i].y);
-        ctx.lineTo(nodes[j].x, nodes[j].y);
-        ctx.stroke();
-      }
-    }
-    for (const n of nodes) {
-      ctx.globalAlpha = n.hub ? 0.8 : 0.35;
-      ctx.fillStyle = n.hub ? signal : line;
-      ctx.beginPath(); ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2); ctx.fill();
-    }
-    return;
-  }
-
-  frame();
-
-  const ro = new ResizeObserver(() => { stop(); build(); frame(); });
-  ro.observe(cv);
-
-  // do not burn CPU in a background tab or when scrolled past
-  const vis = new IntersectionObserver((es) => {
-    es.forEach((e) => {
-      if (e.isIntersecting && !raf) frame();
-      else if (!e.isIntersecting) stop();
-    });
-  });
-  vis.observe(cv);
-
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) stop();
-    else if (!raf) frame();
-  });
-
-  document.addEventListener('astro:before-swap', () => { stop(); ro.disconnect(); vis.disconnect(); }, { once: true });
-}
-
 /* ═══════════════════════════════════════════════════ command palette */
 
 type Doc = { t: string; s: string; u: string; k?: string };
@@ -502,10 +350,9 @@ function initFilters() {
 
 function initChrome() {
   const root = document.documentElement;
-  const effective = () => {
-    const a = root.getAttribute('data-theme');
-    return a === 'dark' || a === 'light' ? a : window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-  };
+  // Light is the design's default. Dark applies only when explicitly chosen,
+  // so the OS preference never overrides the intended presentation.
+  const effective = () => (root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
   const paint = () => {
     const i = document.querySelector('[data-theme-icon]');
     if (i) i.textContent = effective() === 'dark' ? '☀' : '☾';
@@ -591,7 +438,6 @@ function init() {
   initCounters();
   initSpotlight();
   initRail();
-  initCanvas();
   initPalette();
   initFilters();
   initChrome();
