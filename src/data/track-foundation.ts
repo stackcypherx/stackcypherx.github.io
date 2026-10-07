@@ -3,7 +3,7 @@ import type { Track } from './types';
 export const foundation: Track = {
   id: 'f',
   slug: 'foundations',
-  title: 'Track 0 — Foundations',
+  title: 'Track 0: Foundations',
   short: 'Foundations',
   tagline: 'The layer every other track assumes you already have.',
   icon: '⌗',
@@ -26,7 +26,7 @@ export const foundation: Track = {
           kind: 'skill',
           detail:
             'Filesystem, permissions, users/groups, processes, systemd, package managers, SSH, cron, grep/sed/awk, pipes and redirection. Target: you stop reaching for a GUI.',
-          evidence: 'A personal `linux-notes` repo — your own cheatsheet, not a copied one.',
+          evidence: 'A personal `linux-notes` repo: your own cheatsheet, written by you.',
           links: [
             { label: 'TryHackMe: Linux Fundamentals 1–3', url: 'https://tryhackme.com/hacktivities?searchTxt=Linux%20Fundamentals' },
             { label: 'OverTheWire: Bandit (levels 0–20)', url: 'https://overthewire.org/wargames/bandit/' },
@@ -48,7 +48,7 @@ export const foundation: Track = {
           kind: 'skill',
           detail:
             'OSI vs TCP/IP honestly, ARP, DHCP, DNS resolution end-to-end, HTTP/1.1 vs 2 vs 3, TLS handshake, NAT. Read real packets in Wireshark, not diagrams.',
-          evidence: 'A writeup: "What actually happens when I type a URL" — with your own packet captures.',
+          evidence: 'A writeup: "What actually happens when I type a URL", with your own packet captures.',
           links: [
             { label: 'TryHackMe: Introductory Networking', url: 'https://tryhackme.com/hacktivities?searchTxt=Introductory%20Networking' },
             { label: 'Wireshark sample captures', url: 'https://wiki.wireshark.org/SampleCaptures' },
@@ -121,7 +121,7 @@ export const foundation: Track = {
       id: 'f2',
       title: 'Professional hygiene',
       window: 'Month 2–3 · then maintained forever',
-      goal: 'Set up the machinery that turns learning into hireable evidence — before you have anything to show.',
+      goal: 'Set up the machinery that turns learning into hireable evidence, before you have anything to show.',
       exit: 'Every hour you study from now on leaves a public trace without extra effort.',
       items: [
         {
@@ -136,7 +136,7 @@ export const foundation: Track = {
           title: 'The lab journal habit ("HoneyLog")',
           kind: 'habit',
           detail:
-            'Every lab session gets a short log: goal, what you tried, what failed, what you learned, one command worth remembering. This is the single highest-return habit in the whole plan — it is also where your writeups come from for free.',
+            'Every lab session gets a short log: goal, what you tried, what failed, what you learned, one command worth remembering. This is the single highest-return habit in the whole plan, and it is also where your writeups come from for free.',
           evidence: 'A dated entry for every study session, published weekly.',
           weight: 3,
         },
@@ -144,7 +144,7 @@ export const foundation: Track = {
           title: 'Writeup cadence: one per week',
           kind: 'habit',
           detail:
-            'One public technical writeup every week, in English, with screenshots and commands. Quality over length — 600 focused words beats 3,000 padded ones.',
+            'One public technical writeup every week, in English, with screenshots and commands. Quality over length: 600 focused words beats 3,000 padded ones.',
           evidence: '52 writeups a year. Nothing else in this plan compounds like this does.',
           weight: 3,
         },
@@ -160,7 +160,7 @@ export const foundation: Track = {
           title: 'English at professional working level',
           kind: 'skill',
           detail:
-            'Reading is not the bottleneck — writing and speaking are. Target B2→C1. This is a hard gate for remote roles and a formal gate for most visas.',
+            'Writing and speaking are the bottleneck, more than reading. Target B2→C1. This is a hard gate for remote roles and a formal gate for most visas.',
           evidence: 'IELTS 7.0+ (or equivalent) certificate, plus 10 recorded 5-minute technical explanations of your own projects.',
           weight: 3,
         },
@@ -185,7 +185,7 @@ export const foundation: Track = {
           kind: 'habit',
           detail:
             'Password manager, passkeys/2FA everywhere, full-disk encryption, separate lab VM/identity, never reuse work and lab credentials. Employers in security will look.',
-          evidence: 'A short "how I secure my own stack" note — it doubles as an interview answer.',
+          evidence: 'A short "how I secure my own stack" note. It doubles as an interview answer.',
           weight: 1,
         },
         {
@@ -193,7 +193,7 @@ export const foundation: Track = {
           kind: 'habit',
           detail:
             'Anki for ports, protocols, CLI flags, acronyms, exam facts. 15 minutes a day removes most cert-cramming pain.',
-          evidence: 'A shared Anki deck you publish — useful to others, proof of rigour for you.',
+          evidence: 'A shared Anki deck you publish: useful to others, proof of rigour for you.',
           weight: 1,
         },
       ],

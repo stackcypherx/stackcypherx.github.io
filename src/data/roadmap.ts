@@ -19,7 +19,7 @@ export const timeline = [
     months: 'Month 1–3',
     theme: 'Substrate',
     focus:
-      'Foundations phase 0 in full, plus the first 30 rooms of the Cyber Security 101 track. Set up this site, the HoneyLog habit, and the weekly writeup on day one — not later.',
+      'Foundations phase 0 in full, plus the first 30 rooms of the Cyber Security 101 track. Set up this site, the HoneyLog habit, and the weekly writeup on day one, not later.',
     output: 'Home lab running · 12 writeups · site live · GitHub profile presentable',
   },
   {
@@ -27,7 +27,7 @@ export const timeline = [
     months: 'Month 4–6',
     theme: 'First credentials',
     focus:
-      'Finish the 84-room track. ISC2 CC then Security+. In parallel, start the primary specialist track you chose — CCNA study or the Python/LLM fundamentals block.',
+      'Finish the free Cyber Security 101 track. ISC2 CC then Security+. In parallel, start the primary specialist track you chose: CCNA study or the Python/LLM fundamentals block.',
     output: 'Security+ · 50+ rooms · 24 writeups · first professional-format report',
   },
   {
@@ -35,7 +35,7 @@ export const timeline = [
     months: 'Month 7–9',
     theme: 'Commit to a spike',
     focus:
-      'Declare your primary track publicly. Blue or red if security. CCNA done and NetDevOps begun if networks. First deployed RAG app if AI. The other two tracks drop to maintenance — one session a week.',
+      'Declare your primary track publicly. Blue or red if security. CCNA done and NetDevOps begun if networks. First deployed RAG app if AI. The other two tracks drop to maintenance, one session a week.',
     output: 'Primary track declared · one flagship project underway · first CTF or bug bounty attempt',
   },
   {
@@ -51,7 +51,7 @@ export const timeline = [
     months: 'Month 13–15',
     theme: 'Hard credential',
     focus:
-      'The expensive, practical one: OSCP/PNPT, CCNP, or the evals-and-LLMOps body of work. Begin applying to remote roles now — not when you feel ready. Interview feedback is a faster diagnostic than more study.',
+      'The expensive, practical one: OSCP/PNPT, CCNP, or the evals-and-LLMOps body of work. Begin applying to remote roles now, before you feel ready. Interview feedback is a faster diagnostic than more study.',
     output: 'Hard credential in progress · 20+ applications sent · interview loop data',
   },
   {
@@ -83,7 +83,7 @@ export const timeline = [
 export const cadence = [
   { rhythm: 'Daily', commitment: '60–90 min', item: 'One lab, room, or box. 15 min Anki. One HoneyLog entry.' },
   { rhythm: 'Weekly', commitment: '2–3 h', item: 'One published writeup. One review of what you skipped and why.' },
-  { rhythm: 'Every 6 weeks', commitment: '—', item: 'One shipped project with a README, a demo, and a live link if applicable.' },
-  { rhythm: 'Quarterly', commitment: '—', item: 'At most one certification. Re-read your target job descriptions and re-plan against them.' },
-  { rhythm: 'Every 6 months', commitment: '—', item: 'One talk or article on a platform you do not own. One honest audit of whether the plan still fits.' },
+  { rhythm: 'Every 6 weeks', commitment: 'No fixed hours', item: 'One shipped project with a README, a demo, and a live link if applicable.' },
+  { rhythm: 'Quarterly', commitment: 'No fixed hours', item: 'At most one certification. Re-read your target job descriptions and re-plan against them.' },
+  { rhythm: 'Every 6 months', commitment: 'No fixed hours', item: 'One talk or article on a platform you do not own. One honest audit of whether the plan still fits.' },
 ] as const;

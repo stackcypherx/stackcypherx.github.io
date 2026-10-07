@@ -1,77 +1,115 @@
 ---
 import Base from '../layouts/Base.astro';
-import TrackCard from '../components/TrackCard.astro';
 import SectionHead from '../components/SectionHead.astro';
 import { profile, yearsExperience } from '../data/profile';
-import { tracks, timeline, cadence } from '../data/roadmap';
-import { countItems, itemKey } from '../data/types';
-import { totalRooms } from '../data/labs';
-import { builds, vibeStats } from '../data/vibe';
-import { certs } from '../data/certs';
+import { tracks } from '../data/roadmap';
+import { countItems } from '../data/types';
+import { builds } from '../data/vibe';
+
+// Home is the hiring-facing summary: who, track record, evidence, contact.
+// The learning plan has its own section under /plan and gets one block here.
+
+type NoteFrontmatter = { title: string; description?: string; date: string; track?: string; draft?: boolean };
+const notes = Object.values(
+  import.meta.glob<{ frontmatter: NoteFrontmatter; url?: string }>('./writing/*.md', { eager: true }),
+)
+  .filter((m) => m.frontmatter && !m.frontmatter.draft && m.url)
+  .sort((a, b) => +new Date(b.frontmatter.date) - +new Date(a.frontmatter.date))
+  .slice(0, 3);
+const fmt = (d: string) =>
+  new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const securityCreds = profile.credentials.filter((c) => c.domain === 'Security');
 const totalMilestones = tracks.reduce((n, t) => n + countItems(t), 0);
-const held = certs.filter((c) => c.held).length;
 ---
 
 <Base
-  eyebrow={`${profile.location} · open to relocation`}
+  eyebrow={`${profile.location} · open to remote work and relocation`}
   heading="I keep carrier networks running. Now I'm securing them."
   lede={profile.pitch}
   display
 >
-  <div slot="hero-extra" class="row" style="margin-top: 2.2rem; gap: 0.75rem" data-reveal="220">
-    <a class="btn btn-primary" href={`${base}/experience`}>Experience</a>
-    <a class="btn" href={`${base}/agentic`}>What I've built</a>
+  <div slot="hero-extra" class="row" style="margin-top: 2.2rem; gap: 0.75rem">
+    <a class="btn btn-primary" href={`${base}/experience`}>Full experience</a>
+    <a class="btn" href={`mailto:${profile.contact.email}`}>Email me</a>
     <a class="btn" href={profile.contact.linkedin}>LinkedIn ↗</a>
   </div>
 
   <div class="wrap stack-lg" style="margin-top: 4rem">
-    <!-- ─────────────────────────────────────────────────────── key numbers -->
+    <!-- ───────────────────────────────────────────────────────── position -->
     <section>
-      <div class="grid g4" style="border-block: 1px solid var(--rule)">
-        <div class="card" data-reveal>
-          <div class="stat"><span class="n" data-count={yearsExperience}>0</span><span class="l">Years in telecom</span></div>
-          <p class="tiny dim" style="margin-top: 0.5rem">Access, transport, IP core, mobile</p>
+      <SectionHead label="Position" title="Not a career change. A specialisation." />
+      <div class="grid g2 gap" style="gap: 1.1rem">
+        <div class="card">
+          <div class="tag tag-signal" style="margin-bottom: 0.6rem">What I already do</div>
+          <p class="small muted" style="margin: 0">
+            {yearsExperience} years in telecom operations. Today I own mobile broadband and transport
+            service operations across Papua, Maluku, Sulawesi and Kalimantan: fibre and FTTH,
+            Metro-Ethernet, IP core and backhaul, DWDM. SLA accountability for wholesale and enterprise
+            customers, incident command when it breaks, and root-cause analysis on the faults that keep
+            coming back.
+          </p>
         </div>
-        <div class="card" data-reveal="60">
-          <div class="stat"><span class="n" data-count="4">0</span><span class="l">Provinces covered</span></div>
-          <p class="tiny dim" style="margin-top: 0.5rem">Papua · Maluku · Sulawesi · Kalimantan</p>
-        </div>
-        <div class="card" data-reveal="120">
-          <div class="stat"><span class="n" data-count={builds.length}>0</span><span class="l">Systems shipped</span></div>
-          <p class="tiny dim" style="margin-top: 0.5rem">Agent-built · {vibeStats.activeDays} active days</p>
-        </div>
-        <div class="card" data-reveal="180">
-          <div class="stat"><span class="n">CEH</span><span class="l">+ CyberOps</span></div>
-          <p class="tiny dim" style="margin-top: 0.5rem">{held} security credentials held</p>
+        <div class="card">
+          <div class="tag tag-signal" style="margin-bottom: 0.6rem">Where it's going</div>
+          <p class="small muted" style="margin: 0">
+            Network operations is where security incidents get detected and contained, and I have spent
+            a decade watching how carrier infrastructure behaves when it fails. I hold CEH and Cisco
+            CyberOps Associate, and I'm building toward network and telecom security, detection
+            engineering, and securing agentic AI systems.
+          </p>
         </div>
       </div>
     </section>
 
-
-    <!-- ───────────────────────────────────────────────────────── the pitch -->
+    <!-- ───────────────────────────────────────────────────── track record -->
     <section>
-      <SectionHead label="Position" title="Not a career change. A specialisation." />
-      <div class="grid g2 gap" style="gap: 1.1rem">
-        <div class="card spot" data-reveal>
-          <div class="tag tag-signal" style="margin-bottom: 0.6rem">What I already do</div>
-          <p class="small muted" style="margin: 0">
-            Own mobile broadband and transport service operations across roughly the eastern half of
-            Indonesia. Fibre and FTTH, Metro-Ethernet, IP core and backhaul, DWDM. SLA accountability
-            for wholesale and enterprise customers, incident command when it breaks, and root-cause
-            analysis on the faults that keep coming back.
-          </p>
-        </div>
-        <div class="card spot" data-reveal="80">
-          <div class="tag tag-signal" style="margin-bottom: 0.6rem">Where it's going</div>
-          <p class="small muted" style="margin: 0">
-            Network operations is where security incidents are actually detected and contained.
-            Knowing how carrier infrastructure genuinely behaves is context most security candidates
-            never get. I'm building toward network and telecom security, detection engineering, and
-            securing agentic AI systems — the overlap almost nobody occupies.
-          </p>
-        </div>
+      <SectionHead
+        label="Track record"
+        title="Experience"
+        note="The short version. Scope, responsibilities and engineering cases are on the full experience page."
+      />
+      <ol class="tl">
+        {
+          profile.experience.map((job) => (
+            <li>
+              <div class="tag">{job.period}</div>
+              <h3 style="margin: 0; font-size: 1.15rem">{job.role}</h3>
+              <div class="small" style="font-weight: 600">
+                {job.company}
+                {job.current && <span class="chip chip-lime" style="margin-left: 0.5rem">Current</span>}
+              </div>
+              <p class="small muted" style="margin: 0.2rem 0 0; max-width: 80ch">{job.scope}</p>
+            </li>
+          ))
+        }
+      </ol>
+      <p class="small" style="margin-top: 1.2rem">
+        <a href={`${base}/experience`}>Full experience, engineering cases and skills</a>
+      </p>
+    </section>
+
+    <!-- ──────────────────────────────────────────────────── field record -->
+    <section>
+      <SectionHead
+        label="Field record"
+        title="Work an outsider can check"
+        note="Named infrastructure and real incidents, rather than internal awards."
+      />
+      <div class="stack">
+        {
+          profile.achievements.slice(0, 3).map((a) => (
+            <article class="card bordered">
+              <div class="row" style="gap: 0.5rem; margin-bottom: 0.3rem">
+                <span class="tag">{a.date}</span>
+                <span class="tag">{a.org}</span>
+              </div>
+              <h3 style="margin: 0 0 0.4rem">{a.title}</h3>
+              <p class="small muted" style="margin: 0; max-width: 88ch">{a.detail}</p>
+            </article>
+          ))
+        }
       </div>
     </section>
 
@@ -79,13 +117,13 @@ const held = certs.filter((c) => c.held).length;
     <section>
       <SectionHead
         label="Agentic engineering"
-        title="I ship software by orchestrating agents"
-        note="Six systems in four months — an internal operations analytics platform, alerting bots, document automation, two published sites. The specification, the structure and the review are mine; the typing is not."
+        title="Software I ship by orchestrating agents"
+        note={`${builds.length} systems in four months: an internal operations analytics platform, alerting bots, document automation, two published sites. The specification, the structure and the review are mine; the typing is not.`}
       />
       <div class="grid g3 gap" style="gap: 1rem">
         {
-          builds.slice(0, 3).map((b, i) => (
-            <a class="card card-i spot" href={`${base}/agentic#${b.id}`} data-reveal={String(i * 70)}
+          builds.slice(0, 3).map((b) => (
+            <a class="card card-i" href={`${base}/work#${b.id}`}
                style="display: flex; flex-direction: column; gap: 0.6rem">
               <div class="row" style="gap: 0.4rem">
                 <span class="chip chip-signal">{b.kind}</span>
@@ -98,114 +136,78 @@ const held = certs.filter((c) => c.held).length;
           ))
         }
       </div>
-      <p class="small" style="margin-top: 1.2rem"><a href={`${base}/agentic`} >All six builds, with method →</a></p>
+      <p class="small" style="margin-top: 1.2rem"><a href={`${base}/work`}>All {builds.length} builds, with the method behind them</a></p>
     </section>
 
-    <!-- ────────────────────────────────────────────────────────── roadmap -->
+    <!-- ───────────────────────────────────────────────────── credentials -->
     <section>
-      <SectionHead
-        label="In progress"
-        title="The specialisation plan, in public"
-        note={`${totalMilestones} milestones across four tracks. Every one names the public artifact it has to produce before it counts — the progress bars are live and deliberately not flattering.`}
-      />
-      <div class="grid g4 gap" style="gap: 1rem">
-        {tracks.map((t) => <TrackCard track={t} />)}
-      </div>
-      <div class="note-box" style="margin-top: 1.4rem" data-reveal>
-        <p class="small" style="margin: 0">
-          The phase windows assume someone starting from zero. I'm not —
-          <a href={`${base}/roadmap#starting-position`} >see what's already covered and what the real gaps are</a>.
-        </p>
-      </div>
-    </section>
-
-    <!-- ───────────────────────────────────────────────────────── timeline -->
-    <section>
-      <SectionHead id="timeline" label="24 months" title="Quarter by quarter" />
-      <ol class="tl">
-        {
-          timeline.map((q) => (
-            <li>
-              <div class="row" style="gap: 0.55rem; margin-bottom: 0.35rem">
-                <span class="chip chip-signal">{q.q}</span>
-                <span class="tag">{q.months}</span>
-              </div>
-              <h3 style="margin-bottom: 0.35rem">{q.theme}</h3>
-              <p class="small muted" style="margin: 0 0 0.5rem; max-width: 80ch">{q.focus}</p>
-              <p class="tiny" style="margin: 0; color: var(--good); font-family: var(--mono)">→ {q.output}</p>
-            </li>
-          ))
-        }
-      </ol>
-    </section>
-
-    <!-- ────────────────────────────────────────────────────────── cadence -->
-    <section>
-      <SectionHead
-        label="Operating rhythm"
-        title="The machine underneath the milestones"
-        note="Certifications are outcomes. This is the thing that produces them — and the thing to protect on the weeks when work runs long."
-      />
-      <div class="tscroll" data-reveal>
+      <SectionHead label="Credentials" title="Security credentials held" />
+      <div class="tscroll">
         <table>
-          <thead><tr><th>Rhythm</th><th>Commitment</th><th>What happens</th></tr></thead>
+          <thead><tr><th>Credential</th><th>Issuer</th><th>Earned</th></tr></thead>
           <tbody>
-            {cadence.map((c) => (
+            {securityCreds.map((c) => (
               <tr>
-                <td><b>{c.rhythm}</b></td>
-                <td class="mono tiny dim nowrap">{c.commitment}</td>
-                <td class="muted">{c.item}</td>
+                <td><b>{c.name}</b>{c.level && <span class="small muted"> · {c.level}</span>}</td>
+                <td class="muted">{c.issuer}</td>
+                <td class="mono tiny nowrap">{c.date}</td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+      <p class="small" style="margin-top: 1.2rem">
+        <a href={`${base}/experience#credentials`}>All credentials and education</a>
+      </p>
     </section>
 
-    <!-- ──────────────────────────────────────────────────────────── entry -->
+    <!-- ─────────────────────────────────────────────────────────── writing -->
+    {
+      notes.length > 0 && (
+        <section>
+          <SectionHead label="Writing" title="Latest writing" />
+          <div class="stack">
+            {notes.map((n) => (
+              <a class="card card-i bordered" href={n.url} style="display: block; color: inherit">
+                <div class="row" style="gap: 0.5rem; margin-bottom: 0.3rem">
+                  <time class="tiny dim mono" datetime={n.frontmatter.date}>{fmt(n.frontmatter.date)}</time>
+                  {n.frontmatter.track && <span class="chip chip-signal">{n.frontmatter.track}</span>}
+                </div>
+                <h3 style="margin: 0 0 0.3rem">{n.frontmatter.title}</h3>
+                {n.frontmatter.description && <p class="small muted" style="margin: 0">{n.frontmatter.description}</p>}
+              </a>
+            ))}
+          </div>
+          <p class="small" style="margin-top: 1.2rem"><a href={`${base}/writing`}>All writing</a></p>
+        </section>
+      )
+    }
+
+    <!-- ─────────────────────────────────────────────── learning in public -->
     <section>
-      <div class="card spot" data-reveal style="border-color: var(--rule-2)">
-        <div class="tag tag-signal" style="margin-bottom: 0.7rem">Start here</div>
-        <h2 style="margin-bottom: 1.2rem">Three ways in</h2>
-        <div class="grid g3 gap" style="gap: 1.4rem; margin-bottom: 1.6rem">
-          <div>
-            <h4 style="margin-bottom: 0.35rem">Hiring</h4>
-            <p class="small muted" style="margin: 0">
-              <a href={`${base}/experience`} >Experience</a> — {yearsExperience} years,
-              field record, credentials. Then <a href={`${base}/agentic`} >what I've built</a>.
-            </p>
-          </div>
-          <div>
-            <h4 style="margin-bottom: 0.35rem">Curious about the plan</h4>
-            <p class="small muted" style="margin: 0">
-              <a href={`${base}/recommendations`} >The 13 recommendations</a> first —
-              they explain why the roadmap is shaped the way it is.
-            </p>
-          </div>
-          <div>
-            <h4 style="margin-bottom: 0.35rem">Here to use it</h4>
-            <p class="small muted" style="margin: 0">
-              <a href={`${base}/roadmap`} >The roadmap</a> and
-              <a href={`${base}/labs`} > {totalRooms} mapped labs</a> are free.
-              Fork the repo and swap the data files.
-            </p>
-          </div>
+      <SectionHead
+        label="Learning in public"
+        title="The plan behind the specialisation"
+        note={`${totalMilestones} milestones across ${tracks.length} tracks, each tied to a public artifact it has to produce. The roadmap, lab tracker and reasoning are open for anyone to use.`}
+      />
+      <p class="small" style="margin: 0"><a href={`${base}/plan`}>Open the learning plan</a></p>
+    </section>
+
+    <!-- ────────────────────────────────────────────────────────── contact -->
+    <section>
+      <div class="card" style="border-color: var(--rule-2)">
+        <div class="tag tag-signal" style="margin-bottom: 0.6rem">Availability</div>
+        <h2 style="margin-bottom: 0.7rem">Open to the right move</h2>
+        <p class="muted" style="max-width: 76ch">
+          Security engineering, detection engineering, network security and NetDevOps. Open to: {profile.openTo}.
+        </p>
+        <div class="row" style="margin-top: 1.4rem">
+          <a class="btn btn-primary" href={`mailto:${profile.contact.email}`}>Email me</a>
+          <a class="btn" href={profile.contact.linkedin}>LinkedIn ↗</a>
+          <a class="btn" href={profile.contact.github}>GitHub ↗</a>
         </div>
-        <p class="tiny dim" style="margin: 0">Press <kbd>⌘</kbd><kbd>K</kbd> to search everything on this site.</p>
       </div>
     </section>
   </div>
 
-  <div hidden aria-hidden="true">
-    {
-      tracks.flatMap((t) =>
-        t.phases.flatMap((p) =>
-          p.items.map((i) => (
-            <input type="checkbox" data-key={itemKey(t.id, p.id, i.title)}
-                   data-group={`site.all track.${t.id}`} data-weight={i.weight ?? 1} tabindex="-1" />
-          )),
-        ),
-      )
-    }
-  </div>
 </Base>

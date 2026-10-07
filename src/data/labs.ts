@@ -2,14 +2,14 @@
  * Lab inventory.
  *
  * The TryHackMe track below is transcribed from the "Cyber Security Learning Tracker"
- * spreadsheet (THM Free Rooms tab) — 84 rooms across 17 topics (the sheet's three "Get Badge" rows are rendered as streak milestones rather than rooms), designed as a ~100-day
+ * spreadsheet (THM Free Rooms tab): 84 rooms across 17 topics (the sheet's three "Get Badge" rows are rendered as streak milestones rather than rooms), designed as a ~100-day
  * plan with a 50-room checkpoint before moving on to mentored study.
  *
  * The room links point at TryHackMe's hacktivities search rather than hardcoded room
  * slugs: THM slugs are not derivable from room titles (e.g. "Windows Fundamentals 1"
  * lives at /room/windowsfundamentals1xbx), and a search link that always resolves is
  * better than a direct link that silently 404s. Some rooms have moved from free to
- * premium under TryHackMe's current policy — where that happens, the free alternatives
+ * premium under TryHackMe's current policy; where that happens, the free alternatives
  * in `alternatives` below cover the same ground.
  *
  * The machine lists are LainKusanagi's public OSCP-like and post-OSCP red team lists,
@@ -45,7 +45,7 @@ export const roomGroups: RoomGroup[] = [
     rooms: [
       { n: 'Welcome', d: 'Platform orientation and how rooms work.' },
       { n: 'Tutorial', d: 'Using THM tooling, attack boxes, and flags.' },
-      { n: 'OpenVPN', d: 'Connecting your own machine to the THM network — the setup you will reuse constantly.' },
+      { n: 'OpenVPN', d: 'Connecting your own machine to the THM network: the setup you will reuse constantly.' },
       { n: 'Learning Cyber Security', d: 'Map of the field before you commit to a direction.' },
       { n: 'Starting Out In Cyber Sec', d: 'Realistic first steps and common early mistakes.' },
       { n: 'Careers in Cyber', d: 'What the actual roles are and what they do daily.' },
@@ -79,9 +79,9 @@ export const roomGroups: RoomGroup[] = [
     why: 'Method before tools. People who skip this stay script-runners.',
     rooms: [
       { n: 'Pentesting Fundamentals', d: 'Engagement types, scope, ethics, rules of engagement.' },
-      { n: 'The Hacker Methodology', d: 'Structured attack phases — the mental model for everything after.' },
+      { n: 'The Hacker Methodology', d: 'Structured attack phases: the mental model for everything after.' },
       { n: 'Basic Pentesting', d: 'First end-to-end practical: enumerate, exploit, escalate.' },
-      { n: 'Physical Security Intro', d: 'Badge cloning, lock bypass, tailgating — the attack surface people forget.' },
+      { n: 'Physical Security Intro', d: 'Badge cloning, lock bypass, tailgating: the attack surface people forget.' },
       { n: 'Intro to Cyber Threat Intel', d: 'CTI concepts, IOCs, and how intel drives defence.' },
       { n: 'OpenVAS', d: 'Automated vulnerability scanning and reading its output critically.' },
     ],
@@ -89,14 +89,14 @@ export const roomGroups: RoomGroup[] = [
   {
     icon: '📡',
     topic: 'Networking',
-    why: 'This block is where Track 1 and Track 2 share a spine — do it once, benefit twice.',
+    why: 'This block is where Track 1 and Track 2 share a spine. Do it once, benefit twice.',
     rooms: [
       { n: 'Introductory Networking', d: 'OSI model and core internet protocols.' },
-      { n: 'HTTP in detail', d: 'Requests, responses, headers, methods, cookies — prerequisite for all web work.' },
+      { n: 'HTTP in detail', d: 'Requests, responses, headers, methods, cookies. Prerequisite for all web work.' },
       { n: 'DNS in detail', d: 'Resolution chain, record types, and DNS as an attack and exfiltration channel.' },
       { n: 'Dumping Router Firmware', d: 'Extracting and inspecting embedded device firmware.' },
       { n: 'Network Services', d: 'Enumerating and exploiting SMB, Telnet, FTP misconfigurations.' },
-      { n: 'Network Services 2', d: 'NFS, SMTP, MySQL — the second half of the service sweep.' },
+      { n: 'Network Services 2', d: 'NFS, SMTP, MySQL: the second half of the service sweep.' },
     ],
   },
   {
@@ -106,10 +106,10 @@ export const roomGroups: RoomGroup[] = [
     rooms: [
       { n: 'Passive Reconnaissance', d: 'Gathering intelligence without touching the target.' },
       { n: 'Active Reconnaissance', d: 'Direct enumeration and its detection footprint.' },
-      { n: 'OhSINT', d: 'Classic OSINT challenge — metadata and small clues.' },
+      { n: 'OhSINT', d: 'Classic OSINT challenge: metadata and small clues.' },
       { n: 'Shodan.io', d: 'Internet-wide device and service search.' },
       { n: 'Google Dorking', d: 'Advanced search operators for exposed data.' },
-      { n: 'Sakura Room', d: 'Full OSINT investigation scenario — genuinely hard, genuinely worth it.' },
+      { n: 'Sakura Room', d: 'Full OSINT investigation scenario. Hard, and worth it.' },
       { n: 'Searchlight - IMINT', d: 'Image intelligence and geolocation from photographs.' },
     ],
   },
@@ -125,9 +125,9 @@ export const roomGroups: RoomGroup[] = [
       { n: 'Hydra', d: 'Credential attacks against network and web login services.' },
       { n: 'ffuf', d: 'Fast fuzzing for directories, files, parameters, and vhosts.' },
       { n: 'RustScan', d: 'Fast port discovery feeding into nmap.' },
-      { n: 'TShark', d: 'Packet analysis from the terminal — scriptable Wireshark.' },
+      { n: 'TShark', d: 'Packet analysis from the terminal: scriptable Wireshark.' },
       { n: 'Nessus', d: 'Industry-standard vulnerability scanning and report triage.' },
-      { n: 'SQLMap', d: 'Automated SQL injection exploitation — after you can do it manually.' },
+      { n: 'SQLMap', d: 'Automated SQL injection exploitation, after you can do it manually.' },
       { n: 'Intro to OWASP ZAP', d: 'Free Burp alternative, useful for CI-integrated DAST.' },
     ],
   },
@@ -138,7 +138,7 @@ export const roomGroups: RoomGroup[] = [
     rooms: [
       { n: 'Python Basics', d: 'Python for security tooling and automation.' },
       { n: 'Bash Scripting', d: 'Automating terminal workflows.' },
-      { n: 'Intro PoC Scripting', d: 'Writing proof-of-concept exploit code — a real differentiator.' },
+      { n: 'Intro PoC Scripting', d: 'Writing proof-of-concept exploit code, a real differentiator.' },
       { n: 'Learn Rust', d: 'Optional. Increasingly present in modern tooling and malware.' },
     ],
   },
@@ -163,16 +163,16 @@ export const roomGroups: RoomGroup[] = [
       { n: 'Detecting Web Attacks', d: 'The blue-team view: spotting web attacks in logs.' },
       { n: 'Vulnerabilities 101', d: 'Classification, CVE/CVSS, and vulnerability research workflow.' },
       { n: 'SQL Injection', d: 'Manual injection, union attacks, blind injection.' },
-      { n: 'OWASP Top 10 2025: IAAA Failures', d: 'A01, A07, A09 — identification, authentication, authorisation, and accounting failures.' },
-      { n: 'OWASP Top 10 2025: Application Design Flaws', d: 'A02, A03, A06, A10 — design-level weaknesses.' },
-      { n: 'OWASP Top 10 2025: Insecure Data Handling', d: 'A04, A05, A08 — unsafe handling of data.' },
-      { n: 'OWASP Juice Shop', d: 'Deliberately vulnerable app — the best single web practice target.' },
+      { n: 'OWASP Top 10 2025: IAAA Failures', d: 'A01, A07, A09: identification, authentication, authorisation, and accounting failures.' },
+      { n: 'OWASP Top 10 2025: Application Design Flaws', d: 'A02, A03, A06, A10: design-level weaknesses.' },
+      { n: 'OWASP Top 10 2025: Insecure Data Handling', d: 'A04, A05, A08: unsafe handling of data.' },
+      { n: 'OWASP Juice Shop', d: 'Deliberately vulnerable app, the best single web practice target.' },
     ],
   },
   {
     icon: '📱',
     topic: 'Mobile',
-    why: 'A narrow but well-paid niche, and almost nobody in the entry pool has touched it.',
+    why: 'A narrow but well-paid niche that most entry-level paths skip.',
     rooms: [
       { n: 'Android Hacking 101', d: 'APK structure, static analysis, and common Android weaknesses.' },
       { n: 'Mobile Malware Analysis', d: 'Analysing malicious mobile applications.' },
@@ -182,7 +182,7 @@ export const roomGroups: RoomGroup[] = [
     icon: '📶',
     topic: 'Wireless',
     why: 'Direct overlap with Track 2 wireless fundamentals.',
-    rooms: [{ n: 'Wifi Hacking 101', d: 'WPA handshakes, capture, and cracking — plus why WPA3 changes it.' }],
+    rooms: [{ n: 'Wifi Hacking 101', d: 'WPA handshakes, capture, and cracking, plus why WPA3 changes it.' }],
   },
   {
     icon: '⬆️',
@@ -226,7 +226,7 @@ export const roomGroups: RoomGroup[] = [
       { n: 'Wgel CTF', d: 'Hidden directories into system compromise.' },
       { n: 'Kenobi', d: 'Samba and ProFTPD exploitation, then privesc.' },
       { n: 'Ice', d: 'Windows box via a third-party service.' },
-      { n: 'Blue', d: 'EternalBlue (MS17-010) — the canonical Windows exploit.' },
+      { n: 'Blue', d: 'EternalBlue (MS17-010), the canonical Windows exploit.' },
       { n: 'Vulnversity', d: 'Active recon and file upload exploitation.' },
       { n: 'Agent Sudo', d: 'Web plus light cryptography.' },
       { n: 'Startup', d: 'Data gathering and basic privilege escalation.' },
@@ -237,7 +237,7 @@ export const roomGroups: RoomGroup[] = [
     icon: '🎄',
     topic: 'Annual event',
     why: 'The best-designed free security content of the year, and a natural deadline.',
-    rooms: [{ n: 'Advent of Cyber', d: 'Annual December event — 24 days of guided, varied challenges.' }],
+    rooms: [{ n: 'Advent of Cyber', d: 'Annual December event: 24 days of guided, varied challenges.' }],
   },
 ];
 
@@ -249,17 +249,17 @@ export const platforms = [
   { name: 'Hack The Box', lane: 'Red', cost: 'Free / Paid', note: 'Retired machines need a VIP subscription; active machines are free.', url: 'https://www.hackthebox.com/' },
   { name: 'PentesterLab', lane: 'Red', cost: 'Paid', note: 'Excellent, focused web and code-review exercises.', url: 'https://pentesterlab.com/' },
   { name: 'Proving Grounds (OffSec)', lane: 'Red', cost: 'Free / Paid', note: 'Closest in feel to the OSCP exam. Play tier is free.', url: 'https://www.offsec.com/labs/' },
-  { name: 'VulnLab', lane: 'Red', cost: 'Paid', note: 'Strong AD chains — the gap most OSCP candidates have.', url: 'https://www.vulnlab.com/' },
+  { name: 'VulnLab', lane: 'Red', cost: 'Paid', note: 'Strong Active Directory chains, the area OSCP preparation tends to cover thinly.', url: 'https://www.vulnlab.com/' },
   { name: 'LetsDefend', lane: 'Blue', cost: 'Free / Paid', note: 'SOC simulation with realistic alert queues.', url: 'https://letsdefend.io/' },
   { name: 'CyberDefenders', lane: 'Blue', cost: 'Free / Paid', note: 'Blue-team CTFs and DFIR cases with real artifacts.', url: 'https://cyberdefenders.org/' },
   { name: 'Blue Team Labs Online', lane: 'Blue', cost: 'Free / Paid', note: 'Investigations and challenges with a free tier.', url: 'https://blueteamlabs.online/' },
   { name: 'HTB Sherlocks', lane: 'Blue', cost: 'Free / Paid', note: 'DFIR scenarios on the HTB platform.', url: 'https://www.hackthebox.com/' },
   { name: 'picoCTF', lane: 'Both', cost: 'Free', note: 'Permanently available CTF practice, beginner-friendly.', url: 'https://picoctf.org/' },
   { name: 'OverTheWire', lane: 'Both', cost: 'Free', note: 'Bandit is the best Linux CLI trainer in existence.', url: 'https://overthewire.org/wargames/' },
-  { name: 'API Security University', lane: 'Specialisation', cost: 'Free', note: 'API-specific attack surface — underserved and in demand.', url: 'https://university.apisec.ai/' },
+  { name: 'API Security University', lane: 'Specialisation', cost: 'Free', note: 'API-specific attack surface, with few free resources covering it.', url: 'https://university.apisec.ai/' },
   { name: 'Web3 / Smart Contract Security', lane: 'Specialisation', cost: 'Free', note: 'Ethernaut, Damn Vulnerable DeFi. Niche, volatile, high-paying when it pays.', url: 'https://ethernaut.openzeppelin.com/' },
-  { name: 'Containerlab', lane: 'Networks', cost: 'Free', note: 'Container-based network labs — the modern way to practise topologies.', url: 'https://containerlab.dev/' },
-  { name: 'GOAD — Game of Active Directory', lane: 'Both', cost: 'Free', note: 'Self-hosted vulnerable AD lab. Best free AD practice available.', url: 'https://github.com/Orange-Cyberdefense/GOAD' },
+  { name: 'Containerlab', lane: 'Networks', cost: 'Free', note: 'Container-based network labs, the current way to practise topologies.', url: 'https://containerlab.dev/' },
+  { name: 'GOAD (Game of Active Directory)', lane: 'Both', cost: 'Free', note: 'Self-hosted vulnerable AD lab. Best free AD practice available.', url: 'https://github.com/Orange-Cyberdefense/GOAD' },
 ];
 
 /** Free stand-ins for tracker rooms that have moved behind TryHackMe's paywall. */
@@ -359,7 +359,7 @@ export const oscpList: MachineSet[] = [
     ],
   },
   {
-    platform: 'OffSec Proving Grounds — Practice',
+    platform: 'OffSec Proving Grounds: Practice',
     category: 'Linux',
     machines: [
       { n: 'Levram', d: 'E' }, { n: 'ClamAV', d: 'I' }, { n: 'Pelican', d: 'I' }, { n: 'Payday', d: 'I' },
@@ -374,7 +374,7 @@ export const oscpList: MachineSet[] = [
     ],
   },
   {
-    platform: 'OffSec Proving Grounds — Practice',
+    platform: 'OffSec Proving Grounds: Practice',
     category: 'Windows',
     machines: [
       { n: 'Kevin', d: 'E' }, { n: 'Internal', d: 'E' }, { n: 'Algernon', d: 'E' }, { n: 'Slort', d: 'I' },
@@ -385,7 +385,7 @@ export const oscpList: MachineSet[] = [
     ],
   },
   {
-    platform: 'OffSec Proving Grounds — Practice',
+    platform: 'OffSec Proving Grounds: Practice',
     category: 'Windows Active Directory',
     machines: [
       { n: 'Hutch', d: 'H' }, { n: 'Vault', d: 'H' }, { n: 'Access', d: 'VH' }, { n: 'Resourced', d: 'VH' },

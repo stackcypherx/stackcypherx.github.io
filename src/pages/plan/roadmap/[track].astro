@@ -1,9 +1,9 @@
 ---
-import Base from '../../layouts/Base.astro';
-import Checklist from '../../components/Checklist.astro';
-import ProgressPanel from '../../components/ProgressPanel.astro';
-import { tracks } from '../../data/roadmap';
-import { countItems } from '../../data/types';
+import Base from '../../../layouts/Base.astro';
+import Checklist from '../../../components/Checklist.astro';
+import ProgressPanel from '../../../components/ProgressPanel.astro';
+import { tracks } from '../../../data/roadmap';
+import { countItems } from '../../../data/types';
 
 export function getStaticPaths() {
   return tracks.map((track) => ({ params: { track: track.slug }, props: { track } }));
@@ -31,10 +31,10 @@ const others = tracks.filter((t) => t.id !== track.id);
   <div class="panel">
     <div class="wrap">
       <div class="between">
-        <div style="flex: 1; min-width: 200px; max-width: 520px">
+        <div style="flex: 1; min-width: min(200px, 100%); max-width: 520px">
           <div class="between tiny" style="margin-bottom: 0.3rem">
             <span class="dim">{track.short} progress</span>
-            <span class="figure" data-figure-for={group}>—</span>
+            <span class="figure" data-figure-for={group}></span>
           </div>
           <div class="bar thick" data-bar-for={group}><span></span></div>
         </div>
@@ -65,7 +65,7 @@ const others = tracks.filter((t) => t.id !== track.id);
       <div class="grid g3 gap">
         {
           others.map((t) => (
-            <a class="card card-i" href={`${base}/roadmap/${t.slug}`} style="color: inherit">
+            <a class="card card-i" href={`${base}/plan/roadmap/${t.slug}`} style="color: inherit">
               <h3 style="margin: 0 0 0.35rem">{t.short}</h3>
               <p class="small muted" style="margin: 0">{t.tagline}</p>
             </a>

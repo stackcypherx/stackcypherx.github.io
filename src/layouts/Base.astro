@@ -1,7 +1,7 @@
 ---
 import '../styles/global.css';
 import { ClientRouter } from 'astro:transitions';
-import { site, nav } from '../data/site';
+import { site, nav, planNav } from '../data/site';
 import { buildIndex } from '../data/search';
 
 interface Props {
@@ -17,7 +17,7 @@ interface Props {
 
 const { title, description = site.description, heading, lede, eyebrow, display = false } = Astro.props;
 
-const pageTitle = title ? `${title} — ${site.name}` : site.title;
+const pageTitle = title ? `${title} · ${site.name}` : site.title;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const href = (p: string) => (p.startsWith('http') ? p : `${base}${p}` || '/');
 const current = Astro.url.pathname.replace(/\/$/, '') || '/';
@@ -26,6 +26,12 @@ const isCurrent = (p: string) => {
   return current === target || (target !== '/' && current.startsWith(target + '/'));
 };
 const index = JSON.stringify(buildIndex(base));
+const inPlan = current === href('/plan') || current.startsWith(href('/plan') + '/');
+// Track pages live under /plan/roadmap and belong to the Overview entry.
+const isPlanCurrent = (p: string) =>
+  p === '/plan'
+    ? current === href('/plan') || current.startsWith(href('/plan/roadmap'))
+    : current === href(p) || current.startsWith(href(p) + '/');
 ---
 
 <html lang="en">
@@ -43,7 +49,7 @@ const index = JSON.stringify(buildIndex(base));
     <meta property="og:description" content={description} />
     <meta property="og:site_name" content={site.name} />
     <meta property="og:url" content={new URL(Astro.url.pathname, site.url).href} />
-    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:card" content="summary" />
 
     <link
       rel="icon"
@@ -52,11 +58,21 @@ const index = JSON.stringify(buildIndex(base));
 
     <script is:inline>
       (() => {
-        document.documentElement.classList.add('has-js');
-        try {
-          const s = localStorage.getItem('theme');
-          if (s === 'dark' || s === 'light') document.documentElement.setAttribute('data-theme', s);
-        } catch {}
+        const applyTheme = (doc) => {
+          doc.documentElement.classList.add('has-js');
+          try {
+            const s = localStorage.getItem('theme');
+            if (s === 'dark' || s === 'light') doc.documentElement.setAttribute('data-theme', s);
+            if (s === 'dark') doc.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#121210');
+          } catch {}
+        };
+        applyTheme(document);
+        // View Transitions replace <html> attributes with the incoming page's,
+        // so the stored theme is re-applied to that page before it is swapped in.
+        if (!window.__themeSwapWired) {
+          window.__themeSwapWired = true;
+          document.addEventListener('astro:before-swap', (e) => applyTheme(e.newDocument));
+        }
       })();
     </script>
 
@@ -70,9 +86,9 @@ const index = JSON.stringify(buildIndex(base));
           <span>{site.shortName}</span><span class="brand-sub">{site.role}</span>
         </a>
 
-        <button class="icon-btn burger" data-burger aria-label="Menu" aria-expanded="false">☰</button>
+        <button class="icon-btn burger" data-burger aria-expanded="false" aria-controls="primary-nav">Menu</button>
 
-        <nav class="nav" data-nav aria-label="Primary">
+        <nav class="nav" id="primary-nav" data-nav aria-label="Primary">
           {nav.map((n) => (
             <a href={href(n.href)} aria-current={isCurrent(n.href) ? 'page' : undefined}>{n.label}</a>
           ))}
@@ -82,19 +98,28 @@ const index = JSON.stringify(buildIndex(base));
           <span>⌕</span><span class="lbl">Search</span><kbd>⌘K</kbd>
         </button>
 
-        <button class="icon-btn" data-theme-toggle aria-label="Toggle theme">
-          <span data-theme-icon>◐</span>
+        <button class="icon-btn" data-theme-toggle aria-pressed="false" title="Switch between light and dark">
+          <span data-theme-label>Dark</span>
         </button>
       </div>
+      {inPlan && (
+        <nav class="subnav" aria-label="Learning plan">
+          <div class="wrap subnav-in">
+            {planNav.map((n) => (
+              <a href={href(n.href)} aria-current={isPlanCurrent(n.href) ? 'page' : undefined}>{n.label}</a>
+            ))}
+          </div>
+        </nav>
+      )}
     </header>
 
     <main>
       {heading && (
         <section class="hero">
           <div class="wrap hero-in">
-            {eyebrow && <div class="eyebrow" data-reveal>{eyebrow}</div>}
-            <h1 class={display ? 'display' : ''} data-reveal="60">{heading}</h1>
-            {lede && <p class="lede" style="margin-top: 1.3rem" data-reveal="140">{lede}</p>}
+            {eyebrow && <div class="eyebrow">{eyebrow}</div>}
+            <h1 class={display ? 'display' : ''}>{heading}</h1>
+            {lede && <p class="lede" style="margin-top: 1.3rem">{lede}</p>}
             <slot name="hero-extra" />
           </div>
         </section>
@@ -123,7 +148,7 @@ const index = JSON.stringify(buildIndex(base));
           <div>
             <div class="tag" style="margin-bottom: 0.6rem">Colophon</div>
             <p class="tiny dim" style="max-width: 34ch">
-              Astro · hand-written CSS · canvas · no trackers, no analytics, no cookies.
+              Astro · hand-written CSS · no trackers, no analytics, no cookies.
               <a href={site.repo} > Source</a>.
             </p>
           </div>
@@ -131,7 +156,7 @@ const index = JSON.stringify(buildIndex(base));
 
         <p class="tiny dim" style="margin-top: 2.2rem; max-width: 84ch; border-top: 1px solid var(--rule); padding-top: 1.2rem">
           Roadmap research current as of September 2026. Certification costs, exam codes, visa
-          thresholds and platform pricing change — verify against the official source before booking
+          thresholds and platform pricing change, so verify against the official source before booking
           or applying. Nothing here is immigration or financial advice.
         </p>
       </div>

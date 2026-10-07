@@ -1,28 +1,41 @@
 /**
- * Client runtime: progress store, reveals, counters, spotlight, scrollspy,
- * command palette, filters, and the hero network canvas.
+ * Client runtime: progress store, scrollspy, command palette, filters, theme.
  *
  * Everything re-initialises on `astro:page-load` so it survives View Transitions.
  * Listeners that must not stack are registered once, guarded by `wired`.
  */
-
-const reduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /* ══════════════════════════════════════════════════════ progress store */
 
 const STORE = 'gtr.progress.v1';
 type State = Record<string, true>;
 
+let storageOk = true;
+
 function load(): State {
   try {
     const raw = localStorage.getItem(STORE);
     return raw ? (JSON.parse(raw) as State) : {};
   } catch {
+    storageOk = false;
     return {};
   }
 }
 function save(s: State) {
-  try { localStorage.setItem(STORE, JSON.stringify(s)); } catch { /* private mode */ }
+  try {
+    localStorage.setItem(STORE, JSON.stringify(s));
+    storageOk = true;
+  } catch {
+    storageOk = false;
+  }
+  showStorageWarning();
+}
+
+// Blocked storage (private mode, disabled site data) would otherwise lose every tick silently.
+function showStorageWarning() {
+  document.querySelectorAll<HTMLElement>('[data-storage-warning]').forEach((el) => {
+    el.hidden = storageOk;
+  });
 }
 
 let state = load();
@@ -67,112 +80,7 @@ function refreshBars() {
 function hydrate() {
   for (const el of boxes()) el.checked = state[el.dataset.key!] === true;
   refreshBars();
-}
-
-/* ══════════════════════════════════════════════════════════ reveals */
-
-let revealObs: IntersectionObserver | null = null;
-
-function initReveals() {
-  revealObs?.disconnect();
-  const targets = document.querySelectorAll<HTMLElement>('[data-reveal]');
-  if (reduced()) { targets.forEach((t) => t.classList.add('in')); return; }
-
-  const revealAll = () => targets.forEach((t) => t.classList.add('in'));
-
-  // A hidden tab suspends IntersectionObserver and rAF entirely. Without these
-  // two guards, restoring a backgrounded tab shows a blank page.
-  if (document.hidden) {
-    document.addEventListener('visibilitychange', function onVis() {
-      if (document.hidden) return;
-      document.removeEventListener('visibilitychange', onVis);
-      initReveals();
-    });
-  }
-  // Last-resort: whatever has not been revealed after 2s gets revealed anyway.
-  window.setTimeout(revealAll, 2000);
-
-  revealObs = new IntersectionObserver(
-    (entries) => {
-      for (const e of entries) {
-        if (!e.isIntersecting) continue;
-        const el = e.target as HTMLElement;
-        const delay = Number(el.dataset.reveal) || 0;
-        window.setTimeout(() => el.classList.add('in'), delay);
-        revealObs!.unobserve(el);
-      }
-    },
-    { rootMargin: '0px 0px -8% 0px', threshold: 0.06 },
-  );
-  targets.forEach((t) => revealObs!.observe(t));
-
-  // timeline dots light up as they enter
-  const dots = document.querySelectorAll<HTMLElement>('.tl > li');
-  if (dots.length) {
-    const o = new IntersectionObserver(
-      (es) => es.forEach((e) => e.isIntersecting && e.target.classList.add('in')),
-      { rootMargin: '0px 0px -30% 0px' },
-    );
-    dots.forEach((d) => o.observe(d));
-  }
-}
-
-/* ═════════════════════════════════════════════════════════ counters */
-
-function initCounters() {
-  const els = document.querySelectorAll<HTMLElement>('[data-count]');
-  if (!els.length) return;
-
-  const run = (el: HTMLElement) => {
-    const target = Number(el.dataset.count);
-    if (!Number.isFinite(target)) return;
-    const suffix = el.dataset.countSuffix ?? '';
-    if (reduced()) { el.textContent = target.toLocaleString() + suffix; return; }
-
-    const dur = 1100;
-    const t0 = performance.now();
-    const tick = (now: number) => {
-      const p = Math.min((now - t0) / dur, 1);
-      const eased = 1 - Math.pow(1 - p, 3);
-      el.textContent = Math.round(target * eased).toLocaleString() + suffix;
-      if (p < 1) requestAnimationFrame(tick);
-    };
-    requestAnimationFrame(tick);
-  };
-
-  const o = new IntersectionObserver(
-    (es) => es.forEach((e) => {
-      if (!e.isIntersecting) return;
-      run(e.target as HTMLElement);
-      o.unobserve(e.target);
-    }),
-    { threshold: 0.4 },
-  );
-  els.forEach((e) => o.observe(e));
-
-  // If the tab never becomes visible, still show the final numbers.
-  window.setTimeout(() => {
-    els.forEach((el) => {
-      if (el.textContent === '0') {
-        const n = Number(el.dataset.count);
-        if (Number.isFinite(n)) el.textContent = n.toLocaleString() + (el.dataset.countSuffix ?? '');
-      }
-    });
-  }, 2500);
-}
-
-/* ═════════════════════════════════════════════════════════ spotlight */
-
-function initSpotlight() {
-  document.querySelectorAll<HTMLElement>('.spot').forEach((el) => {
-    if (el.dataset.spotWired) return;
-    el.dataset.spotWired = '1';
-    el.addEventListener('pointermove', (ev) => {
-      const r = el.getBoundingClientRect();
-      el.style.setProperty('--mx', `${ev.clientX - r.left}px`);
-      el.style.setProperty('--my', `${ev.clientY - r.top}px`);
-    });
-  });
+  showStorageWarning();
 }
 
 /* ═════════════════════════════════════════════════════════ scrollspy */
@@ -209,10 +117,12 @@ function initPalette() {
   if (!modal || !input || !list) return;
 
   let docs: Doc[] = [];
-  try { docs = JSON.parse(document.getElementById('search-index')?.textContent || '[]'); } catch { /* */ }
+  let indexOk = true;
+  try { docs = JSON.parse(document.getElementById('search-index')?.textContent || '[]'); } catch { indexOk = false; }
 
   let results: Doc[] = [];
   let cursor = 0;
+  let returnFocus: HTMLElement | null = null;
 
   const score = (d: Doc, q: string) => {
     const hay = `${d.t} ${d.s} ${d.k ?? ''}`.toLowerCase();
@@ -226,15 +136,21 @@ function initPalette() {
     return i === q.length ? 12 : 0;
   };
 
-  const render = () => {
+  const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]!));
+
+  const render = (query = '') => {
+    if (!indexOk) {
+      list.innerHTML = `<div class="cmdk-empty">The search index failed to load. Reload the page, or use the menu.</div>`;
+      return;
+    }
     if (!results.length) {
-      list.innerHTML = `<div class="cmdk-empty">No matches</div>`;
+      list.innerHTML = `<div class="cmdk-empty">Nothing matches “${esc(query)}”. Try a cert code, a room name, or a track.</div>`;
       return;
     }
     list.innerHTML = results
       .map(
         (r, i) =>
-          `<a class="cmdk-item" role="option" aria-selected="${i === cursor}" href="${r.u}" data-i="${i}">
+          `<a class="cmdk-item" role="option" aria-selected="${i === cursor}" href="${r.u}" data-i="${i}" tabindex="-1">
              <span class="t">${esc(r.t)}</span><span class="s">${esc(r.s)}</span>
            </a>`,
       )
@@ -242,10 +158,10 @@ function initPalette() {
     list.querySelector<HTMLElement>('[aria-selected="true"]')?.scrollIntoView({ block: 'nearest' });
   };
 
-  const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]!));
-
+  let lastQuery = '';
   const search = (q: string) => {
-    const query = q.trim().toLowerCase();
+    lastQuery = q.trim();
+    const query = lastQuery.toLowerCase();
     results = !query
       ? docs.slice(0, 8)
       : docs
@@ -255,10 +171,11 @@ function initPalette() {
           .slice(0, 24)
           .map((x) => x.d);
     cursor = 0;
-    render();
+    render(lastQuery);
   };
 
   const open = () => {
+    returnFocus = document.activeElement as HTMLElement | null;
     modal.classList.add('show');
     document.body.style.overflow = 'hidden';
     input.value = '';
@@ -266,8 +183,11 @@ function initPalette() {
     input.focus();
   };
   const close = () => {
+    if (!modal.classList.contains('show')) return;
     modal.classList.remove('show');
     document.body.style.overflow = '';
+    returnFocus?.focus();
+    returnFocus = null;
   };
 
   input.addEventListener('input', () => search(input.value));
@@ -277,37 +197,34 @@ function initPalette() {
     const item = (e.target as HTMLElement).closest<HTMLElement>('.cmdk-item');
     if (!item) return;
     const i = Number(item.dataset.i);
-    if (i !== cursor) { cursor = i; render(); }
+    if (i !== cursor) { cursor = i; render(lastQuery); }
   });
 
   input.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowDown') { e.preventDefault(); cursor = (cursor + 1) % Math.max(results.length, 1); render(); }
-    else if (e.key === 'ArrowUp') { e.preventDefault(); cursor = (cursor - 1 + results.length) % Math.max(results.length, 1); render(); }
+    if (e.key === 'ArrowDown') { e.preventDefault(); cursor = (cursor + 1) % Math.max(results.length, 1); render(lastQuery); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); cursor = (cursor - 1 + results.length) % Math.max(results.length, 1); render(lastQuery); }
     else if (e.key === 'Enter') {
       e.preventDefault();
       const r = results[cursor];
       if (r) { close(); window.location.href = r.u; }
     } else if (e.key === 'Escape') { close(); }
+    // The input is the only tab stop inside the dialog; results are driven by the arrow keys.
+    else if (e.key === 'Tab') { e.preventDefault(); }
   });
 
   document.querySelectorAll('[data-cmdk-open]').forEach((b) => b.addEventListener('click', open));
 
+  (window as any).__cmdk = { open, close, isOpen: () => modal.classList.contains('show') };
+
   if (!(window as any).__cmdkKeys) {
     (window as any).__cmdkKeys = true;
     document.addEventListener('keydown', (e) => {
+      const api = (window as any).__cmdk;
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault();
-        const m = document.querySelector<HTMLElement>('[data-cmdk]');
-        if (m?.classList.contains('show')) {
-          m.classList.remove('show'); document.body.style.overflow = '';
-        } else {
-          document.querySelector<HTMLElement>('[data-cmdk-open]')?.click();
-        }
+        if (api.isOpen()) api.close(); else api.open();
       }
-      if (e.key === 'Escape') {
-        const m = document.querySelector<HTMLElement>('[data-cmdk]');
-        if (m?.classList.contains('show')) { m.classList.remove('show'); document.body.style.overflow = ''; }
-      }
+      if (e.key === 'Escape' && api.isOpen()) api.close();
     });
   }
 }
@@ -348,19 +265,24 @@ function initFilters() {
 
 /* ═══════════════════════════════════════════════════ chrome + one-time */
 
+const THEME_COLOR = { light: '#fcfbf8', dark: '#121210' };
+
 function initChrome() {
   const root = document.documentElement;
   // Light is the design's default. Dark applies only when explicitly chosen,
   // so the OS preference never overrides the intended presentation.
   const effective = () => (root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
   const paint = () => {
-    const i = document.querySelector('[data-theme-icon]');
-    if (i) i.textContent = effective() === 'dark' ? '☀' : '☾';
+    const mode = effective();
+    const label = document.querySelector('[data-theme-label]');
+    if (label) label.textContent = mode === 'dark' ? 'Light' : 'Dark';
+    document.querySelector('[data-theme-toggle]')?.setAttribute('aria-pressed', String(mode === 'dark'));
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', THEME_COLOR[mode]);
   };
   document.querySelector('[data-theme-toggle]')?.addEventListener('click', () => {
     const next = effective() === 'dark' ? 'light' : 'dark';
     root.setAttribute('data-theme', next);
-    try { localStorage.setItem('theme', next); } catch { /* */ }
+    try { localStorage.setItem('theme', next); } catch { /* the choice lasts for this page only */ }
     paint();
   });
   paint();
@@ -383,6 +305,7 @@ function initProgressControls() {
     a.download = `progress-${new Date().toISOString().slice(0, 10)}.json`;
     a.click();
     URL.revokeObjectURL(a.href);
+    say('Progress exported as a JSON file.');
   });
 
   document.querySelector('[data-progress-import]')?.addEventListener('click', () => {
@@ -432,11 +355,13 @@ function say(msg: string) {
 let wired = false;
 
 function init() {
+  // Both the readyState check and astro:page-load can fire for the same document.
+  // View Transitions swap <body>, so a flag on it marks one init per page.
+  if (document.body.dataset.uiInit) return;
+  document.body.dataset.uiInit = '1';
+
   state = load();
   hydrate();
-  initReveals();
-  initCounters();
-  initSpotlight();
   initRail();
   initPalette();
   initFilters();
@@ -461,5 +386,5 @@ document.addEventListener('astro:page-load', init);
 if (document.readyState !== 'loading') init();
 else document.addEventListener('DOMContentLoaded', init, { once: true });
 
-// Module scope — keeps this file out of the global script namespace.
+// Module scope: keeps this file out of the global script namespace.
 export {};

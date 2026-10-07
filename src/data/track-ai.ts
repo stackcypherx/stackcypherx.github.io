@@ -3,13 +3,13 @@ import type { Track } from './types';
 export const ai: Track = {
   id: 'a',
   slug: 'ai-agentic',
-  title: 'Track 3 — AI, Agentic Systems & Agentic Engineering',
+  title: 'Track 3: AI, Agentic Systems & Agentic Engineering',
   short: 'AI / Agentic',
   tagline: 'Evals are the new system design. Orchestration is the new coding.',
   icon: '◈',
   accent: '#6b5bd6',
   summary:
-    'This is the least saturated and fastest-moving of the three tracks, and the one where certificates matter least and artifacts matter most. The path runs: solid Python, honest LLM fundamentals, one real RAG system, then agents, then the thing almost nobody builds — evaluation. Running alongside all of it is the craft of working with coding agents, which has stopped being a novelty and started appearing in job requirements.',
+    'This is the least saturated and fastest-moving of the three tracks, and the one where certificates matter least and artifacts matter most. The path runs: solid Python, honest LLM fundamentals, one real RAG system, then agents, then the part few people build properly: evaluation. Running alongside all of it is the craft of working with coding agents, which has stopped being a novelty and started appearing in job requirements.',
   roles: [
     'AI Engineer',
     'LLM / Agent Engineer',
@@ -19,7 +19,7 @@ export const ai: Track = {
     'Forward-Deployed / Solutions Engineer (AI)',
   ],
   marketNote:
-    'Job postings referencing agentic AI grew from 151 to 16,541 between 2024 and 2025 — the steepest rise of any skill in this plan. Hiring managers screen portfolio first and certificates second here: one production RAG system with a real eval table beats five tutorial clones, and 3–5 deeply-evaluated projects with live URLs is the target shape.',
+    'Agentic AI is showing up in more job postings each year. Hiring managers screen portfolio first and certificates second here: one production RAG system with a real eval table beats five tutorial clones, and 3–5 deeply-evaluated projects with live URLs is the target shape.',
   phases: [
     {
       id: 'a1',
@@ -65,7 +65,7 @@ export const ai: Track = {
           title: 'Prompt engineering as measurement, not vibes',
           kind: 'skill',
           detail:
-            'System prompts, few-shot, chain-of-thought, output schemas, prefilling, prompt caching, decomposition. The discipline is not "find the magic words" — it is "change one variable, measure the delta".',
+            'System prompts, few-shot, chain-of-thought, output schemas, prefilling, prompt caching, decomposition. The discipline is not "find the magic words"; it is "change one variable, measure the delta".',
           evidence: 'Ten documented experiments with a before/after accuracy or cost number for each.',
           links: [{ label: 'Anthropic prompt engineering docs', url: 'https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview' }],
           weight: 3,
@@ -82,10 +82,10 @@ export const ai: Track = {
     },
     {
       id: 'a2',
-      title: 'Build with LLM APIs — ship one real RAG system',
+      title: 'Build with LLM APIs: ship one real RAG system',
       window: 'Month 3–7',
       goal: 'Move from notebooks to a service other people can use at a URL.',
-      exit: 'One deployed RAG application with a public eval table. Not a demo — a thing with users, even if the users are three friends.',
+      exit: 'One deployed RAG application with a public eval table and real users, even if the users are three friends.',
       items: [
         {
           title: 'SDK fluency and tool calling',
@@ -115,7 +115,7 @@ export const ai: Track = {
           title: '★ Flagship: a production RAG application',
           kind: 'project',
           detail:
-            'Pick a corpus you genuinely care about — your own security notes, network runbooks, Indonesian-language technical docs. Include citations back to source, handle "I do not know", and measure retrieval precision/recall separately from answer quality.',
+            'Pick a corpus you genuinely care about: your own security notes, network runbooks, Indonesian-language technical docs. Include citations back to source, handle "I do not know", and measure retrieval precision/recall separately from answer quality.',
           evidence: 'Live URL + repo + a README with an eval table and a named list of known failure modes.',
           weight: 8,
         },
@@ -140,7 +140,7 @@ export const ai: Track = {
           title: 'Agent loop fundamentals',
           kind: 'skill',
           detail:
-            'ReAct, plan-then-execute, reflection, state machines vs free-running loops, memory (short-term context vs persistent store), termination conditions, and knowing when a workflow beats an agent — which is most of the time.',
+            'ReAct, plan-then-execute, reflection, state machines vs free-running loops, memory (short-term context vs persistent store), termination conditions, and knowing when a workflow beats an agent, which is most of the time.',
           evidence: 'A from-scratch agent loop in under 200 lines, no framework, with a written comparison against a framework version.',
           weight: 5,
         },
@@ -156,13 +156,13 @@ export const ai: Track = {
           title: 'Model Context Protocol (MCP)',
           kind: 'project',
           detail:
-            'Build your own MCP server exposing something real — your NetBox lab, your notes, your detection rules — and connect it to a client. MCP has become the standard integration surface and building one is a strong, current signal.',
+            'Build your own MCP server exposing something real (your NetBox lab, your notes, your detection rules) and connect it to a client. MCP has become the standard integration surface and building one is a strong, current signal.',
           evidence: 'A published MCP server with a README, installation instructions, and a demo GIF.',
           links: [{ label: 'Model Context Protocol', url: 'https://modelcontextprotocol.io/' }],
           weight: 6,
         },
         {
-          title: 'Agent frameworks — one, deeply',
+          title: 'Agent frameworks: one, deeply',
           kind: 'skill',
           detail:
             'Claude Agent SDK, LangGraph, or CrewAI. Learn one properly and understand what it is doing under the hood; framework-hopping reads as inexperience.',
@@ -196,7 +196,7 @@ export const ai: Track = {
     },
     {
       id: 'a4',
-      title: 'Evals and LLMOps — the skill everyone asks about and nobody has',
+      title: 'Evals and LLMOps: the skill interviewers ask about most',
       window: 'Month 9–16 · overlaps a3 deliberately',
       goal: 'Be able to prove your system works, and detect the day it stops working.',
       exit: 'A public eval harness with CI gating, plus one blog post containing a real eval table and a failure taxonomy.',
@@ -205,7 +205,7 @@ export const ai: Track = {
           title: 'Build a real eval suite',
           kind: 'project',
           detail:
-            'Golden datasets, task-specific metrics, LLM-as-judge with its own validation against human labels, pairwise comparison, statistical significance on small sets. "Eval is the new system design" — and it is the most under-built skill relative to how often interviewers ask about it.',
+            'Golden datasets, task-specific metrics, LLM-as-judge with its own validation against human labels, pairwise comparison, statistical significance on small sets. "Eval is the new system design", and it is the most under-built skill relative to how often interviewers ask about it.',
           evidence: 'An `evals` repo with datasets, scoring code, and versioned results over time.',
           links: [
             { label: 'Ragas', url: 'https://docs.ragas.io/' },
@@ -227,7 +227,7 @@ export const ai: Track = {
           kind: 'skill',
           detail:
             'Evals run on every PR; a merge is blocked if quality drops beyond a threshold. Cheap to build, extremely rare in portfolios, and instantly legible to a senior interviewer.',
-          evidence: 'A GitHub Actions workflow that fails a PR on eval regression — with a screenshot of it doing so.',
+          evidence: 'A GitHub Actions workflow that fails a PR on eval regression, with a screenshot of it doing so.',
           weight: 5,
         },
         {
@@ -241,7 +241,7 @@ export const ai: Track = {
           title: '★ Red-teaming your own AI systems',
           kind: 'project',
           detail:
-            'Direct and indirect prompt injection, tool-abuse chains, data exfiltration through agent context, jailbreak suites, unsafe-output testing. This is where this track fuses with the security track — and the fusion is the rarest profile in the 2026 market.',
+            'Direct and indirect prompt injection, tool-abuse chains, data exfiltration through agent context, jailbreak suites, unsafe-output testing. This is where this track fuses with the security track, and that combination is uncommon in the 2026 market.',
           evidence: 'An automated adversarial eval suite + a published findings report against your own agent.',
           links: [
             { label: 'OWASP Top 10 for LLM Apps', url: 'https://owasp.org/www-project-top-10-for-large-language-model-applications/' },
@@ -262,7 +262,7 @@ export const ai: Track = {
           title: 'Understand what changed',
           kind: 'skill',
           detail:
-            'In February 2026 Karpathy called the vibe-coding era effectively over and proposed "agentic engineering": you are not writing the code 99% of the time, you are orchestrating agents and acting as oversight — and there is real expertise in doing that well. Know this framing; it is the language hiring managers now use.',
+            'In February 2026 Karpathy called the vibe-coding era effectively over and proposed "agentic engineering": you are not writing the code 99% of the time, you are orchestrating agents and acting as oversight, and there is real expertise in doing that well. Know this framing; it is the language hiring managers now use.',
           evidence: 'A published position piece on where you draw the line between the two.',
           links: [{ label: 'Simon Willison on vibe coding vs agentic engineering', url: 'https://simonwillison.net/2026/May/6/vibe-coding-and-agentic-engineering/' }],
           weight: 2,
@@ -271,7 +271,7 @@ export const ai: Track = {
           title: 'Spec-driven development',
           kind: 'skill',
           detail:
-            'Write the specification before the prompt: problem, constraints, interfaces, acceptance criteria, non-goals. Detailed requirements beat open-ended prompts consistently — the spec is now the primary artifact you author.',
+            'Write the specification before the prompt: problem, constraints, interfaces, acceptance criteria, non-goals. Detailed requirements beat open-ended prompts consistently; the spec is now the primary artifact you author.',
           evidence: 'Three specs in your repos, each with the resulting implementation linked.',
           weight: 4,
         },
@@ -292,7 +292,7 @@ export const ai: Track = {
           weight: 4,
         },
         {
-          title: 'Review discipline — the non-negotiable part',
+          title: 'Review discipline: the non-negotiable part',
           kind: 'habit',
           detail:
             'Velocity without review discipline is a liability, not a skill. Small diffs, tests as the gate, read every line before merge, architectural review by you and not the model, conventional commits. Employers are already screening for whether you understand this.',
@@ -310,7 +310,7 @@ export const ai: Track = {
           title: 'Write "How I work with agents"',
           kind: 'signal',
           detail:
-            'A single document describing your method, with real examples and real failures. Job descriptions at AI-native companies now list "experience building with Claude" and "agentic workflow fluency" as requirements — this document is how you answer that before anyone asks.',
+            'A single document describing your method, with real examples and real failures. Job descriptions at AI-native companies now list "experience building with Claude" and "agentic workflow fluency" as requirements. This document is how you answer that before anyone asks.',
           evidence: 'A published essay, linked from the top of your CV.',
           weight: 4,
         },
@@ -331,11 +331,11 @@ export const ai: Track = {
           weight: 4,
         },
         {
-          title: 'Fine-tuning — and knowing when not to',
+          title: 'Fine-tuning, and knowing when not to',
           kind: 'skill',
           detail:
             'LoRA/QLoRA, dataset curation as the real work, distillation, and the honest default: prompting plus retrieval plus evals solves most problems more cheaply. Being able to argue against fine-tuning is a senior signal.',
-          evidence: 'One fine-tune with a measured comparison against a prompted baseline — including the case where the baseline won.',
+          evidence: 'One fine-tune with a measured comparison against a prompted baseline, including the case where the baseline won.',
           weight: 4,
         },
         {
@@ -349,7 +349,7 @@ export const ai: Track = {
           title: 'One cloud AI certification for the ATS',
           kind: 'cert',
           detail:
-            'AWS AI Practitioner (AIF-C01) or Azure AI-102 to get through automated filters cheaply. Google Professional ML Engineer if you want the most technically respected option. NVIDIA DLI for GPU/deep-learning depth. Certificates get you into the room here; projects get the offer — budget accordingly.',
+            'AWS AI Practitioner (AIF-C01) or Azure AI-102 to get through automated filters cheaply. Google Professional ML Engineer if you want the most technically respected option. NVIDIA DLI for GPU/deep-learning depth. Certificates get you into the room here; projects get the offer. Budget accordingly.',
           evidence: 'One badge. Resist collecting more.',
           weight: 4,
         },

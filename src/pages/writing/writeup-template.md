@@ -1,6 +1,6 @@
 ---
 layout: ../../layouts/Note.astro
-title: Template — the writeup format I use
+title: "Template: the writeup format I use"
 description: A reusable structure for room, box, and incident writeups. Copy this file, replace the content, keep the shape.
 date: 2026-09-28
 track: Meta
@@ -8,14 +8,14 @@ tags: [template, method]
 lang: en
 ---
 
-Copy `src/pages/notes/writeup-template.md`, rename it, replace the content. The shape matters more
+Copy `src/pages/writing/writeup-template.md`, rename it, replace the content. The shape matters more
 than the prose: consistency is what makes a body of writeups read as a portfolio rather than a pile
 of posts.
 
 ## Target
 
 What it is, where it lives, why I picked it. One or two lines. If it is a deliberately vulnerable
-target or an authorised engagement, say so explicitly here — every writeup should make its legal
+target or an authorised engagement, say so explicitly here. Every writeup should make its legal
 basis obvious to a reader who arrives cold.
 
 ## Goal
@@ -30,7 +30,7 @@ without sqlmap" is a goal. "Get the flag" is not.
 nmap -sC -sV -oA scans/initial 10.10.10.10
 ```
 
-What the output told me, and — more useful — what I expected and did not find.
+What the output told me, and (more useful) what I expected and did not find.
 
 ## What I tried that failed
 
@@ -51,7 +51,7 @@ Same discipline: what I enumerated, what I found, why the misconfiguration exist
 
 What would have caught this? Which log, which detection, which control. Two or three lines.
 
-Every offensive writeup that includes this section is worth roughly double one that does not — it
+Every offensive writeup that includes this section is worth roughly double one that does not. It
 demonstrates that I understand what I am doing rather than which tool to run, and it is directly
 reusable in a blue-team interview.
 

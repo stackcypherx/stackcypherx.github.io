@@ -3,13 +3,13 @@ import type { Track } from './types';
 export const network: Track = {
   id: 'n',
   slug: 'network-engineering',
-  title: 'Track 2 — Network Engineering',
+  title: 'Track 2: Network Engineering',
   short: 'Networks',
   tagline: 'CCNA gets you read. Automation gets you paid.',
   icon: '⇄',
   accent: '#2f9e6e',
   summary:
-    'Network engineering did not die — it split. The half that only configures switches by hand is shrinking; the half that treats the network as code is the fastest-growing infrastructure specialisation. This track takes you through genuine wire-level fundamentals, then deliberately over-invests in NetDevOps, because that is where the salary premium sits.',
+    'Network engineering did not die; it split. The half that only configures switches by hand is shrinking; the half that treats the network as code is the fastest-growing infrastructure specialisation. This track takes you through genuine wire-level fundamentals, then deliberately over-invests in NetDevOps, because that is where the salary premium sits.',
   roles: [
     'Network Engineer',
     'Network Automation Engineer / NetDevOps',
@@ -19,7 +19,7 @@ export const network: Track = {
     'Network Architect',
   ],
   marketNote:
-    'CCNA as a foundation is still worth it; CCNA as your only preparation is not — the market moved past single-certificate entry. In current postings, automation appears in about 33% and Python in about 22%. The premiums are concrete: observability tooling around +USD 38k, CI/CD experience +USD 35k, Terraform +USD 16k over baseline.',
+    'CCNA as a foundation is still worth it; CCNA as your only preparation is not, because the market moved past single-certificate entry. In current postings, automation appears in about 33% and Python in about 22%. The premiums are concrete: observability tooling around +USD 38k, CI/CD experience +USD 35k, Terraform +USD 16k over baseline.',
   phases: [
     {
       id: 'n1',
@@ -56,7 +56,7 @@ export const network: Track = {
           title: 'Build labs in free simulators and emulators',
           kind: 'lab',
           detail:
-            'Cisco Packet Tracer (free, fine for CCNA), then GNS3 or EVE-NG for real images, then Containerlab with FRR/SONiC/Arista cEOS — Containerlab is the modern, automation-friendly choice and looks current on a CV.',
+            'Cisco Packet Tracer (free, fine for CCNA), then GNS3 or EVE-NG for real images, then Containerlab with FRR/SONiC/Arista cEOS. Containerlab is the modern, automation-friendly choice and looks current on a CV.',
           evidence: 'A `net-labs` repo where every topology is a committed YAML/`.clab` file, not a screenshot.',
           links: [
             { label: 'Containerlab', url: 'https://containerlab.dev/' },
@@ -69,7 +69,7 @@ export const network: Track = {
           title: 'CompTIA Network+ (optional)',
           kind: 'cert',
           detail:
-            'Vendor-neutral, maps to US DoD 8140, and useful if your target employers are not Cisco shops. Skip it if you are going straight to CCNA and money is tight — the overlap is heavy.',
+            'Vendor-neutral, maps to US DoD 8140, and useful if your target employers are not Cisco shops. Skip it if you are going straight to CCNA and money is tight, because the overlap is heavy.',
           evidence: 'Network+ badge, or a written decision that you are skipping it and why.',
           weight: 2,
         },
@@ -78,7 +78,7 @@ export const network: Track = {
           kind: 'skill',
           detail:
             'Copper vs fibre, single vs multimode, SFP/QSFP form factors, DAC vs AOC, power budgets, PoE, patch-panel discipline. Field engineers notice immediately whether you have touched hardware.',
-          evidence: 'A short illustrated note — even from lab gear or photos of a rack you have seen.',
+          evidence: 'A short illustrated note, even from lab gear or photos of a rack you have seen.',
           weight: 1,
         },
       ],
@@ -94,7 +94,7 @@ export const network: Track = {
           title: 'Pass CCNA 200-301 v1.1',
           kind: 'cert',
           detail:
-            'Note that the v1.1 refresh added generative AI, machine learning, and cloud network management content — so the exam now formally expects you to understand how AI tooling participates in network operations. Roughly a quarter of the blueprint is automation and programmability.',
+            'Note that the v1.1 refresh added generative AI, machine learning, and cloud network management content, so the exam now formally expects you to understand how AI tooling participates in network operations. Roughly a quarter of the blueprint is automation and programmability.',
           evidence: 'CCNA badge + a public study-notes repo organised by exam domain.',
           links: [
             { label: 'CCNA exam topics', url: 'https://learningnetwork.cisco.com/s/ccna-exam-topics' },
@@ -113,7 +113,7 @@ export const network: Track = {
           title: 'Network security fundamentals from the network side',
           kind: 'skill',
           detail:
-            'Port security, DHCP snooping, dynamic ARP inspection, 802.1X/NAC, site-to-site VPN, firewall zones. Your security track and this track meet here — exploit it.',
+            'Port security, DHCP snooping, dynamic ARP inspection, 802.1X/NAC, site-to-site VPN, firewall zones. Your security track and this track meet here, so use it.',
           evidence: 'A hardened-switch baseline config, published with justification per line.',
           weight: 3,
         },
@@ -129,7 +129,7 @@ export const network: Track = {
     },
     {
       id: 'n3',
-      title: 'NetDevOps — the actual differentiator',
+      title: 'NetDevOps: the actual differentiator',
       window: 'Month 7–14',
       goal: 'Stop configuring devices. Start deploying network state from a repository, with tests.',
       exit: 'A pipeline that validates and deploys a network change from a pull request. This is the portfolio piece that changes your salary band.',
@@ -139,7 +139,7 @@ export const network: Track = {
           kind: 'skill',
           detail:
             'Netmiko for SSH, NAPALM for vendor abstraction, Nornir for inventory and parallel execution, Scrapli for speed, TextFSM/ntc-templates for parsing CLI output into structured data.',
-          evidence: 'A tool you use weekly — e.g. a config-diff and drift-report script across your lab fleet.',
+          evidence: 'A tool you use weekly, e.g. a config-diff and drift-report script across your lab fleet.',
           links: [{ label: 'Nornir', url: 'https://nornir.readthedocs.io/' }],
           weight: 5,
         },
@@ -171,7 +171,7 @@ export const network: Track = {
           title: 'Source of truth: NetBox or Nautobot',
           kind: 'project',
           detail:
-            'Model your lab — sites, racks, devices, interfaces, prefixes, VLANs — then drive Ansible from the NetBox API instead of static inventory. This is how mature network teams actually work.',
+            'Model your lab (sites, racks, devices, interfaces, prefixes, VLANs), then drive Ansible from the NetBox API instead of static inventory. This is how mature network teams actually work.',
           evidence: 'A running NetBox instance (docker-compose, committed) populated by script, feeding your automation.',
           links: [{ label: 'NetBox', url: 'https://github.com/netbox-community/netbox' }],
           weight: 5,
@@ -237,7 +237,7 @@ export const network: Track = {
           title: 'Cloud networking depth',
           kind: 'cert',
           detail:
-            'AWS VPC, Transit Gateway, Direct Connect, Route 53, PrivateLink; Azure VNet peering, ExpressRoute, Virtual WAN. Target the AWS Advanced Networking Specialty (ANS-C01) — small candidate pool, strong signal.',
+            'AWS VPC, Transit Gateway, Direct Connect, Route 53, PrivateLink; Azure VNet peering, ExpressRoute, Virtual WAN. Target the AWS Advanced Networking Specialty (ANS-C01): small candidate pool, strong signal.',
           evidence: 'ANS-C01 badge + a Terraform multi-account/hub-spoke reference architecture.',
           weight: 6,
         },
@@ -286,7 +286,7 @@ export const network: Track = {
           title: '★ AIOps for networks',
           kind: 'project',
           detail:
-            'Anomaly detection over your telemetry, and an LLM agent with read-only tools over NetBox and device APIs that answers "why is this slow?" with evidence. This is the network × AI overlap almost nobody in the market has yet.',
+            'Anomaly detection over your telemetry, and an LLM agent with read-only tools over NetBox and device APIs that answers "why is this slow?" with evidence. This is the network × AI overlap, and few candidates can show it yet.',
           evidence: 'A published agent + evaluation showing it beats a naive baseline on real tickets you wrote.',
           weight: 8,
         },
@@ -294,7 +294,7 @@ export const network: Track = {
           title: 'Expert certification (long horizon)',
           kind: 'cert',
           detail:
-            'CCIE Enterprise Infrastructure (written + 8-hour lab) or JNCIE. This is a 12–18 month commitment on top of everything else — only worth it if you are staying deep in networking rather than pivoting to platform or security.',
+            'CCIE Enterprise Infrastructure (written + 8-hour lab) or JNCIE. This is a 12–18 month commitment on top of everything else, and only worth it if you are staying deep in networking rather than pivoting to platform or security.',
           evidence: 'CCIE written passed as the first checkpoint.',
           weight: 8,
         },

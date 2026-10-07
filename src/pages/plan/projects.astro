@@ -1,8 +1,8 @@
 ---
-import Base from '../layouts/Base.astro';
-import SectionHead from '../components/SectionHead.astro';
-import { projects } from '../data/projects';
-import { slug } from '../data/types';
+import Base from '../../layouts/Base.astro';
+import SectionHead from '../../components/SectionHead.astro';
+import { projects } from '../../data/projects';
+import { slug } from '../../data/types';
 
 const tiers = ['Flagship', 'Portfolio', 'Starter'] as const;
 const trackNames = ['Cyber', 'Networks', 'AI', 'Cross-track'] as const;
@@ -18,7 +18,7 @@ const shipped = projects.filter((p) => p.status === 'shipped').length;
   title="Projects"
   eyebrow="Portfolio briefs"
   heading="Projects"
-  lede={`${projects.length} briefs, each with the signals it sends to a hiring manager and concrete acceptance criteria. ${shipped} shipped so far. Fill in the repo and live links as they exist — an unlinked project is a plan, not a portfolio.`}
+  lede={`${projects.length} briefs, each with the signals it sends to a hiring manager and concrete acceptance criteria. ${shipped} shipped so far. Repo and live links appear as each one ships. Until then, a project is a plan.`}
 >
   <div class="wrap stack-lg">
     <section>
@@ -26,7 +26,7 @@ const shipped = projects.filter((p) => p.status === 'shipped').length;
         <p class="small" style="margin: 0">
           <b>Six pinned repos, maximum.</b> Each with a README containing a screenshot or GIF, a live
           link where applicable, an eval table where relevant, and a "what I would do differently"
-          section. Archive everything else — a profile with 40 abandoned repos reads worse than one
+          section. Archive everything else. A profile with 40 abandoned repos reads worse than one
           with four finished ones.
         </p>
       </div>
@@ -49,7 +49,7 @@ const shipped = projects.filter((p) => p.status === 'shipped').length;
                 title={tier}
                 note={
                   tier === 'Flagship'
-                    ? 'The ones that change how you are read. Two of these sit in cross-track overlaps that almost nobody occupies.'
+                    ? 'The ones that change how you are read. Two of these sit where two tracks overlap.'
                     : tier === 'Portfolio'
                       ? 'Solid evidence of specific competence. Fast to build once the foundations are there.'
                       : 'Early wins that also make everything afterwards easier.'
@@ -76,7 +76,7 @@ const shipped = projects.filter((p) => p.status === 'shipped').length;
 
                       <div class="grid g2 gap" style="gap: 1.4rem">
                         <div>
-                          <h4 class="tiny dim" style="text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.4rem">
+                          <h4 class="tiny dim" style="margin-bottom: 0.4rem">
                             What it signals
                           </h4>
                           <ul class="small muted" style="margin: 0; padding-left: 1.15rem">
@@ -84,7 +84,7 @@ const shipped = projects.filter((p) => p.status === 'shipped').length;
                           </ul>
                         </div>
                         <div>
-                          <h4 class="tiny dim" style="text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.4rem">
+                          <h4 class="tiny dim" style="margin-bottom: 0.4rem">
                             Done when
                           </h4>
                           <ul class="small muted" style="margin: 0 0 0.8rem; padding-left: 1.15rem">
@@ -103,7 +103,7 @@ const shipped = projects.filter((p) => p.status === 'shipped').length;
           );
         })
       }
-      <p class="muted" style="text-align:center" data-filter-empty hidden style="padding: 2rem 0">No projects match that filter.</p>
+      <p class="muted" style="text-align: center; padding: 2rem 0; margin-inline: auto" data-filter-empty hidden>No project matches. Clear the search or turn off a track filter.</p>
     </section>
   </div>
 </Base>
