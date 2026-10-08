@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import SectionHead from '../components/SectionHead.astro';
+import ProjectIcon from '../components/ProjectIcon.astro';
 import { builds, vibeStats, method } from '../data/vibe';
 
 const kinds = Array.from(new Set(builds.map((b) => b.kind)));
@@ -80,7 +81,10 @@ const shipped = builds.length;
                 </div>
               </div>
 
-              <h3 style="font-size: 1.32rem; margin-bottom: 0.55rem">{b.title}</h3>
+              <div class="row" style="gap: 0.9rem; align-items: center; margin-bottom: 0.55rem; flex-wrap: nowrap">
+                <span class="pico-tile pico-tile-lg"><ProjectIcon id={b.id} title={b.title} size={40} /></span>
+                <h3 style="font-size: 1.32rem; margin: 0">{b.title}</h3>
+              </div>
               <p class="muted" style="max-width: 86ch; margin-bottom: 1.2rem">{b.summary}</p>
 
               <div class="grid g2 gap" style="gap: 1.6rem">
