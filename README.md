@@ -1,8 +1,7 @@
-# stackcypher — portfolio & learning hub
+# stackcypher: portfolio & learning plan
 
-An open roadmap, lab tracker, and portfolio for three fields: **cybersecurity**, **network
-engineering**, and **AI / agentic engineering** — sequenced into milestones built for the global
-hiring market.
+A portfolio for hiring (telecom network operations, specialising into **cybersecurity** and
+**agentic AI**), and, kept separate under `/plan`, the open learning plan behind that move.
 
 Live: **https://stackcypherx.github.io**
 
@@ -10,24 +9,36 @@ Live: **https://stackcypherx.github.io**
 
 ## What's in it
 
+**Portfolio** (primary nav)
+
 | Page | What it holds |
 | --- | --- |
-| `/` | Overview, headline progress, 24-month quarter plan, cadence table |
-| `/roadmap` | Four tracks, 20 phases, ~130 milestones — every one with a required artifact |
-| `/roadmap/[track]` | Per-track checklists: foundations, cybersecurity, networks, AI/agentic |
-| `/labs` | The 84-room free TryHackMe track + 300-odd OSCP-style and red-team machines, all checkable |
-| `/certifications` | 25 credentials with cost, format, and an honest verdict — including what to skip |
-| `/projects` | 10 project briefs with hiring signals and acceptance criteria |
-| `/global-readiness` | Four non-technical pillars + market-by-market certs, frameworks, and visa routes |
-| `/recommendations` | 12 additions beyond the original brief, written as direct advice |
-| `/notes` | Weekly writeup log (Markdown) |
-| `/about` | Who, why, and credit for sources |
+| `/` | CV-first summary: position, experience, field record, selected builds, credentials, latest writing, contact |
+| `/experience` | Full CV: experience, engineering cases, field record, credentials, skills, education |
+| `/work` | Software built by orchestrating coding agents, and the method behind it |
+| `/writing` | Writeups and notes (Markdown) |
+| `/about` | Who, what the site is, and credit for sources |
+
+**Learning plan** (`/plan`, with its own sub-navigation)
+
+| Page | What it holds |
+| --- | --- |
+| `/plan` | Overview: tracks, starting position, warnings, timeline, weekly routine |
+| `/plan/roadmap/[track]` | Per-track checklists: foundations, cybersecurity, networks, AI/agentic |
+| `/plan/labs` | The free TryHackMe track plus OSCP-style and red-team machine lists, all checkable |
+| `/plan/certifications` | Credentials with cost, format, and a verdict, including what to skip |
+| `/plan/projects` | Project briefs with hiring signals and acceptance criteria |
+| `/plan/readiness` | Non-technical pillars plus market-by-market certs, frameworks and visa routes |
+| `/plan/recommendations` | Why the plan is shaped the way it is, written as direct advice |
+
+Old URLs (`/roadmap`, `/labs`, `/notes`, `/agentic` …) redirect to their new homes; the map is in
+`astro.config.mjs`.
 
 ## Progress tracking
 
 Checkboxes persist to `localStorage` under the key `gtr.progress.v1`. No account, no backend, no
 analytics — nothing leaves the browser. Because of that, **clearing site data or switching device
-wipes it**, so use the *Export JSON* button on the roadmap page occasionally and keep the file.
+wipes it**, so use the *Export* button on the learning plan pages occasionally and keep the file.
 
 Item keys are derived from `track.phase.slugified-title`, so **renaming a milestone resets that one
 checkbox**. Reordering or adding items is safe.
@@ -88,7 +99,7 @@ src/data/
 2. `src/pages/about.astro` — replace the "Who" paragraph.
 3. `src/data/projects.ts` — set `repo`, `live`, and `status` as projects ship.
 
-**Adding a writeup:** create `src/pages/notes/my-slug.md`:
+**Adding a writeup:** create `src/pages/writing/my-slug.md`:
 
 ```markdown
 ---
@@ -105,9 +116,9 @@ lang: en
 ...
 ```
 
-It appears on `/notes` automatically, newest first. Set `draft: true` to hide one.
+It appears on `/writing` (and the latest three on the home page) automatically, newest first. Set `draft: true` to hide one.
 
-`src/pages/notes/writeup-template.md` is a reusable structure — copy it rather than starting blank.
+`src/pages/writing/writeup-template.md` is a reusable structure — copy it rather than starting blank.
 
 ## Credit
 

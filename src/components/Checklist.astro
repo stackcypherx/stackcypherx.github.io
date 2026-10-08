@@ -19,16 +19,16 @@ const kindChip: Record<string, string> = {
 };
 ---
 
-<section class="phase" id={phaseGroup} data-reveal>
+<section class="phase" id={phaseGroup}>
   <header class="phase-hd">
     <div class="row" style="gap: 0.55rem">
       <span class="chip chip-signal">{phase.window}</span>
-      <span class="figure" data-figure-for={phaseGroup} data-figure-mode="count">—</span>
+      <span class="figure" data-figure-for={phaseGroup} data-figure-mode="count"></span>
     </div>
     <h3>{phase.title}</h3>
     <p class="small muted" style="max-width: 82ch">{phase.goal}</p>
     <div class="bar" style="margin-top: 0.9rem" data-bar-for={phaseGroup}><span></span></div>
-    <p class="exit"><b>Done when</b> — {phase.exit}</p>
+    <p class="exit"><b>Done when:</b> {phase.exit}</p>
   </header>
 
   <ul class="checks">
@@ -37,15 +37,16 @@ const kindChip: Record<string, string> = {
         const key = itemKey(trackId, phase.id, item.title);
         return (
           <li class="check" id={key}>
-            <input
-              type="checkbox"
-              class="box"
-              data-key={key}
-              data-group={allGroups}
-              data-weight={item.weight ?? 1}
-              id={`cb-${key}`}
-              aria-label={item.title}
-            />
+            <label class="hit">
+              <input
+                type="checkbox"
+                class="box"
+                data-key={key}
+                data-group={allGroups}
+                data-weight={item.weight ?? 1}
+                id={`cb-${key}`}
+              />
+            </label>
             <div>
               <div class="row" style="gap: 0.5rem; align-items: baseline">
                 <label class="check-t" for={`cb-${key}`}>{item.title}</label>
@@ -58,7 +59,7 @@ const kindChip: Record<string, string> = {
               {item.links && item.links.length > 0 && (
                 <div class="check-l">
                   {item.links.map((l) => (
-                    <a href={resolve(l.url)} rel={l.url.startsWith('http') ? 'noopener' : undefined}>{l.label} ↗</a>
+                    <a href={resolve(l.url)} rel={l.url.startsWith('http') ? 'noopener' : undefined}>{l.label}{l.url.startsWith('http') && ' ↗'}</a>
                   ))}
                 </div>
               )}

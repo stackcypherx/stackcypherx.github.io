@@ -25,10 +25,10 @@ const fmt = (d: string) =>
 ---
 
 <Base
-  title="Notes"
-  eyebrow="Learning log"
-  heading="Notes & writeups"
-  lede="One technical writeup a week, published whether or not it feels finished. This is the HoneyLog habit from the tracker, made public — it is the single part of the plan that compounds."
+  title="Writing"
+  eyebrow="Technical writing"
+  heading="Writeups and notes"
+  lede="One technical writeup a week, published whether or not it feels finished. This is the HoneyLog habit from the tracker, made public. It is the part of the plan that compounds."
 >
   <div class="wrap">
     <div class="narrow stack-lg">
@@ -37,13 +37,13 @@ const fmt = (d: string) =>
           <div class="panel">
             <h3 style="margin: 0 0 0.4rem">No notes yet</h3>
             <p class="small muted" style="margin: 0">
-              Add a Markdown file to <code>src/pages/notes/</code> with frontmatter and it appears here.
+              Add a Markdown file to <code>src/pages/writing/</code> with frontmatter and it appears here.
             </p>
           </div>
         ) : (
           <div class="stack">
             {notes.map((n) => (
-              <a class="card card-i spot" href={n.url} style="display: block; color: inherit">
+              <a class="card card-i" href={n.url} style="display: block; color: inherit">
                 <div class="row" style="gap: 0.5rem; margin-bottom: 0.4rem">
                   <time class="tiny dim mono" datetime={n.frontmatter.date}>{fmt(n.frontmatter.date)}</time>
                   {n.frontmatter.track && <span class="chip chip-signal">{n.frontmatter.track}</span>}
@@ -69,11 +69,11 @@ const fmt = (d: string) =>
       <div class="panel">
         <h3 style="margin: 0 0 0.5rem">How to add a note</h3>
         <p class="small muted" style="margin: 0 0 0.8rem">
-          Create <code>src/pages/notes/my-slug.md</code>. The layout, listing, and styling are handled.
+          Create <code>src/pages/writing/my-slug.md</code>. The layout, listing, and styling are handled.
         </p>
         <pre><code>---
 layout: ../../layouts/Note.astro
-title: Room writeup — Pickle Rick
+title: "Room writeup: Pickle Rick"
 description: One line on what this covers and what was new.
 date: 2026-10-05
 track: Cybersecurity
@@ -85,7 +85,7 @@ lang: en
 What I set out to do.
 
 ## What I tried
-Including the things that did not work — that part is the writeup.
+Including the things that did not work. That part is the writeup.
 
 ## What I learned
 The one command or concept worth remembering.

@@ -2,15 +2,18 @@
 /** Export / import / reset for locally stored progress. */
 ---
 
-<div class="panel" data-reveal>
+<div class="panel">
   <div class="between" style="align-items: flex-start">
     <div>
       <div class="tag tag-signal" style="margin-bottom: 0.4rem">Local state</div>
       <h4 style="margin: 0 0 0.3rem">Progress lives in this browser</h4>
       <p class="small muted" style="margin: 0; max-width: 58ch">
-        Checkboxes persist to <code>localStorage</code> — no account, no server, nothing leaves the
-        device. Which also means clearing site data or switching machine wipes it, so export
-        occasionally.
+        Checkboxes persist to <code>localStorage</code>: no account, no server, nothing leaves the
+        device. Clearing site data or switching machine wipes it, so export occasionally.
+      </p>
+      <p class="small" style="margin: 0.6rem 0 0; max-width: 58ch; color: var(--warn)" data-storage-warning hidden>
+        This browser is blocking site storage (private window or disabled site data), so ticks
+        will be lost when you leave the page. Use Export before you go.
       </p>
     </div>
     <div class="row">
@@ -19,5 +22,5 @@
       <button class="btn btn-sm" data-progress-reset>Reset all progress</button>
     </div>
   </div>
-  <p class="small" style="margin: 0.8rem 0 0; color: var(--good); min-height: 1.2em" data-progress-status aria-live="polite"></p>
+  <p class="small" style="margin: 0.8rem 0 0; color: var(--ink-2); min-height: 1.2em" data-progress-status aria-live="polite"></p>
 </div>

@@ -3,7 +3,7 @@ export type Cert = {
   vendor: string;
   track: 'Cyber' | 'Networks' | 'AI' | 'Cloud' | 'Foundation';
   tier: 'Entry' | 'Associate' | 'Professional' | 'Expert';
-  /** Approximate exam/course cost in USD. Verify before booking — these move. */
+  /** Approximate exam/course cost in USD. Verify before booking; these move. */
   cost: string;
   format: string;
   /** Honest assessment, not marketing. */
@@ -12,7 +12,7 @@ export type Cert = {
   when: string;
   priority: 'Do it' | 'Worth it' | 'Situational' | 'Later' | 'Skip unless funded';
   url: string;
-  /** Already earned — set to the date. Renders an "Earned" marker and mutes the priority. */
+  /** Already earned: set to the date. Renders an "Earned" marker and mutes the priority. */
   held?: string;
 };
 
@@ -23,11 +23,11 @@ export const certs: Cert[] = [
     vendor: 'ISC2',
     track: 'Foundation',
     tier: 'Entry',
-    cost: 'Periodically free via ISC2 "One Million Certified" — otherwise ~$50 + membership',
+    cost: 'Periodically free via ISC2 "One Million Certified", otherwise ~$50 + membership',
     format: '100 MCQ · 2 h · proctored',
     verdict:
       'Genuinely easy, genuinely a real credential, and periodically free. The best first badge purely on risk-adjusted return.',
-    when: 'Skip. CEH and CyberOps already cover this ground — this would be a third credential saying the same thing.',
+    when: 'Skip. CEH and CyberOps already cover this ground, and this would be a third credential saying the same thing.',
     priority: 'Skip unless funded',
     url: 'https://www.isc2.org/certifications/cc',
   },
@@ -39,8 +39,8 @@ export const certs: Cert[] = [
     cost: '~$400 (voucher bundles and student discounts exist)',
     format: '90 questions incl. performance-based · 90 min',
     verdict:
-      'The single most-requested security credential in job postings, and the DoD 8140 IAT Level II baseline. It teaches breadth, not skill — treat it as an ATS key.',
-    when: 'Optional paperwork, not a learning goal. Worth the $400 only for the US DoD 8140 IAT II mapping or a posting that names it explicitly — CEH already fills the HR slot.',
+      'The single most-requested security credential in job postings, and the DoD 8140 IAT Level II baseline. It teaches breadth more than skill, so treat it as an ATS key.',
+    when: 'Optional paperwork, not a learning goal. Worth the $400 only for the US DoD 8140 IAT II mapping or a posting that names it explicitly. CEH already fills the HR slot.',
     priority: 'Situational',
     url: 'https://www.comptia.org/certifications/security',
   },
@@ -52,7 +52,7 @@ export const certs: Cert[] = [
     cost: '~$370',
     format: '90 questions · 90 min',
     verdict:
-      'Solid, vendor-neutral, DoD-mapped. Heavily overlapping with CCNA — doing both is mostly duplicated effort.',
+      'Solid, vendor-neutral, DoD-mapped. Heavily overlapping with CCNA; doing both is mostly duplicated effort.',
     when: 'Only if your target employers are not Cisco shops, or you need the DoD mapping. Otherwise go straight to CCNA.',
     priority: 'Situational',
     url: 'https://www.comptia.org/certifications/network',
@@ -80,7 +80,7 @@ export const certs: Cert[] = [
     cost: '~$1,200 with courseware (already held)',
     format: '125 MCQ · 4 h',
     verdict:
-      'Widely recognised by HR and mandatory in a number of government and enterprise tenders, especially across APAC and the Gulf. It is multiple-choice, so it proves breadth rather than hands-on skill — pair it with a practical credential and it does real work on a CV.',
+      'Widely recognised by HR and mandatory in a number of government and enterprise tenders, especially across APAC and the Gulf. It is multiple-choice, so it proves breadth rather than hands-on skill. Pair it with a practical credential and it does real work on a CV.',
     when: 'Held since January 2026 at Mastery level. The follow-up is a practical credential, not another MCQ exam.',
     priority: 'Do it',
     held: 'Jan 2026',
@@ -94,7 +94,7 @@ export const certs: Cert[] = [
     cost: '~$300 (already held, via national scholarship)',
     format: '95–105 questions · 120 min',
     verdict:
-      'Genuinely good SOC-oriented content — monitoring, host and network intrusion analysis, incident response. Earned through the Kominfo Digital Talent Scholarship, which is itself a competitive national selection worth naming.',
+      'Genuinely good SOC-oriented content: monitoring, host and network intrusion analysis, incident response. Earned through the Kominfo Digital Talent Scholarship, which is itself a competitive national selection worth naming.',
     when: 'Held since April 2021. Covers most of what Security+ would teach.',
     priority: 'Do it',
     held: 'Apr 2021',
@@ -173,7 +173,7 @@ export const certs: Cert[] = [
     cost: '~$500 (incl. two attempts)',
     format: '5-day practical exam + professional report + live debrief',
     verdict:
-      'Better value than OSCP and arguably better training for real consultancy work — the report and debrief are the point. Weaker brand recognition outside the community.',
+      'Better value than OSCP and arguably better training for real consultancy work, because the report and debrief are the point. Weaker brand recognition outside the community.',
     when: 'Month 12–15 as the OSCP alternative, or before OSCP as preparation.',
     priority: 'Worth it',
     url: 'https://certifications.tcm-sec.com/pnpt/',
@@ -199,7 +199,7 @@ export const certs: Cert[] = [
     cost: '~$250',
     format: '24 h practical lab exam',
     verdict:
-      'Outstanding value for Active Directory attack depth — the specific gap most OSCP holders have. Do this immediately after OSCP.',
+      'Outstanding value for Active Directory attack depth, which OSCP preparation covers only partly. Do this immediately after OSCP.',
     when: 'Month 18–20.',
     priority: 'Do it',
     url: 'https://www.alteredsecurity.com/adlab',
@@ -238,7 +238,7 @@ export const certs: Cert[] = [
     cost: '~$500–1,500',
     format: 'Course + exam',
     verdict:
-      'The credential that gets you into European and Middle Eastern consulting and GRC roles. Pairs unusually well with technical depth — most GRC people cannot do the technical side.',
+      'The credential that gets you into European and Middle Eastern consulting and GRC roles. Pairs well with technical depth, which many GRC roles lack.',
     when: 'Month 19+, if you want consulting or enterprise security work.',
     priority: 'Situational',
     url: 'https://pecb.com/en/education-and-certification-for-individuals/iso-iec-27001',
@@ -251,7 +251,7 @@ export const certs: Cert[] = [
     cost: '~$750 exam + annual membership',
     format: '125–175 adaptive questions · 4 h',
     verdict:
-      'Requires 5 years of documented paid experience across two domains — but you can pass the exam earlier and hold Associate of ISC2 until you qualify. It is a management credential; do not expect it to prove technical skill.',
+      'Requires 5 years of documented paid experience across two domains, but you can pass the exam earlier and hold Associate of ISC2 until you qualify. It is a management credential; do not expect it to prove technical skill.',
     when: 'Pass the exam around year 2–3; claim the full cert when the years are there.',
     priority: 'Later',
     url: 'https://www.isc2.org/certifications/cissp',
@@ -292,7 +292,7 @@ export const certs: Cert[] = [
     cost: '~$300',
     format: '~100 questions · 120 min',
     verdict:
-      'Still the credential that opens the first network conversation. The v1.1 refresh added generative AI, machine learning, and cloud network management — and roughly a quarter of the blueprint is automation and programmability. Necessary, not sufficient.',
+      'Still the credential that opens the first network conversation. The v1.1 refresh added generative AI, machine learning, and cloud network management, and roughly a quarter of the blueprint is automation and programmability. Necessary, not sufficient.',
     when: 'Month 4–7 if networks are your primary track.',
     priority: 'Do it',
     url: 'https://learningnetwork.cisco.com/s/ccna-exam-topics',
@@ -344,7 +344,7 @@ export const certs: Cert[] = [
     cost: '~$400',
     format: 'MCQ',
     verdict:
-      'Regionally decisive rather than globally. Fortinet penetration is very high across APAC and the Middle East — if those are your markets, this is more useful than it looks from a Western vantage point.',
+      'Regionally decisive rather than globally. Fortinet penetration is very high across APAC and the Middle East. If those are your markets, this is more useful than it looks from a Western vantage point.',
     when: 'Situational, driven entirely by your target region.',
     priority: 'Situational',
     url: 'https://www.fortinet.com/training/cybersecurity-professionals',
@@ -372,7 +372,7 @@ export const certs: Cert[] = [
     cost: '~$100',
     format: 'MCQ · 90 min',
     verdict:
-      'Cheap keyword coverage for ATS filters and recruiter searches. It will not teach you to build anything. That is fine — know what you are buying.',
+      'Cheap keyword coverage for ATS filters and recruiter searches. It will not teach you to build anything. That is fine; know what you are buying.',
     when: 'Month 18+, in a weekend, once your projects already exist.',
     priority: 'Worth it',
     url: 'https://aws.amazon.com/certification/certified-ai-practitioner/',
@@ -398,7 +398,7 @@ export const certs: Cert[] = [
     cost: '~$200',
     format: 'MCQ · 2 h',
     verdict:
-      'The most technically rigorous and most practitioner-respected of the cloud AI certs. Also the most ML-heavy — less aligned with LLM application work than its name suggests.',
+      'The most technically rigorous and most practitioner-respected of the cloud AI certs. Also the most ML-heavy, and less aligned with LLM application work than its name suggests.',
     when: 'Only if you want genuine ML depth, not just LLM application engineering.',
     priority: 'Situational',
     url: 'https://cloud.google.com/learn/certification/machine-learning-engineer',
@@ -411,16 +411,16 @@ export const certs: Cert[] = [
     cost: '~$100–400',
     format: 'Hands-on assessments',
     verdict: 'The right choice specifically for GPU computing and deep-learning infrastructure depth. Narrow, and good at being narrow.',
-    when: 'Situational — only if you are going toward training/serving infrastructure.',
+    when: 'Situational: only if you are going toward training/serving infrastructure.',
     priority: 'Situational',
     url: 'https://www.nvidia.com/en-us/training/',
   },
 ];
 
 export const certPhilosophy = [
-  'Certificates get you into the room. Projects get you the offer. In AI hiring specifically, managers screen portfolio first and credentials second — and the same is increasingly true in security.',
+  'Certificates get you into the room. Projects get you the offer. In AI hiring specifically, managers screen portfolio first and credentials second, and the same is increasingly true in security.',
   'Budget a maximum of four certifications per year, and require each one to unlock a specific filter on a specific job posting you have actually read. If you cannot name the posting, do not book the exam.',
   'Never pay for a bootcamp before exhausting the free material: Professor Messer for CompTIA, Jeremy\'s IT Lab for CCNA, PortSwigger Academy for web, the vendors\' own free learning paths for cloud.',
   'Practical, pass/fail, hands-on credentials (OSCP, PNPT, BTL1, CKS, CCIE lab) are worth several multiple-choice certificates each, because they cannot be crammed and everyone in the industry knows it.',
-  'One badge per capability. Two certificates covering the same ground is a signal that you prefer studying to shipping — and interviewers read it that way.',
+  'One badge per capability. Two certificates covering the same ground is a signal that you prefer studying to shipping, and interviewers read it that way.',
 ];

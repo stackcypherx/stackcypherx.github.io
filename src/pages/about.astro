@@ -2,6 +2,8 @@
 import Base from '../layouts/Base.astro';
 import { site } from '../data/site';
 import { yearsExperience } from '../data/profile';
+import { totalRooms } from '../data/labs';
+import { tracks } from '../data/roadmap';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const linkRows = [
@@ -18,65 +20,60 @@ const linkRows = [
   title="About"
   eyebrow="About"
   heading="About this site"
-  lede="A portfolio and an open learning plan in one place — because the plan is the more interesting artifact until the portfolio fills up."
+  lede="A portfolio for hiring, and the open learning plan behind the specialisation, kept side by side but separate."
 >
   <div class="wrap">
     <div class="narrow prose">
       <h2>Who</h2>
       <p>
-        I'm <b>Dickie</b> — {yearsExperience} years in telecom network and service operations, currently
+        I'm <b>Dickie</b>: {yearsExperience} years in telecom network and service operations, currently
         Mobile Service Operation Officer at PT Telkom Infrastruktur Indonesia (Infranexia), covering
         Papua, Maluku, Sulawesi and Kalimantan from Makassar.
       </p>
       <p>
         My work is the operations end of carrier networks: fibre and FTTH, Metro-Ethernet, IP core and
-        backhaul, DWDM, mobile broadband — and the part that decides whether any of it is actually
-        reliable, which is escalation, incident coordination, and root-cause analysis on the faults that
+        backhaul, DWDM, mobile broadband. Mostly it is the part that decides whether any of it is
+        actually reliable: escalation, incident coordination, and root-cause analysis on the faults that
         keep coming back. Before Telkom I certified devices at Smartfren, including factory inspection in
         Shenzhen and troubleshooting at the R&amp;D principal in Hsinchu.
       </p>
       <p>
-        I am specialising into cybersecurity and agentic AI. That is not a reset — network operations is
-        where security incidents are actually detected and contained, and knowing how carrier
-        infrastructure genuinely behaves is context most security candidates never get. I hold CEH and
+        I am specialising into cybersecurity and agentic AI, building on the operations work rather than
+        leaving it. Network operations is where security incidents get detected and contained, and I
+        have spent years learning how carrier infrastructure behaves under real faults. I hold CEH and
         Cisco CyberOps Associate, and I am aiming at the intersection of network/telecom security,
         detection engineering, and the security of agentic AI systems.
-        <a href={`${base}/experience`}>Full experience and credentials →</a>
+        <a href={`${base}/experience`}>Full experience and credentials</a>.
       </p>
 
       <h2>What this site is</h2>
-      <p>
-        Three things at once, and deliberately not separated:
-      </p>
+      <p>Two parts, kept apart so each reads cleanly:</p>
       <ul>
         <li>
-          <b>An open roadmap.</b> <a href={`${base}/roadmap`}>Four tracks</a> broken into phases and
-          milestones, each with the artifact it must produce. Progress is visible and stored in your
-          own browser, so anyone can fork the plan and use it.
+          <b>The portfolio.</b> <a href={`${base}/experience`}>Experience</a>,
+          the <a href={`${base}/work`}>software I build with coding agents</a>, and
+          <a href={`${base}/writing`}>technical writing</a>. This is the part for anyone hiring.
         </li>
         <li>
-          <b>A lab tracker.</b> The <a href={`${base}/labs`}>84-room free TryHackMe path</a> plus the
-          OSCP-style and post-OSCP machine lists, checkable room by room.
-        </li>
-        <li>
-          <b>A portfolio.</b> <a href={`${base}/projects`}>Project briefs</a> and
-          <a href={`${base}/notes`}>writeups</a>, filling in over time. Right now it is mostly plan and
-          not much portfolio. That is the honest state of it, and the dates are on everything so the
-          rate of change is visible.
+          <b>The learning plan.</b> <a href={`${base}/plan`}>{tracks.length} tracks</a> broken into
+          phases and milestones, each with the artifact it must produce, plus a
+          <a href={`${base}/plan/labs`}>{totalRooms}-room lab tracker</a>, certification verdicts and
+          <a href={`${base}/plan/projects`}>project briefs</a>. Progress is stored in your own browser,
+          so anyone can use the plan as their own.
         </li>
       </ul>
 
       <h2>Why the plan is public</h2>
       <p>
         Because an unpublished plan is one you can quietly abandon in March, and because the evidence
-        that the strongest hiring and immigration routes actually want — recognition, third-party
-        letters, a visible track record — is a byproduct of having been useful in public for a long
+        that the strongest hiring and immigration routes actually want (recognition, third-party
+        letters, a visible track record) is a byproduct of having been useful in public for a long
         time. It cannot be assembled in the month you need it. Starting the clock early is free.
       </p>
 
       <h2>Sources and credit</h2>
       <p>
-        The cybersecurity lab sequence is adapted from the <i>{site.sources.trackerName}</i> — an
+        The cybersecurity lab sequence is adapted from the <i>{site.sources.trackerName}</i>, an
         Indonesian bootcamp's 100-day programme. It is credited by name and deliberately not linked,
         because it is access-restricted course material: room titles here are public TryHackMe names
         and the descriptions are written for this site. The OSCP-like and post-OSCP red team machine
@@ -84,17 +81,17 @@ const linkRows = [
       </p>
       <p>
         Market figures, certification costs, and visa criteria come from research current as of
-        September 2026 and are cited inline where they carry a number. All of it moves — verify against
+        September 2026 and are cited inline where they carry a number. All of it moves, so verify against
         the official source before spending money or making a decision.
       </p>
 
       <h2>How this is built</h2>
       <p>
         Astro, hand-written CSS, no framework and no build-time dependencies beyond Astro itself.
-        Progress tracking is about 150 lines of TypeScript against <code>localStorage</code> — no
+        Progress tracking is about 150 lines of TypeScript against <code>localStorage</code>: no
         accounts, no analytics, no data leaving your browser. Deployed to GitHub Pages by a GitHub
         Actions workflow on every push to <code>main</code>.
-        <a href={site.repo}>Source is here</a> — fork it and replace the data files if the structure
+        <a href={site.repo}>Source is here</a>. Fork it and replace the data files if the structure
         is useful to you.
       </p>
 
@@ -113,12 +110,6 @@ const linkRows = [
         )
       }
 
-      <div class="note-box" style="margin-top: 2rem">
-        <p class="small" style="margin: 0">
-          <b>Fill these in:</b> the profile links live in <code>src/data/site.ts</code>. Empty values
-          are hidden automatically, so add them as the accounts exist rather than leaving placeholders.
-        </p>
-      </div>
     </div>
   </div>
 </Base>

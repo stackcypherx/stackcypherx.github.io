@@ -10,7 +10,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <div class="narrow">
       <div class="grid g2 gap">
         {nav.map((n) => (
-          <a class="card card-i spot" href={`${base}${n.href}`} style="color: inherit">
+          <a class="card card-i" href={`${base}${n.href}`} style="color: inherit">
             <b>{n.label}</b>
           </a>
         ))}

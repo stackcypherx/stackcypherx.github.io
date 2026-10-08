@@ -7,7 +7,7 @@ export type Project = {
   /** What it demonstrates to a hiring manager, specifically. */
   signals: string[];
   stack: string[];
-  /** Concrete acceptance criteria — when it is genuinely done. */
+  /** Concrete acceptance criteria: when it is genuinely done. */
   done: string[];
   /** Fill in once built. */
   repo?: string;
@@ -22,7 +22,7 @@ export const projects: Project[] = [
     track: 'Cross-track',
     tier: 'Starter',
     pitch:
-      'Your entire lab — hypervisor VMs, network segments, vulnerable targets, monitoring — defined in code and rebuildable from scratch with one command.',
+      'Your entire lab (hypervisor VMs, network segments, vulnerable targets, monitoring) defined in code and rebuildable from scratch with one command.',
     signals: [
       'Infrastructure-as-code discipline before anyone asked for it',
       'Documentation habits that survive contact with your future self',
@@ -44,7 +44,7 @@ export const projects: Project[] = [
     pitch:
       'Fifteen Sigma rules, each paired with the Atomic Red Team test that triggers it, validated in CI, with documented false-positive characteristics.',
     signals: [
-      'Detection engineering — the skill SOCs promote for, not the one they hire Tier 1 for',
+      'Detection engineering: the skill SOCs promote for, beyond what they hire Tier 1 for',
       'Testing rigour applied to security content',
       'MITRE ATT&CK as working vocabulary rather than a poster',
     ],
@@ -82,7 +82,7 @@ export const projects: Project[] = [
     track: 'Networks',
     tier: 'Flagship',
     pitch:
-      'A pull request changes a YAML data model; CI renders configs, spins up a Containerlab topology, runs pyATS assertions, and deploys to the lab on merge — posting a config diff back to the PR.',
+      'A pull request changes a YAML data model; CI renders configs, spins up a Containerlab topology, runs pyATS assertions, and deploys to the lab on merge, posting a config diff back to the PR.',
     signals: [
       'NetDevOps for real, which is where the salary premium sits',
       'You test network changes before a maintenance window',
@@ -143,7 +143,7 @@ export const projects: Project[] = [
     track: 'AI',
     tier: 'Portfolio',
     pitch:
-      'A Model Context Protocol server exposing something real — your NetBox lab, your detection rules, your notes — with read-only safety boundaries and a client demo.',
+      'A Model Context Protocol server exposing something real (your NetBox lab, your detection rules, your notes) with read-only safety boundaries and a client demo.',
     signals: [
       'Current with the actual integration standard, not last year\'s',
       'Tool design as API design',
@@ -163,9 +163,9 @@ export const projects: Project[] = [
     track: 'Cross-track',
     tier: 'Flagship',
     pitch:
-      'An automated adversarial evaluation suite against your own agent: direct and indirect prompt injection, tool-abuse chains, data exfiltration through context, jailbreak batteries — with a published findings report.',
+      'An automated adversarial evaluation suite against your own agent: direct and indirect prompt injection, tool-abuse chains, data exfiltration through context, jailbreak batteries, with a published findings report.',
     signals: [
-      'The AI × security overlap almost nobody holds. This is your differentiator.',
+      'The AI × security overlap, where your two tracks meet. This is your differentiator.',
       'Evaluation engineering plus offensive security in one artifact',
       'Directly relevant to the fastest-growing category of security work',
     ],
@@ -183,7 +183,7 @@ export const projects: Project[] = [
     track: 'Cross-track',
     tier: 'Flagship',
     pitch:
-      'An agent with read-only tools over NetBox, device telemetry, and syslog that answers "why is this slow?" with cited evidence — evaluated against tickets you wrote yourself.',
+      'An agent with read-only tools over NetBox, device telemetry, and syslog that answers "why is this slow?" with cited evidence, evaluated against tickets you wrote yourself.',
     signals: [
       'The networks × AI overlap, which is even rarer than AI × security',
       'Agent design constrained by real safety requirements',
@@ -206,7 +206,7 @@ export const projects: Project[] = [
       'Your writeups and notes published in both English and Indonesian, searchable, with the Indonesian versions targeting an audience that is genuinely underserved.',
     signals: [
       'Teaching ability, which is how senior is assessed when you lack years',
-      'Audience building — the raw material for recognition-based visa routes',
+      'Audience building: the raw material for recognition-based visa routes',
       'Consistency demonstrated over months, publicly and with dates',
     ],
     stack: ['Astro', 'Markdown', 'client-side search'],

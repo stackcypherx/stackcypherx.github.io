@@ -5,14 +5,14 @@
  * company-internal idea competition or a board-level commendation means little
  * to someone in Rotterdam or Dubai, and listing it spends credibility to say
  * nothing. So internal recognition is out, and what replaces it is field
- * outcomes — named infrastructure, real incidents, measurable scope — anchored
+ * outcomes (named infrastructure, real incidents, measurable scope) anchored
  * by certifications a stranger can independently verify.
  *
- * DELIBERATELY OMITTED from this public file — do not add them back:
+ * DELIBERATELY OMITTED from this public file; do not add them back:
  *   · phone number          (public page = spam magnet; keep it on the PDF you send)
  *   · photo, age, GPA       (illegal to request in UK/US hiring, weakens nothing to omit)
  *   · internal band/grade, job-stream codes, and the 30-item internal training log
- *     from the Ingenium-printed company CV — that is an internal HR record, not
+ *     from the Ingenium-printed company CV. That is an internal HR record, not
  *     portfolio content, and publishing it serves no one.
  *
  * Technical scope below is drawn from both CVs but described in industry-standard
@@ -38,7 +38,7 @@ export type Credential = {
   date: string;
   level?: string;
   domain: string;
-  /** Who recognises it — International / National / Standards. */
+  /** Who recognises it: International / National / Standards. */
   scope: string;
 };
 
@@ -63,7 +63,7 @@ export type Profile = {
 
 /**
  * Completed years of professional experience since the Smartfren start date
- * (November 2014). Month-aware, so it does not round up in January — and so the
+ * (November 2014). Month-aware, so it does not round up in January, and so the
  * number here never contradicts the prose elsewhere on the site.
  */
 export const yearsExperience = (() => {
@@ -90,11 +90,11 @@ export const profile: Profile = {
 
   /** Two sentences a recruiter reads before deciding to keep reading. */
   pitch:
-    `${yearsWord[0].toUpperCase()}${yearsWord.slice(1)} years running carrier-grade network and service operations across eastern Indonesia — fibre, Metro-E, IP core, DWDM and mobile broadband — now specialising into cybersecurity and agentic AI. CEH-certified, Cisco CyberOps trained, and currently accountable for mobile service operations across the Papua, Maluku, Sulawesi and Kalimantan region.`,
+    `${yearsWord[0].toUpperCase()}${yearsWord.slice(1)} years running carrier-grade network and service operations across eastern Indonesia (fibre, Metro-E, IP core, DWDM and mobile broadband), now specialising into cybersecurity and agentic AI. CEH-certified, Cisco CyberOps trained, and currently accountable for mobile service operations across the Papua, Maluku, Sulawesi and Kalimantan region.`,
 
   summary: [
-    'I have spent my career on the operations side of telecommunications: keeping networks up, restoring them when they go down, and holding SLAs for wholesale and enterprise customers across some of the most geographically difficult territory in Indonesia. That work covers access and transport — FTTH and OLT integration, Metro-Ethernet, IP/MPLS backhaul, DWDM, satellite and radio — plus the unglamorous parts that decide whether a network is actually reliable: escalation paths, incident coordination, and root-cause analysis on recurring faults.',
-    `The pivot into security is not a career reset. Network operations is where security incidents are actually detected and contained, and ${yearsWord} years of knowing how carrier infrastructure genuinely behaves is the context most security candidates never acquire. I am building deliberately toward the intersection of telecom/network security, detection engineering, and the security of agentic AI systems.`,
+    'I have spent my career on the operations side of telecommunications: keeping networks up, restoring them when they go down, and holding SLAs for wholesale and enterprise customers across some of the most geographically difficult territory in Indonesia. That work covers access and transport (FTTH and OLT integration, Metro-Ethernet, IP/MPLS backhaul, DWDM, satellite and radio) plus the unglamorous parts that decide whether a network is actually reliable: escalation paths, incident coordination, and root-cause analysis on recurring faults.',
+    `The pivot into security builds on the operations career rather than restarting it. Network operations is where security incidents get detected and contained, and I bring ${yearsWord} years of knowing how carrier infrastructure behaves under real faults. I am building deliberately toward the intersection of telecom/network security, detection engineering, and the security of agentic AI systems.`,
   ],
 
   contact: {
@@ -119,16 +119,16 @@ export const profile: Profile = {
     {
       company: 'PT Telkom Infrastruktur Indonesia (Infranexia)',
       companyNote: "Telkom Indonesia subsidiary managing the group's connectivity network operations",
-      role: 'Mobile Service Operation Officer — Service Operation Area 4',
+      role: 'Mobile Service Operation Officer, Service Operation Area 4',
       place: 'Makassar, Indonesia',
       period: 'Feb 2026 – Present',
       current: true,
       scope:
-        'Mobile broadband and SL-WDM service operations across Papua, Maluku, Sulawesi and Kalimantan (Pamasuka) — roughly the eastern half of the country.',
+        'Mobile broadband and SL-WDM service operations across Papua, Maluku, Sulawesi and Kalimantan (Pamasuka): roughly the eastern half of the country.',
       points: [
         'Own mobile broadband service fulfilment and assurance for the Area, against defined procedures, working methods and quality standards.',
         'Coordinate with Network Operations and adjacent units to keep service delivery moving across regional and district offices.',
-        'Monitor mobile service performance — network quality, capacity, and Mobile Broadband stability.',
+        'Monitor mobile service performance: network quality, capacity, and Mobile Broadband stability.',
         'Run service troubleshooting end to end, including escalation and cross-unit coordination for incident handling and resolution.',
         'Hold service delivery to SLA and customer requirements.',
         'Analyse recurring disruptions and quality issues to produce service-improvement recommendations.',
@@ -159,7 +159,7 @@ export const profile: Profile = {
       place: 'Makassar, Indonesia',
       period: 'Apr 2020 – Jul 2024',
       scope:
-        'Wholesale and OLO fulfilment and assurance — network design input and topology assessment for access, backhaul, IP core and Metro-E / SL-WDM services.',
+        'Wholesale and OLO fulfilment and assurance: network design input and topology assessment for access, backhaul, IP core and Metro-E / SL-WDM services.',
       points: [
         'Designed topology and assessed ISP material requirements for new links, rebalancing, fiberisation and dualhoming across access, backhaul, IPRAN and IP core.',
         'Troubleshot and held quality of service at or above the standard required for wholesale customers; secured SLA and SLG commitments.',
@@ -172,10 +172,10 @@ export const profile: Profile = {
     },
     {
       company: 'PT Telkom Indonesia Tbk',
-      role: 'Operation & Maintenance Officer — Maluku Utara Branch',
+      role: 'Operation & Maintenance Officer, Maluku Utara Branch',
       place: 'Ternate, Indonesia',
       period: 'Oct 2017 – Mar 2020',
-      scope: 'Access and network operations for the North Maluku branch — an archipelagic, logistically hard service area.',
+      scope: 'Access and network operations for the North Maluku branch, an archipelagic, logistically hard service area.',
       points: [
         'Led and managed the branch technical team across operation, maintenance and service operation activities.',
         'Ran access-layer delivery: new OLT integration, and supervision and commissioning of FTTH deployment (FTM, feeder, ODC, distribution, ODP).',
@@ -198,28 +198,28 @@ export const profile: Profile = {
         'Led testing for smartphone and MiFi products through to launch with minimal post-launch defects and no critical issues.',
         'Coordinated cross-functional resolution with developers and vendors on identified defects.',
         'Fed back into automated testing processes, cutting test cycle time and helping hold project timelines.',
-        'Conducted factory inspection in Shenzhen, China — production process, quality control, and adherence to manufacturing standards and component termsheets.',
+        'Conducted factory inspection in Shenzhen, China: production process, quality control, and adherence to manufacturing standards and component termsheets.',
         'Troubleshot devices at the R&D principal in Hsinchu, Taiwan, reducing device-related technical faults.',
       ],
       tags: ['QA / Test Engineering', 'Hardware', 'Vendor Management', 'International'],
     },
   ],
 
-  /** Engineering cases — what the work was, stated so an outsider can judge the difficulty. */
+  /** Engineering cases: what the work was, stated so an outsider can judge the difficulty. */
   keyProjects: [
     {
       title: 'Access network build-out in an archipelagic service area',
       place: 'North Maluku',
       period: '2017 – 2020',
       detail:
-        'New OLT integration and end-to-end FTTH deployment — feeder, distribution, ODC and ODP — across islands where every rollout carries a sea-freight and weather dependency. Led the branch technical team and ran the commissioning.',
+        'New OLT integration and end-to-end FTTH deployment (feeder, distribution, ODC and ODP) across islands where every rollout carries a sea-freight and weather dependency. Led the branch technical team and ran the commissioning.',
     },
     {
       title: 'Wholesale service assurance at regional scale',
       place: 'Eastern Indonesia',
       period: '2020 – 2026',
       detail:
-        'Topology design and material specification for new links, rebalancing, fiberisation and dual-homing across access, backhaul, IPRAN and IP core — then holding the resulting services to contracted SLA and SLG for carrier and enterprise customers.',
+        'Topology design and material specification for new links, rebalancing, fiberisation and dual-homing across access, backhaul, IPRAN and IP core, then holding the resulting services to contracted SLA and SLG for carrier and enterprise customers.',
     },
     {
       title: 'Operational data consolidation',
@@ -248,38 +248,38 @@ export const profile: Profile = {
       org: 'Emergency response, Luwu Utara, South Sulawesi',
       date: 'Jul 2020',
       detail:
-        'Deployed to the flash-flood disaster zone as part of the technical recovery effort, restoring critical communications infrastructure while access routes were still compromised. Incident command under genuine constraint — the conditions that separate procedure from judgement.',
+        'Deployed to the flash-flood disaster zone as part of the technical recovery effort, restoring critical communications infrastructure while access routes were still compromised. Incident command under real constraint, where procedure runs out and judgement takes over.',
     },
     {
       title: 'Connectivity delivery for PON & Peparnas Papua 2021',
       org: 'National and Para Games, Papua',
       date: '2021',
       detail:
-        'Surveyed, designed topology and specified material requirements for new links and mobile base-station dual-homing supporting Indonesia\u2019s national multi-sport games in Papua — a fixed, immovable deadline in the country\u2019s most logistically difficult province.',
+        'Surveyed, designed topology and specified material requirements for new links and mobile base-station dual-homing supporting Indonesia\u2019s national multi-sport games in Papua: a fixed, immovable deadline in the country\u2019s most logistically difficult province.',
     },
     {
       title: 'Cisco CyberOps Associate via national scholarship',
       org: 'Digital Talent Scholarship, Ministry of Communication & Informatics (Kominfo)',
       date: 'Apr 2021',
       detail:
-        'Competitive national government programme. The credential is Cisco\u2019s security-operations associate track — monitoring, host and network intrusion analysis, and incident response.',
+        'Competitive national government programme. The credential is Cisco\u2019s security-operations associate track: monitoring, host and network intrusion analysis, and incident response.',
     },
     {
       title: 'Regional operations ownership across four provinces',
       org: 'Papua, Maluku, Sulawesi & Kalimantan (Pamasuka)',
       date: '2026 – present',
       detail:
-        'Accountable for mobile broadband and transport service operations across roughly the eastern half of Indonesia — an archipelagic footprint measured in thousands of kilometres, where every fault has a logistics problem attached to it.',
+        'Accountable for mobile broadband and transport service operations across roughly the eastern half of Indonesia, an archipelagic footprint measured in thousands of kilometres, where every fault has a logistics problem attached to it.',
     },
   ],
 
   /** Credentials already held. These feed the "Earned" markers on the certifications page. */
   credentials: [
     { name: 'Certified Ethical Hacker (CEH)', issuer: 'EC-Council', date: 'Jan 2026', level: 'Mastery', domain: 'Security', scope: 'International' },
-    { name: 'Cisco CyberOps Associate', issuer: 'Cisco — via Kominfo Digital Talent Scholarship', date: 'Apr 2021', domain: 'Security', scope: 'International + national programme' },
-    { name: 'Cisco Cybersecurity Foundation', issuer: 'Cisco', date: '\u2014', domain: 'Security', scope: 'International' },
+    { name: 'Cisco CyberOps Associate', issuer: 'Cisco, via Kominfo Digital Talent Scholarship', date: 'Apr 2021', domain: 'Security', scope: 'International + national programme' },
+    { name: 'Cisco Cybersecurity Foundation', issuer: 'Cisco', date: 'Undated', domain: 'Security', scope: 'International' },
     { name: 'Google Digital Marketing & E-commerce', issuer: 'Google Career Certificates', date: 'Dec 2023', domain: 'Commercial', scope: 'International' },
-    { name: 'BlueTeam.id Cybersecurity Training', issuer: 'BlueTeam.id', date: '\u2014', domain: 'Security', scope: 'National' },
+    { name: 'BlueTeam.id Cybersecurity Training', issuer: 'BlueTeam.id', date: 'Undated', domain: 'Security', scope: 'National' },
     { name: 'ISO/IEC 27001:2022 ISMS', issuer: 'Awareness programme, with ISO 9001 QMS and ISO 22301 BCMS', date: '2025', domain: 'Governance', scope: 'Standards' },
   ],
 
@@ -317,7 +317,7 @@ export const profile: Profile = {
 
   languages: [
     { name: 'Indonesian', level: 'Native' },
-    { name: 'English', level: 'Professional working — IELTS 6.5' },
+    { name: 'English', level: 'Professional working (IELTS 6.5)' },
   ],
 
   interests: [
@@ -325,7 +325,7 @@ export const profile: Profile = {
     {
       title: 'Labour union leadership',
       detail:
-        'Headed the Consultation and Advocacy department — advised workers and their families on legal rights and mediated disputes toward fair resolution.',
+        'Headed the Consultation and Advocacy department: advised workers and their families on legal rights and mediated disputes toward fair resolution.',
     },
     { title: 'Blood donation', detail: 'Initiated and organised multiple donation drives.' },
   ],

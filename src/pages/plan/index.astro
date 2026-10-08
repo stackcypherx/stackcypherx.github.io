@@ -3,19 +3,27 @@ import Base from '../../layouts/Base.astro';
 import TrackCard from '../../components/TrackCard.astro';
 import ProgressPanel from '../../components/ProgressPanel.astro';
 import SectionHead from '../../components/SectionHead.astro';
-import { tracks, timeline } from '../../data/roadmap';
+import { tracks, timeline, cadence } from '../../data/roadmap';
+import { planNav } from '../../data/site';
 import { countItems, itemKey } from '../../data/types';
 import { yearsWord } from '../../data/profile';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const totalMilestones = tracks.reduce((n, t) => n + countItems(t), 0);
+const sections: Record<string, string> = {
+  '/plan/labs': 'The free TryHackMe track plus OSCP-style and post-OSCP machine lists, checkable room by room.',
+  '/plan/certifications': 'Every credential on the path with price, format and a verdict, including which to skip.',
+  '/plan/projects': 'Portfolio project briefs with acceptance criteria. Shipped ones move to Work.',
+  '/plan/readiness': 'The non-technical side of hiring across borders: visibility, recognition, interviews, markets.',
+  '/plan/recommendations': 'Why the plan is shaped the way it is, written to be argued with.',
+};
 ---
 
 <Base
-  title="Roadmap"
-  eyebrow="The checklist"
-  heading="The roadmap"
-  lede={`${totalMilestones} milestones across four tracks. Each one names the artifact it has to produce — tick nothing you cannot link to. Progress saves in your browser, so export a backup occasionally.`}
+  title="Learning plan"
+  eyebrow="Learning in public"
+  heading="The learning plan"
+  lede={`The 24-month plan behind my move into security and agentic AI, kept public so it stays honest. ${totalMilestones} milestones across ${tracks.length} tracks, each naming the artifact it has to produce. Anyone can use it: ticks save in your own browser, so export a backup occasionally.`}
 >
   <div class="wrap stack-lg">
     <section>
@@ -27,21 +35,21 @@ const totalMilestones = tracks.reduce((n, t) => n + countItems(t), 0);
     <section>
       <SectionHead
         id="starting-position"
-        title="Starting position — this is not a blank slate"
-        note={`The phase windows below are written for someone beginning from zero. I am not. ${yearsWord[0].toUpperCase()}${yearsWord.slice(1)} years of carrier network and service operations, plus CEH and Cisco CyberOps, already cover a meaningful slice of the plan — and pretending otherwise would waste a year.`}
+        title="Starting position: not a blank slate"
+        note={`The phase windows below are written for someone beginning from zero. I am not. ${yearsWord[0].toUpperCase()}${yearsWord.slice(1)} years of carrier network and service operations, plus CEH and Cisco CyberOps, already cover a meaningful slice of the plan. Pretending otherwise would waste a year.`}
       />
       <div class="grid g2 gap">
         <div class="note-box ok">
-          <h4 style="margin: 0 0 0.5rem">Already covered — do not re-study</h4>
+          <h4 style="margin: 0 0 0.5rem">Already covered, so no re-study</h4>
           <ul class="small" style="margin: 0">
-            <li><b>Networking fundamentals (Foundations + Track 2 phase 1).</b> OSI/TCP-IP, routing, fibre, Metro-E, IP core, DWDM — this is the day job, at carrier scale, across four regions.</li>
-            <li><b>Incident and escalation discipline.</b> Service assurance, SLA ownership, root-cause analysis on recurring faults. Most SOC candidates learn this from a course; it is over a decade of my actual work.</li>
+            <li><b>Networking fundamentals (Foundations + Track 2 phase 1).</b> OSI/TCP-IP, routing, fibre, Metro-E, IP core, DWDM. This is the day job, at carrier scale, across four regions.</li>
+            <li><b>Incident and escalation discipline.</b> Service assurance, SLA ownership, root-cause analysis on recurring faults. Over a decade of this is my actual work, not coursework.</li>
             <li><b>Security fundamentals.</b> CEH (Mastery, 2026) and Cisco CyberOps Associate (2021) already clear most of what Security+ and ISC2 CC teach.</li>
-            <li><b>Team leadership and stakeholder work.</b> Led branch technical teams, helpdesk operations, and vendor coordination — the part junior candidates cannot fake.</li>
+            <li><b>Team leadership and stakeholder work.</b> Led branch technical teams, helpdesk operations, and vendor coordination, with years of practice behind each.</li>
           </ul>
         </div>
         <div class="note-box warn">
-          <h4 style="margin: 0 0 0.5rem">The actual gaps — where the time goes</h4>
+          <h4 style="margin: 0 0 0.5rem">The actual gaps, where the time goes</h4>
           <ul class="small" style="margin: 0">
             <li><b>Hands-on offensive and defensive practice.</b> CEH is multiple-choice. The gap is demonstrable practical skill: the lab track, a practical credential, published writeups.</li>
             <li><b>Code and automation.</b> Python, Git, IaC, CI/CD. Operations experience without automation experience is the single biggest limiter on international roles.</li>
@@ -52,11 +60,11 @@ const totalMilestones = tracks.reduce((n, t) => n + countItems(t), 0);
         </div>
       </div>
 
-      <div class="card" style="margin-top: 1rem; border-left: 3px solid var(--accent)">
+      <div class="card" style="margin-top: 1rem; border-top: 2px solid var(--ink); padding-inline: 0">
         <h4 style="margin: 0 0 0.5rem">How that changes the plan</h4>
         <p class="small" style="margin: 0 0 0.6rem; max-width: 92ch">
           Compress the first two quarters into roughly one. Skip ISC2 CC and treat Security+ as optional
-          paperwork rather than a learning goal — CEH already occupies that slot on a CV. Start the lab
+          paperwork rather than a learning goal, since CEH already occupies that slot on a CV. Start the lab
           track and the Python/automation work immediately and in parallel, and bring the hard practical
           credential forward from month 13 to around month 8.
         </p>
@@ -64,8 +72,20 @@ const totalMilestones = tracks.reduce((n, t) => n + countItems(t), 0);
           One credential worth checking early: <b>CISSP requires five years of paid experience in two of
           its eight domains</b>. Carrier network operations maps cleanly onto Communication &amp; Network
           Security, and service assurance arguably onto Security Operations. That requirement may already
-          be satisfied — which would make CISSP a near-term target rather than a year-three one.
+          be satisfied, which would make CISSP a near-term target rather than a year-three one.
         </p>
+      </div>
+    </section>
+
+    <section>
+      <SectionHead title="What else is in the plan" />
+      <div class="grid g2 gap" style="gap: 1rem">
+        {planNav.filter((n) => sections[n.href]).map((n) => (
+          <a class="card card-i bordered" href={`${base}${n.href}`} style="display: block; color: inherit">
+            <h3 style="margin: 0 0 0.3rem">{n.label}</h3>
+            <p class="small muted" style="margin: 0">{sections[n.href]}</p>
+          </a>
+        ))}
       </div>
     </section>
 
@@ -81,9 +101,9 @@ const totalMilestones = tracks.reduce((n, t) => n + countItems(t), 0);
           <h4 style="margin: 0 0 0.3rem">Do not run three tracks in parallel</h4>
           <p class="small" style="margin: 0">
             Equal effort across three fields produces a plausible junior in all three and a credible
-            candidate for none. Pick one primary — roughly 70% of your hours — and let the other two
+            candidate for none. Pick one primary (roughly 70% of your hours) and let the other two
             make you unusual rather than employable.
-            <a href={`${base}/recommendations#rec-1`}>Recommendation 1 →</a>
+            <a href={`${base}/plan/recommendations#rec-1`}>Recommendation 1</a>
           </p>
         </div>
         <div class="note-box warn">
@@ -97,8 +117,8 @@ const totalMilestones = tracks.reduce((n, t) => n + countItems(t), 0);
           <h4 style="margin: 0 0 0.3rem">Plan for month seven</h4>
           <p class="small" style="margin: 0">
             Almost everyone stalls between month six and nine, when the material gets harder and no job
-            has appeared yet. Decide your minimum viable week now — one lab and one paragraph is fine.
-            <a href={`${base}/recommendations#rec-12`}>Recommendation 12 →</a>
+            has appeared yet. Decide your minimum viable week now. One lab and one paragraph is fine.
+            <a href={`${base}/plan/recommendations#rec-12`}>Recommendation 12</a>
           </p>
         </div>
       </div>
@@ -111,24 +131,24 @@ const totalMilestones = tracks.reduce((n, t) => n + countItems(t), 0);
           tracks.map((t) => (
             <div class="card bordered">
               <div class="between" style="align-items: flex-start">
-                <div style="flex: 1; min-width: 280px">
-                  <h3 style="margin: 0 0 0.4rem"><a href={`${base}/roadmap/${t.slug}`}>{t.title}</a></h3>
+                <div style="flex: 1; min-width: min(280px, 100%)">
+                  <h3 style="margin: 0 0 0.4rem"><a href={`${base}/plan/roadmap/${t.slug}`}>{t.title}</a></h3>
                   <p class="small muted" style="margin: 0 0 0.7rem; max-width: 82ch">{t.summary}</p>
                   <p class="small" style="margin: 0 0 0.6rem; max-width: 82ch">
-                    <b class="dim tiny" style="text-transform: uppercase; letter-spacing: 0.05em">Market note</b><br />
+                    <b class="tiny">Market note</b><br />
                     <span class="muted">{t.marketNote}</span>
                   </p>
                   <div class="row">
                     {t.roles.map((r) => <span class="tok">{r}</span>)}
                   </div>
                 </div>
-                <div style="min-width: 170px">
-                  <div class="figure" data-figure-for={`track.${t.id}`}>—</div>
+                <div style="min-width: min(170px, 100%)">
+                  <div class="figure" data-figure-for={`track.${t.id}`}></div>
                   <div class="bar thick" style="margin-top: 0.4rem" data-bar-for={`track.${t.id}`}><span></span></div>
                   <p class="tiny dim" style="margin: 0.5rem 0 0">
                     {t.phases.length} phases · {countItems(t)} milestones
                   </p>
-                  <a class="btn btn-sm" style="margin-top: 0.6rem" href={`${base}/roadmap/${t.slug}`}>Open →</a>
+                  <a class="btn btn-sm" style="margin-top: 0.6rem" href={`${base}/plan/roadmap/${t.slug}`}>Open this track</a>
                 </div>
               </div>
             </div>
@@ -158,6 +178,26 @@ const totalMilestones = tracks.reduce((n, t) => n + countItems(t), 0);
           ))
         }
       </ol>
+    </section>
+    <section>
+      <SectionHead
+        title="The weekly routine underneath the milestones"
+        note="Certifications are outcomes. This routine produces them, and it is the thing to protect on the weeks when work runs long."
+      />
+      <div class="tscroll">
+        <table>
+          <thead><tr><th>Rhythm</th><th>Commitment</th><th>What happens</th></tr></thead>
+          <tbody>
+            {cadence.map((c) => (
+              <tr>
+                <td><b>{c.rhythm}</b></td>
+                <td class="mono tiny dim nowrap">{c.commitment}</td>
+                <td class="muted">{c.item}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </section>
   </div>
 

@@ -3,7 +3,7 @@ export type ItemKind = 'skill' | 'cert' | 'lab' | 'project' | 'signal' | 'habit'
 export type Link = { label: string; url: string };
 
 export type Item = {
-  /** Short, stable title. Used to derive the progress-storage key — renaming resets that item. */
+  /** Short, stable title. Used to derive the progress-storage key, so renaming resets that item. */
   title: string;
   kind: ItemKind;
   /** What you actually do. */

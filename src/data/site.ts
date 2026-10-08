@@ -3,13 +3,13 @@ export const site = {
   shortName: 'dickie.zh',
   role: 'netops · security · agentic ai',
   handle: 'stackcypherx',
-  title: 'Dickie Zulfickar Hervianto — Network Operations · Security · Agentic AI',
+  title: 'Dickie Zulfickar Hervianto · Network Operations · Security · Agentic AI',
   tagline: 'Carrier network operations, specialising into security and agentic AI.',
   description:
-    'Portfolio of Dickie Zulfickar Hervianto — telecom network and service operations engineer with over a decade at Telkom Indonesia and Smartfren, now specialising into cybersecurity and agentic AI. Includes an open, milestone-based learning roadmap built for the global hiring market.',
+    'Portfolio of Dickie Zulfickar Hervianto, a telecom network and service operations engineer with over a decade at Telkom Indonesia and Smartfren, now specialising into cybersecurity and agentic AI. Experience, agent-built software, and technical writing, plus the learning plan behind the specialisation.',
   url: 'https://stackcypherx.github.io',
   repo: 'https://github.com/stackcypherx/stackcypherx.github.io',
-  // Empty strings are hidden from the UI — add them as the accounts exist.
+  // Empty strings are hidden from the UI; add them as the accounts exist.
   // Phone number deliberately excluded from this public site; keep it on the CV you send.
   links: {
     github: 'https://github.com/stackcypherx',
@@ -32,13 +32,21 @@ export const site = {
   startedOn: '2026-09-28',
 } as const;
 
+// Primary nav is the portfolio. The learning plan is one entry, with its own
+// sub-navigation (planNav) rendered on every /plan page.
 export const nav = [
   { label: 'Experience', href: '/experience' },
-  { label: 'Agentic', href: '/agentic' },
-  { label: 'Roadmap', href: '/roadmap' },
-  { label: 'Labs', href: '/labs' },
-  { label: 'Certs', href: '/certifications' },
-  { label: 'Readiness', href: '/global-readiness' },
-  { label: 'Notes', href: '/notes' },
+  { label: 'Work', href: '/work' },
+  { label: 'Writing', href: '/writing' },
   { label: 'About', href: '/about' },
+  { label: 'Learning plan', href: '/plan' },
+] as const;
+
+export const planNav = [
+  { label: 'Overview', href: '/plan' },
+  { label: 'Labs', href: '/plan/labs' },
+  { label: 'Certifications', href: '/plan/certifications' },
+  { label: 'Project briefs', href: '/plan/projects' },
+  { label: 'Readiness', href: '/plan/readiness' },
+  { label: 'Recommendations', href: '/plan/recommendations' },
 ] as const;
