@@ -3,7 +3,7 @@
  * into the page as JSON. No runtime fetch, no search service; the whole corpus
  * is a few KB, so shipping it inline beats any network round trip.
  */
-import { nav, planNav } from './site';
+import { nav, planNav, sections } from './site';
 import { tracks } from './roadmap';
 import { certs } from './certs';
 import { projects } from './projects';
@@ -20,6 +20,7 @@ export function buildIndex(base = ''): Doc[] {
   const b = base.replace(/\/$/, '');
   const docs: Doc[] = [];
 
+  for (const n of sections) docs.push({ t: n.label, s: 'Section', u: `${b}${n.href}` });
   for (const n of nav) docs.push({ t: n.label, s: 'Page', u: `${b}${n.href}` });
   for (const n of planNav) docs.push({ t: n.label, s: 'Learning plan', u: `${b}${n.href}` });
   docs.push({ t: 'Home', s: 'Page', u: `${b}/` });

@@ -32,14 +32,18 @@ export const site = {
   startedOn: '2026-09-28',
 } as const;
 
-// Primary nav is the portfolio. The learning plan is one entry, with its own
-// sub-navigation (planNav) rendered on every /plan page.
+// Two top-level tabs, like a console's "Games | Media". Each tab has its own
+// row of pages underneath: `nav` for the portfolio, `planNav` for the plan.
+export const sections = [
+  { label: 'Portfolio', short: 'Portfolio', href: '/' },
+  { label: 'Learning plan', short: 'Plan', href: '/plan' },
+] as const;
+
 export const nav = [
   { label: 'Experience', href: '/experience' },
   { label: 'Work', href: '/work' },
   { label: 'Writing', href: '/writing' },
   { label: 'About', href: '/about' },
-  { label: 'Learning plan', href: '/plan' },
 ] as const;
 
 export const planNav = [

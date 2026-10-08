@@ -248,19 +248,33 @@ main { counter-reset: sec; }
   font-family: var(--sans); font-size: 0.8rem; font-weight: 500; color: var(--ink-3);
 }
 
-.nav { display: flex; gap: 0.1rem; margin-left: auto; align-items: center; }
-.nav a {
-  font-size: 0.875rem; color: var(--ink-2);
-  padding: 0.35rem 0.55rem; position: relative;
-  transition: color 0.16s; white-space: nowrap;
+/* Section tabs, like a console's "Games | Media": large, quiet, one underlined. */
+.tabs { display: flex; gap: 0.4rem; align-items: center; margin-left: 1.2rem; }
+.tabs a {
+  display: inline-flex; align-items: center; min-height: 44px; padding: 0 0.6rem;
+  font-family: var(--display); font-size: 1.05rem; font-weight: 400; color: var(--ink-3);
+  position: relative; white-space: nowrap; transition: color 0.16s;
 }
-.nav a:hover { color: var(--ink); }
-.nav a[aria-current='page'] { color: var(--ink); font-weight: 560; }
-.nav a[aria-current='page']::after {
-  content: ''; position: absolute;
-  left: 0.55rem; right: 0.55rem; bottom: -1px;
-  height: 2px; background: var(--accent);
+.tabs a:hover { color: var(--ink); }
+.tabs a[aria-current] { color: var(--ink); font-weight: 500; }
+.tabs a[aria-current]::after {
+  content: ''; position: absolute; left: 0.6rem; right: 0.6rem; bottom: 6px; height: 2px; background: var(--accent);
 }
+.tab-short { display: none; }
+
+/* My local time: useful to a recruiter in another timezone deciding when to call. */
+.clock { margin-left: auto; font-size: 0.82rem; color: var(--ink-3); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.clock-t { color: var(--ink-2); }
+
+/* Initials badge (no photo on the public site); links to About. 36px visual, 44px hit. */
+.avatar {
+  display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+  width: 36px; height: 36px; border-radius: 50%; position: relative;
+  background: var(--paper-3); border: 1px solid var(--rule-2);
+  font-size: 0.78rem; font-weight: 600; letter-spacing: 0.02em; color: var(--ink);
+}
+.avatar::after { content: ''; position: absolute; inset: -4px; border-radius: 50%; }
+.avatar:hover { border-color: var(--ink); }
 
 /* 36px visual, 44px hit area via the ::after overhang */
 .icon-btn, .kbd-btn {
@@ -294,20 +308,19 @@ main { counter-reset: sec; }
   content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: var(--accent);
 }
 
-/* The five-item nav row fits alongside search and theme down to about 900px. */
-.burger { display: none; }
+/* Narrow screens: drop the role line, then the brand and the clock's suffix,
+   then shorten the plan tab. The full label stays available to screen readers. */
 @media (max-width: 940px) {
-  .burger { display: inline-flex; margin-left: auto; }
+  .brand-sub, .clock-p { display: none; }
   .kbd-btn span.lbl { display: none; }
-  .nav {
-    display: none; order: 4; width: 100%; margin: 0 0 0.8rem;
-    flex-direction: column; align-items: stretch; gap: 0;
-    border-top: 1px solid var(--rule); padding-top: 0.5rem;
-  }
-  .nav.open { display: flex; }
-  .nav a { padding: 0.6rem 0; min-height: 44px; display: flex; align-items: center; }
-  .nav a[aria-current='page']::after { display: none; }
-  .hdr-in { flex-wrap: wrap; height: auto; min-height: 62px; }
+}
+@media (max-width: 640px) {
+  .brand, .clock { display: none; }
+  .tabs { margin-left: 0; margin-right: auto; }
+}
+@media (max-width: 400px) {
+  .tab-long { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .tab-short { display: inline; }
 }
 
 /* ────────────────────────────────────────────────────────────────── hero */
@@ -624,12 +637,14 @@ th {
 /* Full-bleed page photo, blurred and darkened. Two layers so a new image can
    fade in over the old one. The scrim strength (--scrim) is measured per photo
    at build time in Backdrop.astro so every text colour stays above AA. */
-.backdrop { position: fixed; inset: 0; z-index: -1; overflow: hidden; background: var(--base); }
+.backdrop { position: fixed; inset: 0; z-index: -1; overflow: hidden; background: var(--base); --blur: 16px; }
+/* Keep both blur values in step with Backdrop.astro's measurement. */
+.backdrop[data-sharp] { --blur: 5px; }
 .backdrop-layer {
   position: absolute; inset: -40px;
   background-size: cover; background-position: center;
-  filter: blur(16px) saturate(1.15);   /* keep in step with Backdrop.astro's measurement */
-  opacity: 0; transition: opacity 0.45s var(--ease);
+  filter: blur(var(--blur)) saturate(1.15);
+  opacity: 0; transition: opacity 0.45s var(--ease), filter 0.45s var(--ease);
 }
 .backdrop-layer.is-on { opacity: 1; }
 .backdrop-scrim {
@@ -665,7 +680,57 @@ th {
 .tile-d { font-size: 0.86rem; color: var(--ink-2); line-height: 1.45; }
 @media (max-width: 600px) { .tile { width: 78vw; } }
 
+/* ─────────────────────────────────────────────────── console home screen */
+/* Home only. A row of square icons; the focused one lifts and its panel and
+   background replace the intro. The page h1 lives in the intro panel, which is
+   also what shows without JavaScript and on touch screens. */
+.console { min-height: calc(100svh - 63px); display: flex; padding: clamp(1.5rem, 4vh, 2.5rem) 0 clamp(2.5rem, 7vh, 4.5rem); }
+.console > .wrap { display: flex; flex-direction: column; gap: clamp(2rem, 6vh, 4.5rem); }
+
+.icons {
+  display: flex; align-items: center; gap: 1rem; list-style: none; margin: 0; max-width: none;
+  padding: 0.9rem 0.5rem; overflow-x: auto; scroll-snap-type: x proximity; scrollbar-width: none;
+  /* fade the edge so a cut-off icon reads as "more this way" */
+  mask-image: linear-gradient(90deg, #000 calc(100% - 3rem), transparent);
+}
+.icons::-webkit-scrollbar { display: none; }
+.icons > li { margin: 0; flex: 0 0 auto; scroll-snap-align: start; }
+.icons > li.icons-gap { width: 0.6rem; }   /* separates sections from builds */
+.icon {
+  display: flex; align-items: center; justify-content: center;
+  width: 84px; height: 84px; border-radius: 22px;
+  background: var(--paper-3) center / cover no-repeat; border: 1px solid var(--rule-2);
+  color: var(--ink); font-family: var(--display); font-size: 0.82rem; font-weight: 500;
+  transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease), border-color 0.2s;
+}
+.icon-photo { font-size: 0; }   /* photo icons are named by aria-label and the panel */
+.icon:hover, .icon:focus-visible, .icon[aria-current='true'] {
+  transform: scale(1.12); border-color: var(--ink);
+  outline: 2px solid var(--ink); outline-offset: 3px;
+  box-shadow: 0 0 0 8px rgba(140, 188, 255, 0.16), 0 20px 50px -16px rgba(0, 0, 0, 0.8);
+}
+
+.console-panel { margin-top: auto; max-width: 64ch; }
+.console-panel [data-panel][hidden] { display: none; }
+.console-kicker { font-size: 0.9rem; color: var(--ink-2); margin-bottom: 1rem; }
+.console-title {
+  font-family: var(--display); font-weight: 300; line-height: 1.04; letter-spacing: -0.03em;
+  font-size: clamp(2.2rem, 5.4vw, 4rem); margin: 0; max-width: 18ch; text-wrap: balance;
+}
+.console-line { margin-top: 1.2rem; }
+.console-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2rem; }
+
+/* The console's wide rounded action button. */
+.btn-pill { border-radius: 999px; min-height: 48px; padding: 0 2rem; font-weight: 600; }
+.btn-pill.btn-primary:hover { background: var(--ink); color: var(--base); box-shadow: 0 0 0 3px rgba(243, 245, 249, 0.45); }
+
+@media (max-width: 640px) {
+  .console { min-height: auto; }
+  .icon { width: 68px; height: 68px; border-radius: 18px; font-size: 0.74rem; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .backdrop-layer { transition: none; }
+  .icon, .icon:hover, .icon:focus-visible, .icon[aria-current='true'] { transition: none; transform: none; }
   .tile, .tile:hover, .tile:focus-visible { transition: none; transform: none; }
 }

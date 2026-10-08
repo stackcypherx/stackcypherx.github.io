@@ -16,16 +16,22 @@ feels interactive.
 
 ## Where the effect goes
 
-- **Portfolio** (Home, Experience, Work, Writing, About): dark, blurred background photo, frosted
-  header, rounded panels. No tile row, no background changes while browsing.
-- **Learning plan** (`/plan`): the same, plus a horizontal row of focus tiles. The focused tile
-  lifts, gets a white outline and soft glow, and swaps the page background to its own photo.
+- **Top bar (every page):** "Portfolio | Learning plan" tabs like a console's "Games | Media", my
+  local time in Makassar (useful to recruiters in other timezones), search, and an initials badge
+  instead of a photo. Each tab's pages sit in a second row underneath.
+- **Home (2026-10-08, after nanaaquasi/playstation-5-uidesign):** a console home screen. A row of
+  square icons (Experience, Work, Writing, Learning plan, then the featured builds); hovering or
+  focusing one swaps the panel below and the background to that item. The default panel is the
+  intro with the page h1, which is also what shows on touch screens and without JavaScript. Blur
+  is light (5px) so the photo reads. Below the first screen, Home continues as the CV.
+- **Other portfolio pages:** dark, blurred (16px) background photo, rounded panels. No icon row.
+- **Learning plan** (`/plan`): a row of focus tiles that swap the background, as before.
 
 ## Backgrounds
 
-One photo per slot in `src/assets/backgrounds/`, named after the slot. Blurred 16px (soft, but the subject
-stays recognisable) and darkened by a scrim measured per photo at build time, so any photo keeps
-text above WCAG AA.
+One photo per slot in `src/assets/backgrounds/`, named after the slot. Blurred 16px (5px on Home)
+and darkened by a scrim measured per photo and per blur at build time, so any photo keeps text
+above WCAG AA. Section icons on Home show the same photos as thumbnails.
 
 | Slot | Used on | Photo should show |
 | --- | --- | --- |
@@ -52,8 +58,9 @@ body. No Sony typeface. Letter-spacing only on the small label above section hea
 
 ## Shape and depth
 
-Radii: 8px controls, 14px panels, 18px tiles. One frosted surface (the header). One shadow (the
-search dialog). One glow (the focused tile).
+Radii: 8px controls, 14px panels, 18px tiles, 22px home icons; the main action is a fully
+rounded button. One frosted surface (the header). One shadow (the
+search dialog). One glow style (the focused tile or home icon).
 
 ## Motion
 
@@ -62,7 +69,8 @@ under reduced motion.
 
 ## Not allowed
 
-PlayStation logos, controller button symbols, sounds, or Sony trademarks.
+PlayStation logos, controller button symbols, sounds, boot screens, looping video backgrounds,
+"Play" wording, or Sony trademarks. Labels say what happens ("Open experience").
 
 ## Dials
 

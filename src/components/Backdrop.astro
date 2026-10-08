@@ -2,14 +2,17 @@
 /**
  * Full-bleed blurred background. Each slot resolves to an optimised photo from
  * src/assets/backgrounds/ when one exists, otherwise to its gradient fallback.
- * Every slot is exposed as CSS variables (--bg-<slot>, --scrim-<slot>) so the
- * client script can crossfade between them without knowing file names.
+ * Every slot is exposed as CSS variables (--bg-<slot>, --scrim-<slot>,
+ * --scrim-sharp-<slot>) so the client script can crossfade between them
+ * without knowing file names.
  *
  * The scrim is measured per photo at build time: the photo is blurred the way
  * the page blurs it, its brightest area is found, and the scrim is set to the
  * lightest value that still keeps every text colour above WCAG AA over that
  * area. Dark photos stay visible; bright ones get darkened more. Replacing a
- * photo re-measures it automatically.
+ * photo re-measures it automatically. Pages that ask for a sharp background
+ * (the console home screen) blur far less, so they get their own measurement:
+ * less blur leaves brighter spots, which need a stronger scrim.
  *
  * The element persists across View Transitions, so moving between pages
  * crossfades the background instead of flashing.
@@ -18,8 +21,11 @@ import { getImage } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import { backgrounds, bgKeys, type BgKey } from '../data/backgrounds';
 
-interface Props { current: BgKey }
-const { current } = Astro.props;
+interface Props { current: BgKey; sharp?: boolean }
+const { current, sharp = false } = Astro.props;
+
+// Keep in step with --blur in global.css.
+const BLUR = 16, SHARP_BLUR = 5;
 
 const files = import.meta.glob<{ default: ImageMetadata }>(
   '../assets/backgrounds/*.{jpg,jpeg,png,webp,avif}',
@@ -42,11 +48,11 @@ const mix = (fg: number[], alpha: number, bg: number[]) => fg.map((c, i) => c * 
 const BASE = [6, 8, 14], PANEL = [14, 17, 24], PANEL_ALPHA = 0.72;
 const SMALL_TEXT = [174, 181, 193], ACCENT = [140, 188, 255];
 
-async function measureScrim(file: string): Promise<number> {
+async function measureScrim(file: string, blurPx: number): Promise<number> {
   try {
-    const sharp = (await import('sharp')).default;
-    // Blur as the page does (16px over a ~1600px-wide cover image, so 1.6px at 160px), then sample.
-    const { data, info } = await sharp(file).resize(160).blur(1.6).raw().toBuffer({ resolveWithObject: true });
+    const sharpLib = (await import('sharp')).default;
+    // Blur as the page does: blurPx over a ~1600px-wide cover image is blurPx/10 at 160px.
+    const { data, info } = await sharpLib(file).resize(160).blur(Math.max(0.3, blurPx / 10)).raw().toBuffer({ resolveWithObject: true });
     let brightest = [0, 0, 0];
     for (let i = 0; i < data.length; i += info.channels) {
       const px = [data[i], data[i + 1], data[i + 2]];
@@ -76,14 +82,20 @@ for (const key of bgKeys) {
     // Builds run from the project root; the glob key gives the file name.
     const root: string = (globalThis as any).process?.cwd?.() ?? '.';
     const source = `${root}/src/assets/backgrounds/${match[0].split('/').pop()}`;
-    vars.push(`--bg-${key}: url("${img.src}")`, `--scrim-${key}: ${await measureScrim(source)}`);
+    vars.push(
+      `--bg-${key}: url("${img.src}")`,
+      `--scrim-${key}: ${await measureScrim(source, BLUR)}`,
+      `--scrim-sharp-${key}: ${await measureScrim(source, SHARP_BLUR)}`,
+    );
   } else {
-    vars.push(`--bg-${key}: ${backgrounds[key].fallback}`, `--scrim-${key}: ${FALLBACK_SCRIM}`);
+    vars.push(`--bg-${key}: ${backgrounds[key].fallback}`, `--scrim-${key}: ${FALLBACK_SCRIM}`, `--scrim-sharp-${key}: ${FALLBACK_SCRIM}`);
   }
 }
 ---
 
-<div class="backdrop" style={`${vars.join('; ')}; --scrim: var(--scrim-${current})`} data-backdrop data-current={current} transition:persist="backdrop" aria-hidden="true">
+<!-- Slot variables live on :root so other elements (the home-screen icons) can show the same photos. -->
+<style is:inline set:html={`:root { ${vars.join('; ')}; }`}></style>
+<div class="backdrop" style={`--scrim: var(--scrim-${sharp ? 'sharp-' : ''}${current})`} data-backdrop data-current={current} data-sharp={sharp ? 'true' : undefined} transition:persist="backdrop" aria-hidden="true">
   <div class="backdrop-layer is-on" style={`background-image: var(--bg-${current})`}></div>
   <div class="backdrop-layer"></div>
   <div class="backdrop-scrim"></div>
