@@ -1,22 +1,26 @@
 ---
 import Base from '../../layouts/Base.astro';
-import TrackCard from '../../components/TrackCard.astro';
 import ProgressPanel from '../../components/ProgressPanel.astro';
 import SectionHead from '../../components/SectionHead.astro';
 import { tracks, timeline, cadence } from '../../data/roadmap';
-import { planNav } from '../../data/site';
 import { countItems, itemKey } from '../../data/types';
 import { yearsWord } from '../../data/profile';
+import type { BgKey } from '../../data/backgrounds';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const totalMilestones = tracks.reduce((n, t) => n + countItems(t), 0);
-const sections: Record<string, string> = {
-  '/plan/labs': 'The free TryHackMe track plus OSCP-style and post-OSCP machine lists, checkable room by room.',
-  '/plan/certifications': 'Every credential on the path with price, format and a verdict, including which to skip.',
-  '/plan/projects': 'Portfolio project briefs with acceptance criteria. Shipped ones move to Work.',
-  '/plan/readiness': 'The non-technical side of hiring across borders: visibility, recognition, interviews, markets.',
-  '/plan/recommendations': 'Why the plan is shaped the way it is, written to be argued with.',
+// The tile row: four tracks, then the rest of the plan. Each tile names the
+// background it shows while focused.
+const trackBg: Record<string, BgKey> = {
+  foundations: 'lab', cybersecurity: 'security', 'network-engineering': 'field', 'ai-agentic': 'work',
 };
+const sections: { href: string; label: string; line: string; bg: BgKey }[] = [
+  { href: '/plan/labs', label: 'Labs', bg: 'security', line: 'TryHackMe track plus OSCP-style and red-team machine lists.' },
+  { href: '/plan/certifications', label: 'Certifications', bg: 'lab', line: 'Price, format and a verdict for each, including what to skip.' },
+  { href: '/plan/projects', label: 'Project briefs', bg: 'work', line: 'Portfolio projects with acceptance criteria.' },
+  { href: '/plan/readiness', label: 'Readiness', bg: 'field', line: 'Visibility, recognition, interviews and markets.' },
+  { href: '/plan/recommendations', label: 'Recommendations', bg: 'writing', line: 'Why the plan is shaped this way.' },
+];
 ---
 
 <Base
@@ -26,10 +30,31 @@ const sections: Record<string, string> = {
   lede={`The 24-month plan behind my move into security and agentic AI, kept public so it stays honest. ${totalMilestones} milestones across ${tracks.length} tracks, each naming the artifact it has to produce. Anyone can use it: ticks save in your own browser, so export a backup occasionally.`}
 >
   <div class="wrap stack-lg">
-    <section>
-      <div class="grid g4 gap">
-        {tracks.map((t) => <TrackCard track={t} />)}
-      </div>
+    <section aria-label="Tracks and sections">
+      <p class="tiny dim" style="margin: 0">Use the arrow keys to move along the row.</p>
+      <ul class="tiles" data-tiles>
+        {tracks.map((t, i) => (
+          <li>
+            <a class="tile" href={`${base}/plan/roadmap/${t.slug}`} data-bg={trackBg[t.slug] ?? 'lab'}>
+              <span class="tile-k">
+                <span>Track {String(i + 1).padStart(2, '0')}</span>
+                <span class="figure" data-figure-for={`track.${t.id}`} data-figure-mode="pct"></span>
+              </span>
+              <span class="tile-t">{t.short}</span>
+              <span class="tile-d">{t.tagline}</span>
+            </a>
+          </li>
+        ))}
+        {sections.map((x) => (
+          <li>
+            <a class="tile" href={`${base}${x.href}`} data-bg={x.bg}>
+              <span class="tile-k"><span>Plan</span></span>
+              <span class="tile-t">{x.label}</span>
+              <span class="tile-d">{x.line}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
     </section>
 
     <section>
@@ -74,18 +99,6 @@ const sections: Record<string, string> = {
           Security, and service assurance arguably onto Security Operations. That requirement may already
           be satisfied, which would make CISSP a near-term target rather than a year-three one.
         </p>
-      </div>
-    </section>
-
-    <section>
-      <SectionHead title="What else is in the plan" />
-      <div class="grid g2 gap" style="gap: 1rem">
-        {planNav.filter((n) => sections[n.href]).map((n) => (
-          <a class="card card-i bordered" href={`${base}${n.href}`} style="display: block; color: inherit">
-            <h3 style="margin: 0 0 0.3rem">{n.label}</h3>
-            <p class="small muted" style="margin: 0">{sections[n.href]}</p>
-          </a>
-        ))}
       </div>
     </section>
 

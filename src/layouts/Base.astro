@@ -3,6 +3,8 @@ import '../styles/global.css';
 import { ClientRouter } from 'astro:transitions';
 import { site, nav, planNav } from '../data/site';
 import { buildIndex } from '../data/search';
+import Backdrop from '../components/Backdrop.astro';
+import { backgrounds, type BgKey } from '../data/backgrounds';
 
 interface Props {
   title?: string;
@@ -13,9 +15,11 @@ interface Props {
   eyebrow?: string;
   /** Use the oversized display type for the heading. */
   display?: boolean;
+  /** Background slot; defaults to one chosen from the URL. */
+  bg?: BgKey;
 }
 
-const { title, description = site.description, heading, lede, eyebrow, display = false } = Astro.props;
+const { title, description = site.description, heading, lede, eyebrow, display = false, bg } = Astro.props;
 
 const pageTitle = title ? `${title} · ${site.name}` : site.title;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -26,6 +30,19 @@ const isCurrent = (p: string) => {
   return current === target || (target !== '/' && current.startsWith(target + '/'));
 };
 const index = JSON.stringify(buildIndex(base));
+const photoCredits = Object.values(backgrounds).flatMap((b) => (b.credit ? [b.credit] : []));
+
+// Each page's background is chosen by what the page is about.
+const bgByPath: [string, BgKey][] = [
+  ['/plan/roadmap/cybersecurity', 'security'],
+  ['/plan/roadmap/network-engineering', 'field'],
+  ['/plan/roadmap/ai-agentic', 'work'],
+  ['/plan/labs', 'security'],
+  ['/plan', 'lab'],
+  ['/work', 'work'],
+  ['/writing', 'writing'],
+];
+const pageBg: BgKey = bg ?? bgByPath.find(([p]) => current === href(p) || current.startsWith(href(p) + '/'))?.[1] ?? 'field';
 const inPlan = current === href('/plan') || current.startsWith(href('/plan') + '/');
 // Track pages live under /plan/roadmap and belong to the Overview entry.
 const isPlanCurrent = (p: string) =>
@@ -41,7 +58,7 @@ const isPlanCurrent = (p: string) =>
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
-    <meta name="theme-color" content="#fcfbf8" />
+    <meta name="theme-color" content="#06080e" />
     <link rel="canonical" href={new URL(Astro.url.pathname, site.url).href} />
 
     <meta property="og:type" content="profile" />
@@ -53,33 +70,16 @@ const isPlanCurrent = (p: string) =>
 
     <link
       rel="icon"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23fcfbf8'/%3E%3Cpath d='M14 46 L32 16 L50 46' stroke='%2316160f' stroke-width='5' fill='none'/%3E%3Cpath d='M22 38 h20' stroke='%239a3412' stroke-width='5'/%3E%3C/svg%3E"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2306080e'/%3E%3Cpath d='M14 46 L32 16 L50 46' stroke='%23f3f5f9' stroke-width='5' fill='none'/%3E%3Cpath d='M22 38 h20' stroke='%238cbcff' stroke-width='5'/%3E%3C/svg%3E"
     />
 
-    <script is:inline>
-      (() => {
-        const applyTheme = (doc) => {
-          doc.documentElement.classList.add('has-js');
-          try {
-            const s = localStorage.getItem('theme');
-            if (s === 'dark' || s === 'light') doc.documentElement.setAttribute('data-theme', s);
-            if (s === 'dark') doc.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#121210');
-          } catch {}
-        };
-        applyTheme(document);
-        // View Transitions replace <html> attributes with the incoming page's,
-        // so the stored theme is re-applied to that page before it is swapped in.
-        if (!window.__themeSwapWired) {
-          window.__themeSwapWired = true;
-          document.addEventListener('astro:before-swap', (e) => applyTheme(e.newDocument));
-        }
-      })();
-    </script>
+    <script is:inline>document.documentElement.classList.add('has-js');</script>
 
     <ClientRouter />
   </head>
 
   <body>
+    <Backdrop current={pageBg} />
     <header class="hdr">
       <div class="wrap hdr-in">
         <a class="brand" href={href('/')}>
@@ -98,9 +98,6 @@ const isPlanCurrent = (p: string) =>
           <span>⌕</span><span class="lbl">Search</span><kbd>⌘K</kbd>
         </button>
 
-        <button class="icon-btn" data-theme-toggle aria-pressed="false" title="Switch between light and dark">
-          <span data-theme-label>Dark</span>
-        </button>
       </div>
       {inPlan && (
         <nav class="subnav" aria-label="Learning plan">
@@ -113,7 +110,7 @@ const isPlanCurrent = (p: string) =>
       )}
     </header>
 
-    <main>
+    <main data-page-bg={pageBg}>
       {heading && (
         <section class="hero">
           <div class="wrap hero-in">
@@ -131,7 +128,7 @@ const isPlanCurrent = (p: string) =>
       <div class="wrap">
         <div class="between" style="align-items: flex-start">
           <div>
-            <div style="margin-bottom: 0.5rem"><b style="font-family: var(--serif); font-size: 1.1rem">{site.name}</b></div>
+            <div style="margin-bottom: 0.5rem"><b style="font-size: 1.05rem; font-weight: 500">{site.name}</b></div>
             <p class="small muted" style="max-width: 46ch">{site.tagline}</p>
           </div>
 
@@ -159,6 +156,14 @@ const isPlanCurrent = (p: string) =>
           thresholds and platform pricing change, so verify against the official source before booking
           or applying. Nothing here is immigration or financial advice.
         </p>
+        {photoCredits.length > 0 && (
+          <p class="tiny dim" style="margin-top: 0.8rem; max-width: 84ch">
+            Background photos:{' '}
+            {photoCredits.map((c, i) => (
+              <>{i > 0 && ', '}<a href={c.url}>{c.by}</a> ({c.source})</>
+            ))}.
+          </p>
+        )}
       </div>
     </footer>
 

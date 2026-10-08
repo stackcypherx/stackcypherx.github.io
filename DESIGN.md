@@ -1,39 +1,69 @@
 # Design direction
 
-Transcribed from the existing design (commit 3c7f9d6, "Rebuild the design language: editorial,
-light-first", and the header of `src/styles/global.css`). Edit freely; this file is the source of
-direction, and antislop only filters against it.
+Owner's choice (2026-10-08): a PlayStation 5 home-screen feel, inspired by it rather than copied,
+applied with restraint on the portfolio and in full on the learning plan. This replaces the earlier
+editorial, light-first direction. Edit freely; antislop only filters against this file.
 
 ## Identity
 
-A printed report, not a product landing page. The site is one person's working record: 11 years
-of carrier network operations, the move into security and agentic AI, and the plan in public.
+A console home screen for one person's career: calm, dark, cinematic. Content floats over a
+full-bleed photo that belongs to the page it sits on.
 
 ## Personality
 
-Plain, exact, a little dry. Evidence over adjectives.
+Quiet confidence. The portfolio reads senior and steady; the learning plan is the one place that
+feels interactive.
+
+## Where the effect goes
+
+- **Portfolio** (Home, Experience, Work, Writing, About): dark, blurred background photo, frosted
+  header, rounded panels. No tile row, no background changes while browsing.
+- **Learning plan** (`/plan`): the same, plus a horizontal row of focus tiles. The focused tile
+  lifts, gets a white outline and soft glow, and swaps the page background to its own photo.
+
+## Backgrounds
+
+One photo per slot in `src/assets/backgrounds/`, named after the slot. Blurred 16px (soft, but the subject
+stays recognisable) and darkened by a scrim measured per photo at build time, so any photo keeps
+text above WCAG AA.
+
+| Slot | Used on | Photo should show |
+| --- | --- | --- |
+| `field` | Home, Experience, About, network track, Readiness tile | Field work: fibre, towers, sites |
+| `lab` | Learning plan, foundations track, Certifications tile | A network rack or lab |
+| `security` | Labs, cybersecurity track | Security work: screens, code, a CTF desk |
+| `work` | Work, AI track, Project briefs tile | Software you built |
+| `writing` | Writing, Recommendations tile | A desk with notes |
+
+Missing photos fall back to a dark slate-blue gradient, all in one hue family.
 
 ## Palette
 
-- Paper (light, default): `#fcfbf8`, with `#f4f2ec` / `#eae7de` / `#e0dcd0` for recessed surfaces
-- Ink: `#16160f`, secondary `#504f46`
-- Accent, used once per moment: rust `#9a3412` (section numbers, marks, current state)
-- Links: ink blue `#1c4a78`
-- Status only: green `#3f6b41` (done/output), amber `#8a6410` (warning)
-- Dark mode is an explicit user choice, a warm inversion of the same design, never the default
+- Canvas `#06080e`; panels are translucent near-black (`rgba(14,17,24,.72)`)
+- Text `#f3f5f9`, secondary `#c3c9d4`, small/labels `#aeb5c1`
+- One cool accent `#8cbcff` for focus, current state and section numbers
+- Status only: green `#8fd19e`, amber `#f0c060`
+- Dark only
 
 ## Typography
 
-- Display and headings: system book serif (Iowan Old Style, Palatino, Georgia)
-- Text: system sans
-- Mono: only for numbers and codes (section numbers, figures, exam codes)
+One system sans (SF Pro / Segoe UI / system-ui) in light weights: thin large headings, regular
+body. No Sony typeface. Letter-spacing only on the small label above section heads.
 
-## Composition
+## Shape and depth
 
-Hairline rules instead of boxes, an asymmetric grid (number column + content column), and
-auto-numbered sections (`01`, `02` ...) as the identity motif. No gradients, glows, particle
-fields, or scrolling logo strips.
+Radii: 8px controls, 14px panels, 18px tiles. One frosted surface (the header). One shadow (the
+search dialog). One glow (the focused tile).
 
-## Dials (proposed, confirm or change)
+## Motion
 
-Dial: ENERGY 1 / RHYTHM 2 / MOTION 1
+Background crossfade (~450ms), tile lift on focus, page cross-fade. Nothing loops. All of it off
+under reduced motion.
+
+## Not allowed
+
+PlayStation logos, controller button symbols, sounds, or Sony trademarks.
+
+## Dials
+
+Dial: ENERGY 2 / RHYTHM 2 / MOTION 2
