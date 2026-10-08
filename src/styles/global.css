@@ -1,66 +1,52 @@
 /* ═══════════════════════════════════════════════════════════════════════════
-   Editorial: a printed-report design language. Direction lives in DESIGN.md.
+   Console: a dark, cinematic design language. Direction lives in DESIGN.md.
 
-   Light/paper by default. Serif display against sans text, hairline rules
-   instead of boxes, an asymmetric grid, auto-numbered sections, and one
-   restrained accent. No gradients, no glows, no particle fields, no
-   scrolling logo strips. Dark is an explicit user choice, not the default.
+   Content floats over a full-bleed background photo that is blurred and
+   darkened per page. One clean sans in light weights, rounded panels, one cool
+   accent for focus and current state. The learning plan gets a row of focus
+   tiles that swap the background; the portfolio pages stay restrained.
+   Dark only: the look depends on it.
    ═══════════════════════════════════════════════════════════════════════════ */
 
+/* Contrast is checked against the worst case: a pure-white photo pixel under the
+   78% scrim (rgb 61,62,67), and a panel over that (rgb 28,31,37). */
 :root {
-  --paper:    #fcfbf8;
-  --paper-2:  #f4f2ec;
-  --paper-3:  #eae7de;
-  --paper-4:  #e0dcd0;
+  --base:     #06080e;                    /* page canvas under the backdrop      */
+  --paper:    rgba(14, 17, 24, 0.72);     /* panels                              */
+  --paper-2:  rgba(30, 36, 48, 0.78);     /* panel hover, code                   */
+  --paper-3:  rgba(44, 52, 68, 0.82);     /* checked chips                       */
+  --paper-4:  rgba(255, 255, 255, 0.14);  /* progress track                      */
+  --solid:    #10141c;                    /* opaque surfaces (search dialog)     */
 
-  --ink:      #16160f;
-  --ink-2:    #504f46;
-  --ink-3:    #64635a;   /* 5.84:1 on paper, 4.89:1 on paper-3: small text and control edges */
-  --ink-4:    #a8a69a;   /* markers and separators only, never text */
+  --ink:      #f3f5f9;   /* 9.74:1 worst case on page */
+  --ink-2:    #c3c9d4;   /* 6.39:1 */
+  --ink-3:    #aeb5c1;   /* 5.16:1: small text and control edges */
+  --ink-4:    #6b7383;   /* markers and separators only, never text */
 
-  --rule:     #dcd7c9;
-  --rule-2:   #c6c0ae;
+  --rule:     rgba(255, 255, 255, 0.10);
+  --rule-2:   rgba(255, 255, 255, 0.24);
 
-  --accent:   #9a3412;   /* rust: section numbers, marks, current state */
-  --link:     #1c4a78;   /* ink blue: links                             */
-  --good:     #3f6b41;
-  --warn:     #8a6410;
+  --accent:   #8cbcff;   /* cool blue: focus, current state, section numbers (5.45:1) */
+  --link:     #8cbcff;
+  --good:     #8fd19e;
+  --warn:     #f0c060;
 
-  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua",
-           Georgia, "Times New Roman", ui-serif, serif;
-  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto,
+  --sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", system-ui, Roboto,
+          "Helvetica Neue", Arial, sans-serif;
+  --display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", system-ui, Roboto,
           "Helvetica Neue", Arial, sans-serif;
   --mono: ui-monospace, "SF Mono", SFMono-Regular, "Cascadia Mono", Menlo,
           Consolas, monospace;
+
+  --r-sm: 8px;    /* buttons, inputs, tokens */
+  --r-md: 14px;   /* panels and cards        */
+  --r-lg: 18px;   /* focus tiles             */
 
   --measure: 66ch;
   --maxw: 1180px;
   --gutter: clamp(1.25rem, 5vw, 3.5rem);
 
   --ease: cubic-bezier(0.2, 0.6, 0.2, 1);
-
-  color-scheme: light;
-}
-
-/* Dark is opt-in only. A warm inversion of the same design, not a new one. */
-:root[data-theme='dark'] {
-  --paper:    #121210;
-  --paper-2:  #1a1a17;
-  --paper-3:  #22221e;
-  --paper-4:  #2b2b26;
-
-  --ink:      #ece9df;
-  --ink-2:    #b2afa3;
-  --ink-3:    #8e8b81;   /* 5.50:1 on paper, 4.68:1 on paper-3 */
-  --ink-4:    #5f5d56;
-
-  --rule:     #2e2e28;
-  --rule-2:   #45443c;
-
-  --accent:   #e4794f;
-  --link:     #86b3dd;
-  --good:     #86b884;
-  --warn:     #d6a744;
 
   color-scheme: dark;
 }
@@ -84,7 +70,7 @@ html {
 
 body {
   font-family: var(--sans);
-  background: var(--paper);
+  background: var(--base);
   color: var(--ink);
   font-size: 17px;
   line-height: 1.66;
@@ -96,12 +82,12 @@ body {
 img, svg { display: block; max-width: 100%; }
 
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-::selection { background: var(--ink); color: var(--paper); }
+::selection { background: var(--accent); color: var(--base); }
 
 /* ──────────────────────────────────────────────────────────── typography */
 h1, h2, h3 {
-  font-family: var(--serif);
-  font-weight: 600;
+  font-family: var(--display);
+  font-weight: 400;
   line-height: 1.12;
   letter-spacing: -0.012em;
   text-wrap: balance;
@@ -111,17 +97,19 @@ h4 { font-family: var(--sans); font-weight: 650; font-size: 1rem; letter-spacing
 
 .display {
   font-size: clamp(2.6rem, 7vw, 5.1rem);
-  line-height: 0.97;
-  letter-spacing: -0.028em;
+  font-weight: 300;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
 }
-h1 { font-size: clamp(2rem, 4.4vw, 3rem); }
+h1 { font-size: clamp(2rem, 4.4vw, 3rem); font-weight: 300; }
 h2 { font-size: clamp(1.5rem, 2.9vw, 2.15rem); }
 h3 { font-size: 1.2rem; letter-spacing: -0.008em; }
 
 p { text-wrap: pretty; max-width: var(--measure); }
 
 .lede {
-  font-family: var(--serif);
+  font-family: var(--sans);
+  font-weight: 300;
   font-size: clamp(1.14rem, 1.9vw, 1.4rem);
   line-height: 1.5;
   color: var(--ink-2);
@@ -147,7 +135,7 @@ p { text-wrap: pretty; max-width: var(--measure); }
 a { color: var(--link); text-decoration: none; }
 .prose a,
 p > a:not(.btn):not(.tok),
-li > a:not(.btn) {
+li > a:not(.btn):not(.tile) {
   text-decoration: underline;
   text-decoration-thickness: from-font;
   text-underline-offset: 0.18em;
@@ -156,10 +144,10 @@ li > a:not(.btn) {
 }
 .prose a:hover,
 p > a:not(.btn):not(.tok):hover,
-li > a:not(.btn):hover { text-decoration-color: currentColor; }
+li > a:not(.btn):not(.tile):hover { text-decoration-color: currentColor; }
 
 code, kbd, pre { font-family: var(--mono); font-variant-numeric: tabular-nums lining-nums; }
-code { font-size: 0.84em; background: var(--paper-2); padding: 0.08em 0.34em; border-radius: 2px; color: var(--ink); }
+code { font-size: 0.84em; background: var(--paper-2); padding: 0.08em 0.34em; border-radius: 4px; color: var(--ink); }
 pre {
   background: var(--paper-2);
   padding: 1.15rem 1.3rem;
@@ -171,7 +159,7 @@ pre code { background: none; padding: 0; }
 
 kbd {
   font-size: 0.68rem; background: var(--paper-2);
-  border: 1px solid var(--rule); border-bottom-width: 2px; border-radius: 3px;
+  border: 1px solid var(--rule-2); border-bottom-width: 2px; border-radius: 4px;
   padding: 0.1em 0.36em; color: var(--ink-2);
 }
 
@@ -197,8 +185,10 @@ hr { border: 0; border-top: 1px solid var(--rule); margin: 3.5rem 0; }
 .stack-lg > * + * { margin-top: clamp(3.5rem, 8vw, 6.5rem); }
 
 /* hairline-separated groups: the editorial alternative to bordered cards */
-.grid { display: grid; gap: 1px; background: var(--rule); }
+.grid { display: grid; gap: 1px; }
 .grid > * { background: var(--paper); }
+.grid:not(.gap) > :first-child { border-radius: var(--r-md) 0 0 var(--r-md); }
+.grid:not(.gap) > :last-child { border-radius: 0 var(--r-md) var(--r-md) 0; }
 /* Grid and flex children default to min-width: auto, which lets one long
    word or nowrap token widen the whole track past a phone screen. */
 .grid > *, .railed > *, .between > *, .stack > *, .stack-lg > * { min-width: 0; }
@@ -219,7 +209,7 @@ main { counter-reset: sec; }
   gap: 0.5rem;
   margin-bottom: 2.2rem;
   padding-top: 1.6rem;
-  border-top: 2px solid var(--ink);
+  border-top: 2px solid rgba(255, 255, 255, 0.42);
 }
 .sec-head::before {
   content: counter(sec, decimal-leading-zero);
@@ -242,14 +232,14 @@ main { counter-reset: sec; }
 .hdr {
   position: sticky; top: 0; z-index: 80;
   border-bottom: 1px solid var(--rule);
-  background: color-mix(in srgb, var(--paper) 92%, transparent);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: rgba(8, 11, 18, 0.62);
+  backdrop-filter: blur(18px) saturate(1.2);
+  -webkit-backdrop-filter: blur(18px) saturate(1.2);
 }
 .hdr-in { display: flex; align-items: center; gap: 1.1rem; height: 62px; }
 
 .brand {
-  font-family: var(--serif); font-size: 1.14rem; font-weight: 600;
+  font-family: var(--display); font-size: 1.14rem; font-weight: 500;
   letter-spacing: -0.015em; color: var(--ink); flex-shrink: 0;
   display: inline-flex; align-items: baseline; gap: 0.55rem;
   padding-block: 0.6rem;
@@ -275,7 +265,7 @@ main { counter-reset: sec; }
 /* 36px visual, 44px hit area via the ::after overhang */
 .icon-btn, .kbd-btn {
   display: inline-flex; align-items: center; justify-content: center;
-  height: 36px; border: 1px solid var(--ink-3); border-radius: 2px;
+  height: 36px; border: 1px solid var(--ink-3); border-radius: var(--r-sm);
   background: transparent; color: var(--ink-2);
   font: inherit; cursor: pointer; flex-shrink: 0; position: relative;
   transition: border-color 0.16s, color 0.16s;
@@ -333,7 +323,7 @@ main { counter-reset: sec; }
 }
 
 /* ──────────────────────────────────────────────────────────── surfaces */
-.card { background: var(--paper); padding: clamp(1.4rem, 2.4vw, 2rem); position: relative; }
+.card { background: var(--paper); padding: clamp(1.4rem, 2.4vw, 2rem); position: relative; border-radius: var(--r-md); }
 .gap > .card, .card.bordered { border: 1px solid var(--rule); }
 .card-i { cursor: pointer; transition: background 0.18s; }
 .card-i:hover { background: var(--paper-2); }
@@ -361,8 +351,8 @@ main { counter-reset: sec; }
 
 .tok {
   display: inline-block; font-size: 0.8rem; padding: 0.15rem 0.55rem;
-  border: 1px solid var(--rule); border-radius: 2px;
-  color: var(--ink-2); background: var(--paper); white-space: nowrap;
+  border: 1px solid var(--rule-2); border-radius: 6px;
+  color: var(--ink-2); background: transparent; white-space: nowrap;
   max-width: 100%;
 }
 /* Long tokens (e.g. "Open to: ...") wrap instead of pushing the page sideways on phones. */
@@ -372,20 +362,20 @@ main { counter-reset: sec; }
 .btn {
   display: inline-flex; align-items: center; gap: 0.45rem;
   min-height: 44px; padding: 0.58rem 1.1rem;
-  border: 1px solid var(--ink); border-radius: 2px;
-  background: transparent; color: var(--ink);
+  border: 1px solid var(--rule-2); border-radius: var(--r-sm);
+  background: rgba(255, 255, 255, 0.04); color: var(--ink);
   font: inherit; font-size: 0.9rem; font-weight: 540; cursor: pointer;
   transition: background 0.18s, color 0.18s, border-color 0.18s;
 }
-.btn:hover { background: var(--ink); color: var(--paper); }
-.btn-primary { background: var(--ink); color: var(--paper); }
-.btn-primary:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn:hover { background: rgba(255, 255, 255, 0.12); border-color: var(--ink-2); }
+.btn-primary { background: var(--ink); color: var(--base); border-color: var(--ink); }
+.btn-primary:hover { background: var(--accent); border-color: var(--accent); color: var(--base); }
 .btn-sm { padding: 0.3rem 0.65rem; font-size: 0.82rem; }
 
 /* ─────────────────────────────────────────────────────────────── stats */
 .stat { display: flex; flex-direction: column; gap: 0.35rem; }
 .stat .n {
-  font-family: var(--serif); font-size: clamp(2.1rem, 4.2vw, 3rem);
+  font-family: var(--display); font-size: clamp(2.1rem, 4.2vw, 3rem);
   font-weight: 600; line-height: 0.95; letter-spacing: -0.03em; color: var(--ink);
 }
 .stat .l { font-family: var(--sans); font-size: 0.86rem; font-weight: 560; color: var(--ink-2); }
@@ -413,8 +403,8 @@ main { counter-reset: sec; }
 input[type='checkbox'].box {
   appearance: none; -webkit-appearance: none;
   width: 20px; height: 20px; margin: 2px 0 0;
-  border: 1.5px solid var(--ink-3); border-radius: 0;
-  background: var(--paper); cursor: pointer; position: relative; flex-shrink: 0;
+  border: 1.5px solid var(--ink-3); border-radius: 5px;
+  background: transparent; cursor: pointer; position: relative; flex-shrink: 0;
   transition: background 0.16s, border-color 0.16s;
 }
 input[type='checkbox'].box:hover { border-color: var(--ink); }
@@ -422,7 +412,7 @@ input[type='checkbox'].box:checked { background: var(--ink); border-color: var(-
 input[type='checkbox'].box:checked::after {
   content: ''; position: absolute; left: 5.5px; top: 1.5px;
   width: 5px; height: 10px;
-  border: solid var(--paper); border-width: 0 2px 2px 0;
+  border: solid var(--base); border-width: 0 2px 2px 0;
   transform: rotate(45deg);
 }
 .hit {
@@ -445,13 +435,13 @@ table { border-collapse: collapse; width: 100%; font-size: 0.92rem; }
 th, td { text-align: left; padding: 0.72rem 1.1rem 0.72rem 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
 th {
   font-family: var(--sans); font-size: 0.82rem; font-weight: 650; color: var(--ink-2);
-  white-space: nowrap; border-bottom: 1px solid var(--ink); padding-bottom: 0.6rem;
+  white-space: nowrap; border-bottom: 1px solid var(--rule-2); padding-bottom: 0.6rem;
 }
 
 /* ──────────────────────────────────────────────────────────── timeline */
 .tl { list-style: none; padding: 0; margin: 0; max-width: none; }
 .tl > li { position: relative; padding: 1.6rem 0; margin: 0; border-top: 1px solid var(--rule); display: grid; gap: 0.4rem; }
-.tl > li:first-child { border-top: 1px solid var(--ink); }
+.tl > li:first-child { border-top: 1px solid var(--rule-2); }
 .tl > li:last-child { border-bottom: 1px solid var(--rule); }
 @media (min-width: 860px) {
   .tl > li { grid-template-columns: 11rem minmax(0, 1fr); column-gap: 2.5rem; }
@@ -460,7 +450,7 @@ th {
 }
 
 /* ────────────────────────────────────────────────────── experience list */
-.xp { border-top: 1px solid var(--ink); }
+.xp { border-top: 1px solid var(--rule-2); }
 .xp-item { padding: 2.2rem 0; border-bottom: 1px solid var(--rule); position: relative; }
 .xp-item:last-child { border-bottom: 0; }
 .xp-role { font-size: 1.5rem; margin: 0.5rem 0 0.25rem; }
@@ -475,19 +465,18 @@ th {
 .cmdk {
   position: fixed; inset: 0; z-index: 200; display: none;
   padding: clamp(3rem, 13vh, 9rem) 1rem 1rem;
-  background: color-mix(in srgb, var(--ink) 28%, transparent);
-  backdrop-filter: blur(3px);
+  background: rgba(0, 0, 0, 0.6);
 }
 .cmdk.show { display: block; }
 .cmdk-box {
   max-width: 610px; margin-inline: auto;
-  background: var(--paper); border: 1px solid var(--ink);
-  box-shadow: 0 28px 60px -24px color-mix(in srgb, var(--ink) 45%, transparent);
+  background: var(--solid); border: 1px solid var(--rule-2); border-radius: var(--r-md);
+  box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.8);   /* the one raised layer */
   overflow: hidden;
 }
 .cmdk-in {
   width: 100%; border: 0; background: transparent; color: var(--ink);
-  font: inherit; font-family: var(--serif); font-size: 1.15rem;
+  font: inherit; font-family: var(--display); font-weight: 300; font-size: 1.2rem;
   padding: 1.1rem 1.3rem; border-bottom: 1px solid var(--rule);
 }
 .cmdk-in:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
@@ -529,7 +518,7 @@ th {
 
 /* ──────────────────────────────────────────────────── rooms / machines */
 .rgroup { border-top: 1px solid var(--rule); }
-.rgroup:first-of-type { border-top: 1px solid var(--ink); }
+.rgroup:first-of-type { border-top: 1px solid var(--rule-2); }
 .rgroup > summary {
   padding: 0.95rem 0; cursor: pointer;
   font-family: var(--sans); font-weight: 620; font-size: 0.96rem;
@@ -560,7 +549,7 @@ th {
 .m {
   display: inline-flex; align-items: center; gap: 0.35rem;
   font-size: 0.83rem; min-height: 44px; padding: 0 0.7rem;
-  border: 1px solid var(--rule); border-radius: 2px;
+  border: 1px solid var(--rule-2); border-radius: var(--r-sm);
   background: var(--paper); cursor: pointer; user-select: none;
   transition: border-color 0.16s, background 0.16s;
 }
@@ -586,7 +575,7 @@ th {
 /* ───────────────────────────────────────────────────── recommendations */
 .rec { border-top: 1px solid var(--rule); padding: 2.6rem 0; }
 .rec h2 { font-size: clamp(1.4rem, 2.5vw, 1.85rem); max-width: 22ch; }
-.rec:first-of-type { border-top: 1px solid var(--ink); }
+.rec:first-of-type { border-top: 1px solid var(--rule-2); }
 .rec-n { font-family: var(--mono); font-size: 0.75rem; color: var(--accent); font-variant-numeric: tabular-nums lining-nums; letter-spacing: 0.06em; }
 /* Sans deck under a serif headline: the contrast is what builds the hierarchy.
    Serif on serif at similar weight just reads as two competing headlines. */
@@ -611,10 +600,10 @@ th {
 .prose h2 { margin: 3rem 0 0.9rem; }
 .prose h3 { margin: 2.1rem 0 0.6rem; }
 .prose strong, .prose b { color: var(--ink); font-weight: 650; }
-.prose blockquote { border-left: 2px solid var(--rule-2); padding-left: 1.3rem; margin: 1.8rem 0; color: var(--ink-3); font-family: var(--serif); font-size: 1.08rem; }
+.prose blockquote { border-left: 2px solid var(--rule-2); padding-left: 1.3rem; margin: 1.8rem 0; color: var(--ink-2); font-size: 1.08rem; font-weight: 300; }
 
 /* ───────────────────────────────────────────────────────────── footer */
-.ftr { border-top: 2px solid var(--ink); margin-top: clamp(5rem, 12vh, 8rem); padding: 2.75rem 0 4rem; background: var(--paper); }
+.ftr { border-top: 1px solid var(--rule-2); margin-top: clamp(5rem, 12vh, 8rem); padding: 2.75rem 0 4rem; background: rgba(6, 8, 14, 0.55); }
 .ftr a { color: var(--ink-2); }
 .ftr .row a { display: inline-flex; align-items: center; min-height: 44px; }
 .ftr a:hover { color: var(--ink); }
@@ -629,4 +618,54 @@ th {
   .hdr, .ftr, .cmdk, .filters, .icon-btn, .kbd-btn, .rail { display: none !important; }
   body { background: #fff; color: #000; font-size: 11pt; }
   a { color: #000; }
+}
+
+/* ──────────────────────────────────────────────────────────── backdrop */
+/* Full-bleed page photo, blurred and darkened. Two layers so a new image can
+   fade in over the old one. The scrim strength (--scrim) is measured per photo
+   at build time in Backdrop.astro so every text colour stays above AA. */
+.backdrop { position: fixed; inset: 0; z-index: -1; overflow: hidden; background: var(--base); }
+.backdrop-layer {
+  position: absolute; inset: -40px;
+  background-size: cover; background-position: center;
+  filter: blur(16px) saturate(1.15);   /* keep in step with Backdrop.astro's measurement */
+  opacity: 0; transition: opacity 0.45s var(--ease);
+}
+.backdrop-layer.is-on { opacity: 1; }
+.backdrop-scrim {
+  position: absolute; inset: 0;
+  background: rgb(6 8 14 / var(--scrim, 0.8));
+  transition: background-color 0.45s var(--ease);
+}
+
+/* ───────────────────────────────────────────────────────── focus tiles */
+/* Learning-plan only. A row of tiles; the focused one lifts, gets the white
+   outline and the site's one glow, and swaps the page background to its own. */
+.tiles {
+  display: flex; gap: 1rem; list-style: none; margin: 0; padding: 1.2rem 0.4rem 1.6rem; max-width: none;
+  overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
+}
+.tiles::-webkit-scrollbar { display: none; }
+.tiles > li { margin: 0; flex: 0 0 auto; scroll-snap-align: start; }
+.tile {
+  display: flex; flex-direction: column; justify-content: space-between; gap: 0.8rem;
+  width: 15.5rem; min-height: 11rem; padding: 1.2rem 1.25rem;
+  border-radius: var(--r-lg); border: 1px solid var(--rule);
+  background: var(--paper); color: var(--ink);
+  transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease), border-color 0.25s;
+}
+.tile:hover, .tile:focus-visible {
+  transform: scale(1.06);
+  border-color: var(--ink);
+  outline: 2px solid var(--ink); outline-offset: 3px;
+  box-shadow: 0 0 0 8px rgba(140, 188, 255, 0.16), 0 24px 60px -18px rgba(0, 0, 0, 0.75);
+}
+.tile-k { font-size: 0.78rem; color: var(--ink-3); display: flex; justify-content: space-between; gap: 0.5rem; }
+.tile-t { font-family: var(--display); font-size: 1.25rem; font-weight: 400; line-height: 1.2; }
+.tile-d { font-size: 0.86rem; color: var(--ink-2); line-height: 1.45; }
+@media (max-width: 600px) { .tile { width: 78vw; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .backdrop-layer { transition: none; }
+  .tile, .tile:hover, .tile:focus-visible { transition: none; transform: none; }
 }

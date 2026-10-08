@@ -1,5 +1,5 @@
 /**
- * Client runtime: progress store, scrollspy, command palette, filters, theme.
+ * Client runtime: progress store, scrollspy, command palette, filters, backdrop, tiles.
  *
  * Everything re-initialises on `astro:page-load` so it survives View Transitions.
  * Listeners that must not stack are registered once, guarded by `wired`.
@@ -265,33 +265,59 @@ function initFilters() {
 
 /* ═══════════════════════════════════════════════════ chrome + one-time */
 
-const THEME_COLOR = { light: '#fcfbf8', dark: '#121210' };
-
 function initChrome() {
-  const root = document.documentElement;
-  // Light is the design's default. Dark applies only when explicitly chosen,
-  // so the OS preference never overrides the intended presentation.
-  const effective = () => (root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
-  const paint = () => {
-    const mode = effective();
-    const label = document.querySelector('[data-theme-label]');
-    if (label) label.textContent = mode === 'dark' ? 'Light' : 'Dark';
-    document.querySelector('[data-theme-toggle]')?.setAttribute('aria-pressed', String(mode === 'dark'));
-    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', THEME_COLOR[mode]);
-  };
-  document.querySelector('[data-theme-toggle]')?.addEventListener('click', () => {
-    const next = effective() === 'dark' ? 'light' : 'dark';
-    root.setAttribute('data-theme', next);
-    try { localStorage.setItem('theme', next); } catch { /* the choice lasts for this page only */ }
-    paint();
-  });
-  paint();
-
   const nav = document.querySelector('[data-nav]');
   const burger = document.querySelector('[data-burger]');
   burger?.addEventListener('click', () => {
     const open = nav?.classList.toggle('open');
     burger.setAttribute('aria-expanded', String(!!open));
+  });
+}
+
+/* ══════════════════════════════════════════════════ backdrop + tiles */
+
+// The backdrop persists across View Transitions; each page names its slot on
+// <main data-page-bg>. Changing slot fades a fresh layer in over the old one.
+function setBackdrop(key: string | undefined) {
+  const bd = document.querySelector<HTMLElement>('[data-backdrop]');
+  if (!bd || !key || bd.dataset.current === key) return;
+  const layers = bd.querySelectorAll<HTMLElement>('.backdrop-layer');
+  const on = bd.querySelector<HTMLElement>('.backdrop-layer.is-on');
+  const next = Array.from(layers).find((l) => l !== on) ?? layers[0];
+  next.style.backgroundImage = `var(--bg-${key})`;
+  next.classList.add('is-on');
+  on?.classList.remove('is-on');
+  bd.style.setProperty('--scrim', `var(--scrim-${key})`);
+  bd.dataset.current = key;
+}
+
+const pageBg = () => document.querySelector<HTMLElement>('main')?.dataset.pageBg;
+
+function initTiles() {
+  setBackdrop(pageBg());
+
+  document.querySelectorAll<HTMLElement>('[data-tiles]').forEach((row) => {
+    const tiles = Array.from(row.querySelectorAll<HTMLElement>('.tile'));
+    tiles.forEach((t, i) => {
+      const show = () => setBackdrop(t.dataset.bg);
+      t.addEventListener('mouseenter', show);
+      t.addEventListener('focus', show);
+      t.addEventListener('keydown', (e) => {
+        const step = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+        if (!step) return;
+        e.preventDefault();
+        const to = tiles[Math.min(tiles.length - 1, Math.max(0, i + step))];
+        to.focus();
+        to.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+      });
+    });
+    // Leaving the row returns the page to its own background.
+    row.addEventListener('mouseleave', () => {
+      if (!row.contains(document.activeElement)) setBackdrop(pageBg());
+    });
+    row.addEventListener('focusout', (e) => {
+      if (!row.contains(e.relatedTarget as Node | null)) setBackdrop(pageBg());
+    });
   });
 }
 
@@ -366,6 +392,7 @@ function init() {
   initPalette();
   initFilters();
   initChrome();
+  initTiles();
   initProgressControls();
 
   if (!wired) {
