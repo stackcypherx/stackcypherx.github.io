@@ -1,42 +1,109 @@
 ---
 import Base from '../layouts/Base.astro';
 import SectionHead from '../components/SectionHead.astro';
-import { profile, yearsExperience } from '../data/profile';
+import { profile, yearsExperience, yearsWord } from '../data/profile';
 import { tracks } from '../data/roadmap';
 import { countItems } from '../data/types';
 import { builds } from '../data/vibe';
+import type { BgKey } from '../data/backgrounds';
 
 // Home is the hiring-facing summary: who, track record, evidence, contact.
 // The learning plan has its own section under /plan and gets one block here.
 
 type NoteFrontmatter = { title: string; description?: string; date: string; track?: string; draft?: boolean };
-const notes = Object.values(
+const allNotes = Object.values(
   import.meta.glob<{ frontmatter: NoteFrontmatter; url?: string }>('./writing/*.md', { eager: true }),
 )
   .filter((m) => m.frontmatter && !m.frontmatter.draft && m.url)
-  .sort((a, b) => +new Date(b.frontmatter.date) - +new Date(a.frontmatter.date))
-  .slice(0, 3);
+  .sort((a, b) => +new Date(b.frontmatter.date) - +new Date(a.frontmatter.date));
+const notes = allNotes.slice(0, 3);
 const fmt = (d: string) =>
   new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const securityCreds = profile.credentials.filter((c) => c.domain === 'Security');
 const totalMilestones = tracks.reduce((n, t) => n + countItems(t), 0);
+
+// The console home screen: one icon per destination. Section icons show their
+// page's photo; build icons show a monogram until each build has a screenshot.
+type ConsoleItem = {
+  id: string; label: string; kicker: string; line: string;
+  cta: string; href: string; bg: BgKey; photo: boolean; mono?: string;
+};
+// First word of the build's name: short enough for the icon, readable on touch screens.
+const monogram = (t: string) => t.split(/[\s-]+/)[0].replace(/[^A-Za-z]/g, '');
+// A short intro for the first screen; the full pitch is on the Experience page.
+const intro = `${yearsWord[0].toUpperCase()}${yearsWord.slice(1)} years running carrier network and service operations across eastern Indonesia, now specialising into cybersecurity and agentic AI. CEH and Cisco CyberOps certified.`;
+const items: ConsoleItem[] = [
+  { id: 'experience', label: 'Experience', kicker: `${yearsExperience} years · ${profile.experience.length} roles`, bg: 'field', photo: true,
+    line: 'Carrier network and service operations across eastern Indonesia: roles, engineering cases, field record and credentials.',
+    cta: 'Open experience', href: '/experience' },
+  { id: 'work', label: 'Work', kicker: `${builds.length} builds`, bg: 'work', photo: true,
+    line: 'Software I ship by orchestrating coding agents, and the method that keeps it correct.',
+    cta: 'See the builds', href: '/work' },
+  { id: 'writing', label: 'Writing', kicker: `${allNotes.length} published`, bg: 'writing', photo: true,
+    line: 'Technical writeups and notes from the labs and the job.',
+    cta: 'Read the writing', href: '/writing' },
+  { id: 'plan', label: 'Learning plan', kicker: `${totalMilestones} milestones · ${tracks.length} tracks`, bg: 'lab', photo: true,
+    line: 'The open plan behind the move into security and agentic AI. Anyone can use it.',
+    cta: 'Open the plan', href: '/plan' },
+  ...builds.slice(0, 3).map((b): ConsoleItem => ({
+    id: `build-${b.id}`, label: b.title, kicker: `${b.kind} · ${b.period}`, bg: 'work', photo: false, mono: monogram(b.title),
+    line: b.summary, cta: 'See this build', href: `/work#${b.id}`,
+  })),
+];
+const sectionCount = 4;
 ---
 
-<Base
-  eyebrow={`${profile.location} · open to remote work and relocation`}
-  heading="I keep carrier networks running. Now I'm securing them."
-  lede={profile.pitch}
-  display
->
-  <div slot="hero-extra" class="row" style="margin-top: 2.2rem; gap: 0.75rem">
-    <a class="btn btn-primary" href={`${base}/experience`}>Full experience</a>
-    <a class="btn" href={`mailto:${profile.contact.email}`}>Email me</a>
-    <a class="btn" href={profile.contact.linkedin}>LinkedIn ↗</a>
-  </div>
+<Base sharpBg>
+  <!-- ─────────────────────────────────────────────── console home screen -->
+  <section class="console" data-console aria-label="Introduction">
+    <div class="wrap">
+      <ul class="icons" data-icons aria-label="Where to go">
+        {items.map((it, i) => (
+          <>
+            {i === sectionCount && <li class="icons-gap" aria-hidden="true"></li>}
+            <li>
+              <a
+                class={`icon${it.photo ? ' icon-photo' : ''}`}
+                href={`${base}${it.href}`}
+                data-item={it.id}
+                data-bg={it.bg}
+                aria-label={it.label}
+                aria-describedby={`panel-line-${it.id}`}
+                style={it.photo ? `background-image: var(--bg-${it.bg})` : undefined}
+              >{it.photo ? it.label : it.mono}</a>
+            </li>
+          </>
+        ))}
+      </ul>
 
-  <div class="wrap stack-lg" style="margin-top: 4rem">
+      <div class="console-panel">
+        <div data-panel="intro">
+          <p class="console-kicker">{profile.location} · open to remote work and relocation</p>
+          <h1 class="console-title">I keep carrier networks running. Now I'm securing them.</h1>
+          <p class="lede console-line">{intro}</p>
+          <div class="console-actions">
+            <a class="btn btn-primary btn-pill" href={`${base}/experience`}>Open experience</a>
+            <a class="btn btn-pill" href={`mailto:${profile.contact.email}`}>Email me</a>
+            <a class="btn btn-pill" href={profile.contact.linkedin}>LinkedIn ↗</a>
+          </div>
+        </div>
+        {items.map((it) => (
+          <div data-panel={it.id} hidden>
+            <p class="console-kicker">{it.kicker}</p>
+            <p class="console-title">{it.label}</p>
+            <p class="lede console-line" id={`panel-line-${it.id}`}>{it.line}</p>
+            <div class="console-actions">
+              <a class="btn btn-primary btn-pill" href={`${base}${it.href}`} tabindex="-1">{it.cta}</a>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap stack-lg" style="margin-top: 2rem">
     <!-- ───────────────────────────────────────────────────────── position -->
     <section>
       <SectionHead label="Position" title="Not a career change. A specialisation." />

@@ -1,5 +1,6 @@
 /**
- * Client runtime: progress store, scrollspy, command palette, filters, backdrop, tiles.
+ * Client runtime: progress store, scrollspy, command palette, filters, backdrop,
+ * plan tiles, the home-screen console, and the local-time clock.
  *
  * Everything re-initialises on `astro:page-load` so it survives View Transitions.
  * Listeners that must not stack are registered once, guarded by `wired`.
@@ -265,13 +266,16 @@ function initFilters() {
 
 /* ═══════════════════════════════════════════════════ chrome + one-time */
 
+// My local time in Makassar (UTC+8), for recruiters in other timezones.
+let clockTimer = 0;
 function initChrome() {
-  const nav = document.querySelector('[data-nav]');
-  const burger = document.querySelector('[data-burger]');
-  burger?.addEventListener('click', () => {
-    const open = nav?.classList.toggle('open');
-    burger.setAttribute('aria-expanded', String(!!open));
-  });
+  const out = document.querySelector<HTMLElement>('[data-clock-time]');
+  if (!out) return;
+  const fmt = new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Makassar' });
+  const tick = () => { out.textContent = fmt.format(new Date()); };
+  tick();
+  window.clearInterval(clockTimer);
+  clockTimer = window.setInterval(tick, 30_000);
 }
 
 /* ══════════════════════════════════════════════════ backdrop + tiles */
@@ -280,15 +284,33 @@ function initChrome() {
 // <main data-page-bg>. Changing slot fades a fresh layer in over the old one.
 function setBackdrop(key: string | undefined) {
   const bd = document.querySelector<HTMLElement>('[data-backdrop]');
-  if (!bd || !key || bd.dataset.current === key) return;
+  if (!bd || !key) return;
+  // Pages can ask for the lighter blur; each blur has its own measured scrim.
+  const sharp = document.querySelector<HTMLElement>('main')?.dataset.pageSharp === 'true';
+  if (sharp) bd.dataset.sharp = 'true'; else delete bd.dataset.sharp;
+  bd.style.setProperty('--scrim', `var(--scrim-${sharp ? 'sharp-' : ''}${key})`);
+  if (bd.dataset.current === key) return;
   const layers = bd.querySelectorAll<HTMLElement>('.backdrop-layer');
   const on = bd.querySelector<HTMLElement>('.backdrop-layer.is-on');
   const next = Array.from(layers).find((l) => l !== on) ?? layers[0];
   next.style.backgroundImage = `var(--bg-${key})`;
   next.classList.add('is-on');
   on?.classList.remove('is-on');
-  bd.style.setProperty('--scrim', `var(--scrim-${key})`);
   bd.dataset.current = key;
+}
+
+// Left/Right arrows move focus along a row of links.
+function arrowNav(links: HTMLElement[]) {
+  links.forEach((el, i) => {
+    el.addEventListener('keydown', (e) => {
+      const step = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+      if (!step) return;
+      e.preventDefault();
+      const to = links[Math.min(links.length - 1, Math.max(0, i + step))];
+      to.focus();
+      to.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+    });
+  });
 }
 
 const pageBg = () => document.querySelector<HTMLElement>('main')?.dataset.pageBg;
@@ -298,18 +320,11 @@ function initTiles() {
 
   document.querySelectorAll<HTMLElement>('[data-tiles]').forEach((row) => {
     const tiles = Array.from(row.querySelectorAll<HTMLElement>('.tile'));
-    tiles.forEach((t, i) => {
+    arrowNav(tiles);
+    tiles.forEach((t) => {
       const show = () => setBackdrop(t.dataset.bg);
       t.addEventListener('mouseenter', show);
       t.addEventListener('focus', show);
-      t.addEventListener('keydown', (e) => {
-        const step = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
-        if (!step) return;
-        e.preventDefault();
-        const to = tiles[Math.min(tiles.length - 1, Math.max(0, i + step))];
-        to.focus();
-        to.scrollIntoView({ block: 'nearest', inline: 'nearest' });
-      });
     });
     // Leaving the row returns the page to its own background.
     row.addEventListener('mouseleave', () => {
@@ -319,6 +334,36 @@ function initTiles() {
       if (!row.contains(e.relatedTarget as Node | null)) setBackdrop(pageBg());
     });
   });
+}
+
+// Home screen: hovering or focusing an icon shows its panel and background.
+// Leaving the whole console returns to the intro, which holds the page's h1.
+function initConsole() {
+  const root = document.querySelector<HTMLElement>('[data-console]');
+  if (!root) return;
+  const icons = Array.from(root.querySelectorAll<HTMLElement>('.icon'));
+  const panels = Array.from(root.querySelectorAll<HTMLElement>('[data-panel]'));
+
+  const show = (id: string, bg?: string) => {
+    panels.forEach((p) => { p.hidden = p.dataset.panel !== id; });
+    icons.forEach((i) => i.setAttribute('aria-current', String(i.dataset.item === id)));
+    setBackdrop(bg ?? pageBg());
+  };
+  const reset = () => {
+    panels.forEach((p) => { p.hidden = p.dataset.panel !== 'intro'; });
+    icons.forEach((i) => i.removeAttribute('aria-current'));
+    setBackdrop(pageBg());
+  };
+
+  arrowNav(icons);
+  icons.forEach((icon) => {
+    const go = () => show(icon.dataset.item!, icon.dataset.bg);
+    icon.addEventListener('mouseenter', go);
+    icon.addEventListener('focus', go);
+  });
+  root.addEventListener('mouseleave', () => { if (!root.contains(document.activeElement)) reset(); });
+  root.addEventListener('focusout', (e) => { if (!root.contains(e.relatedTarget as Node | null)) reset(); });
+  root.addEventListener('keydown', (e) => { if (e.key === 'Escape') { reset(); (document.activeElement as HTMLElement | null)?.blur(); } });
 }
 
 /* ═════════════════════════════════════════════ progress side-controls */
@@ -393,6 +438,7 @@ function init() {
   initFilters();
   initChrome();
   initTiles();
+  initConsole();
   initProgressControls();
 
   if (!wired) {
