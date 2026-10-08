@@ -1,0 +1,92 @@
+---
+/**
+ * Project icons, drawn for this site as one consistent set: 48×48 grid, 2.5px
+ * rounded strokes in the text colour, one accent detail per icon. Each glyph
+ * shows what the project does. "this-site" reuses the site's favicon mark; the
+ * internal and personal tools have no public site or favicon to borrow from.
+ *
+ * Unknown ids fall back to the first letter of the title, so a new build in
+ * src/data/vibe.ts still gets an icon until it has a glyph here.
+ */
+interface Props {
+  id: string;
+  title: string;
+  /** Rendered size in px; the glyph scales with it. */
+  size?: number;
+}
+const { id, title, size = 48 } = Astro.props;
+const known = ['ops-analytics', 'site-monitor-bot', 'phototodoc', 'search-to-doc', 'learning-tracker', 'this-site'];
+const letter = title.trim().charAt(0).toUpperCase();
+---
+
+<svg
+  class="pico"
+  width={size}
+  height={size}
+  viewBox="0 0 48 48"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2.5"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+  focusable="false"
+>
+  {id === 'ops-analytics' && (
+    <>
+      {/* operations analytics: bars with an assurance trend line */}
+      <path d="M7 40h34" />
+      <path d="M12 40V29M20 40V22M28 40V26M36 40V17" stroke-width="4.5" />
+      <path d="M9 22l9-7 8 4 13-10" class="pico-accent" />
+    </>
+  )}
+  {id === 'site-monitor-bot' && (
+    <>
+      {/* site monitoring: a cell tower broadcasting, with an alert raised */}
+      <circle cx="24" cy="16" r="2.6" />
+      <path d="M24 19l-7 21M24 19l7 21M19.4 33h9.2" />
+      <path d="M16.5 9.5a10.5 10.5 0 0 0 0 13M31.5 9.5a10.5 10.5 0 0 1 0 13" />
+      <circle cx="39" cy="9" r="4" class="pico-fill" />
+    </>
+  )}
+  {id === 'phototodoc' && (
+    <>
+      {/* photo to document: a photo becomes a formatted page */}
+      <rect x="5" y="6" width="19" height="15" rx="2.5" />
+      <path d="M7.5 18.5l5-5 4 4 2.5-2.5 3 3" />
+      <path d="M26 17h9l6 6v19H26z" />
+      <path d="M35 17v6h6" />
+      <path d="M30 31h7M30 36h7" class="pico-accent" />
+      <path d="M14 25v6a4 4 0 0 0 4 4h4" />
+      <path d="M19.5 32l3 3-3 3" />
+    </>
+  )}
+  {id === 'search-to-doc' && (
+    <>
+      {/* search capture to document: a page found and captured */}
+      <path d="M9 6h16l8 8v20" />
+      <path d="M9 6v34h15" />
+      <path d="M25 6v8h8" />
+      <path d="M14 19h11M14 24h7" />
+      <circle cx="32" cy="32" r="6.5" class="pico-accent" />
+      <path d="M37 37l5 5" />
+    </>
+  )}
+  {id === 'learning-tracker' && (
+    <>
+      {/* security learning tracker: a shield with progress checked off */}
+      <path d="M24 5l14 5v11c0 9.5-6 16.5-14 21-8-4.5-14-11.5-14-21V10z" />
+      <path d="M17 23l5 5 9-10" class="pico-accent" />
+    </>
+  )}
+  {id === 'this-site' && (
+    <>
+      {/* the site's own favicon mark */}
+      <path d="M13 39L24 11l11 28" stroke-width="3.5" />
+      <path d="M17.5 31h13" stroke-width="3.5" class="pico-accent" />
+    </>
+  )}
+  {!known.includes(id) && (
+    <text x="24" y="31" text-anchor="middle" font-size="20" font-weight="600" fill="currentColor" stroke="none">{letter}</text>
+  )}
+</svg>

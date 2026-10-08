@@ -687,15 +687,18 @@ th {
 .console { min-height: calc(100svh - 63px); display: flex; padding: clamp(1.5rem, 4vh, 2.5rem) 0 clamp(2.5rem, 7vh, 4.5rem); }
 .console > .wrap { display: flex; flex-direction: column; gap: clamp(2rem, 6vh, 4.5rem); }
 
-.icons {
-  display: flex; align-items: center; gap: 1rem; list-style: none; margin: 0; max-width: none;
-  padding: 0.9rem 0.5rem; overflow-x: auto; scroll-snap-type: x proximity; scrollbar-width: none;
+/* Two labelled groups (Explore, Projects) in one sideways-scrolling row. */
+.icon-groups {
+  display: flex; gap: 2rem; overflow-x: auto; scroll-snap-type: x proximity; scrollbar-width: none;
+  padding: 0 0.5rem;
   /* fade the edge so a cut-off icon reads as "more this way" */
   mask-image: linear-gradient(90deg, #000 calc(100% - 3rem), transparent);
 }
-.icons::-webkit-scrollbar { display: none; }
+.icon-groups::-webkit-scrollbar { display: none; }
+.icon-group { flex: 0 0 auto; }
+.icon-group-label { font-size: 0.78rem; color: var(--ink-3); margin: 0 0 0.2rem 0.2rem; letter-spacing: 0.02em; }
+.icons { display: flex; align-items: center; gap: 1rem; list-style: none; margin: 0; max-width: none; padding: 0.9rem 0.2rem; }
 .icons > li { margin: 0; flex: 0 0 auto; scroll-snap-align: start; }
-.icons > li.icons-gap { width: 0.6rem; }   /* separates sections from builds */
 .icon {
   display: flex; align-items: center; justify-content: center;
   width: 84px; height: 84px; border-radius: 22px;
@@ -704,6 +707,18 @@ th {
   transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease), border-color 0.2s;
 }
 .icon-photo { font-size: 0; }   /* photo icons are named by aria-label and the panel */
+.icon-project { background: linear-gradient(150deg, #1d2840 0%, #0f1522 100%); }
+
+/* Drawn project icons: text-colour strokes, one accent detail. */
+.pico { display: block; color: var(--ink); }
+.pico .pico-accent { stroke: var(--accent); }
+.pico .pico-fill { fill: var(--accent); stroke: none; }
+.pico-tile {
+  display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+  width: 40px; height: 40px; border-radius: 11px; border: 1px solid var(--rule-2);
+  background: linear-gradient(150deg, #1d2840 0%, #0f1522 100%);
+}
+.pico-tile-lg { width: 54px; height: 54px; border-radius: 15px; }
 .icon:hover, .icon:focus-visible, .icon[aria-current='true'] {
   transform: scale(1.12); border-color: var(--ink);
   outline: 2px solid var(--ink); outline-offset: 3px;

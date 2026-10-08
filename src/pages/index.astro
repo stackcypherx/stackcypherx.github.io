@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import SectionHead from '../components/SectionHead.astro';
+import ProjectIcon from '../components/ProjectIcon.astro';
 import { profile, yearsExperience, yearsWord } from '../data/profile';
 import { tracks } from '../data/roadmap';
 import { countItems } from '../data/types';
@@ -25,58 +26,68 @@ const securityCreds = profile.credentials.filter((c) => c.domain === 'Security')
 const totalMilestones = tracks.reduce((n, t) => n + countItems(t), 0);
 
 // The console home screen: one icon per destination. Section icons show their
-// page's photo; build icons show a monogram until each build has a screenshot.
+// page's photo; projects show their drawn icon (src/components/ProjectIcon.astro).
 type ConsoleItem = {
   id: string; label: string; kicker: string; line: string;
-  cta: string; href: string; bg: BgKey; photo: boolean; mono?: string;
+  cta: string; href: string; bg: BgKey;
+  /** Set for projects: drawn icon instead of a photo thumbnail. */
+  project?: string;
 };
-// First word of the build's name: short enough for the icon, readable on touch screens.
-const monogram = (t: string) => t.split(/[\s-]+/)[0].replace(/[^A-Za-z]/g, '');
+// Projects borrow the background closest to what they do, until each has its own screenshot.
+const projectBg: Record<string, BgKey> = {
+  'ops-analytics': 'work', 'site-monitor-bot': 'field', phototodoc: 'writing',
+  'search-to-doc': 'writing', 'learning-tracker': 'security', 'this-site': 'lab',
+};
 // A short intro for the first screen; the full pitch is on the Experience page.
 const intro = `${yearsWord[0].toUpperCase()}${yearsWord.slice(1)} years running carrier network and service operations across eastern Indonesia, now specialising into cybersecurity and agentic AI. CEH and Cisco CyberOps certified.`;
 const items: ConsoleItem[] = [
-  { id: 'experience', label: 'Experience', kicker: `${yearsExperience} years · ${profile.experience.length} roles`, bg: 'field', photo: true,
+  { id: 'experience', label: 'Experience', kicker: `${yearsExperience} years · ${profile.experience.length} roles`, bg: 'field',
     line: 'Carrier network and service operations across eastern Indonesia: roles, engineering cases, field record and credentials.',
     cta: 'Open experience', href: '/experience' },
-  { id: 'work', label: 'Work', kicker: `${builds.length} builds`, bg: 'work', photo: true,
+  { id: 'work', label: 'Work', kicker: `${builds.length} builds`, bg: 'work',
     line: 'Software I ship by orchestrating coding agents, and the method that keeps it correct.',
     cta: 'See the builds', href: '/work' },
-  { id: 'writing', label: 'Writing', kicker: `${allNotes.length} published`, bg: 'writing', photo: true,
+  { id: 'writing', label: 'Writing', kicker: `${allNotes.length} published`, bg: 'writing',
     line: 'Technical writeups and notes from the labs and the job.',
     cta: 'Read the writing', href: '/writing' },
-  { id: 'plan', label: 'Learning plan', kicker: `${totalMilestones} milestones · ${tracks.length} tracks`, bg: 'lab', photo: true,
+  { id: 'plan', label: 'Learning plan', kicker: `${totalMilestones} milestones · ${tracks.length} tracks`, bg: 'lab',
     line: 'The open plan behind the move into security and agentic AI. Anyone can use it.',
     cta: 'Open the plan', href: '/plan' },
-  ...builds.slice(0, 3).map((b): ConsoleItem => ({
-    id: `build-${b.id}`, label: b.title, kicker: `${b.kind} · ${b.period}`, bg: 'work', photo: false, mono: monogram(b.title),
-    line: b.summary, cta: 'See this build', href: `/work#${b.id}`,
-  })),
 ];
-const sectionCount = 4;
+const projects: ConsoleItem[] = builds.map((b) => ({
+  id: `build-${b.id}`, project: b.id, label: b.title, bg: projectBg[b.id] ?? 'work',
+  kicker: `Project · ${b.kind} · ${b.visibility} · ${b.period}`,
+  line: b.summary, cta: 'See this project', href: `/work#${b.id}`,
+}));
+const allItems = [...items, ...projects];
 ---
 
 <Base sharpBg>
   <!-- ─────────────────────────────────────────────── console home screen -->
   <section class="console" data-console aria-label="Introduction">
     <div class="wrap">
-      <ul class="icons" data-icons aria-label="Where to go">
-        {items.map((it, i) => (
-          <>
-            {i === sectionCount && <li class="icons-gap" aria-hidden="true"></li>}
-            <li>
-              <a
-                class={`icon${it.photo ? ' icon-photo' : ''}`}
-                href={`${base}${it.href}`}
-                data-item={it.id}
-                data-bg={it.bg}
-                aria-label={it.label}
-                aria-describedby={`panel-line-${it.id}`}
-                style={it.photo ? `background-image: var(--bg-${it.bg})` : undefined}
-              >{it.photo ? it.label : it.mono}</a>
-            </li>
-          </>
+      <div class="icon-groups" data-icons>
+        {[{ label: 'Explore', list: items }, { label: `Projects · ${projects.length}`, list: projects }].map((g) => (
+          <div class="icon-group">
+            <p class="icon-group-label" id={`grp-${g.list === items ? 'explore' : 'projects'}`}>{g.label}</p>
+            <ul class="icons" aria-labelledby={`grp-${g.list === items ? 'explore' : 'projects'}`}>
+              {g.list.map((it) => (
+                <li>
+                  <a
+                    class={`icon${it.project ? ' icon-project' : ' icon-photo'}`}
+                    href={`${base}${it.href}`}
+                    data-item={it.id}
+                    data-bg={it.bg}
+                    aria-label={it.project ? `Project: ${it.label}` : it.label}
+                    aria-describedby={`panel-line-${it.id}`}
+                    style={it.project ? undefined : `background-image: var(--bg-${it.bg})`}
+                  >{it.project ? <ProjectIcon id={it.project} title={it.label} size={44} /> : it.label}</a>
+                </li>
+              ))}
+            </ul>
+          </div>
         ))}
-      </ul>
+      </div>
 
       <div class="console-panel">
         <div data-panel="intro">
@@ -89,7 +100,7 @@ const sectionCount = 4;
             <a class="btn btn-pill" href={profile.contact.linkedin}>LinkedIn ↗</a>
           </div>
         </div>
-        {items.map((it) => (
+        {allItems.map((it) => (
           <div data-panel={it.id} hidden>
             <p class="console-kicker">{it.kicker}</p>
             <p class="console-title">{it.label}</p>
@@ -192,7 +203,8 @@ const sectionCount = 4;
           builds.slice(0, 3).map((b) => (
             <a class="card card-i" href={`${base}/work#${b.id}`}
                style="display: flex; flex-direction: column; gap: 0.6rem">
-              <div class="row" style="gap: 0.4rem">
+              <div class="row" style="gap: 0.4rem; align-items: center">
+                <span class="pico-tile"><ProjectIcon id={b.id} title={b.title} size={30} /></span>
                 <span class="chip chip-signal">{b.kind}</span>
                 <span class="tag">{b.period}</span>
               </div>
